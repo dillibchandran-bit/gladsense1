@@ -38,9 +38,13 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
   // Check if auditing self on current page
   if (typeof window !== 'undefined' && window.location.hostname === host && typeof document !== 'undefined') {
     html = document.documentElement.outerHTML;
+  } else if (sampleContent && sampleContent.includes('<') && sampleContent.includes('>')) {
+    // Zero-cost direct HTML source inspection: user supplied page source code directly
+    html = sampleContent;
   } else {
-    // Attempt fetch via multi-proxy
+    // Attempt fetch via multi-proxy (100% free, zero operational cost)
     const corsProxies = [
+      `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(normalizedUrl)}`,
       `https://api.allorigins.win/raw?url=${encodeURIComponent(normalizedUrl)}`,
       `https://corsproxy.io/?${encodeURIComponent(normalizedUrl)}`,
     ];
@@ -48,12 +52,12 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
     for (const proxy of corsProxies) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 7500);
         const resp = await fetch(proxy, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (resp.ok) {
           const text = await resp.text();
-          if (text && text.length > 200) {
+          if (text && text.length > 200 && !text.includes('Attention Required! | Cloudflare')) {
             html = text;
             break;
           }
@@ -66,7 +70,11 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
 
   // If fetch failed completely, fall back to exact server fallback
   if (!html || html.length < 100) {
-    return generateExactFallbackResult(normalizedUrl, mode, rejectionReason, fetchErrorMsg || 'CORS / Bot Challenge', sampleContent);
+    if (sampleContent && sampleContent.includes('<') && sampleContent.includes('>')) {
+      html = sampleContent;
+    } else {
+      return generateExactFallbackResult(normalizedUrl, mode, rejectionReason, fetchErrorMsg || 'CORS / Bot Challenge', sampleContent);
+    }
   }
 
   // 3. Parse HTML features (matching server engine exactly)

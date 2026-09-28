@@ -29,6 +29,7 @@ import {
   Zap,
   FileText,
   DollarSign,
+  Code2,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { KidExplainer } from './KidExplainer';
@@ -284,6 +285,54 @@ ${
                   ?
                 </span>
               </span>
+            </div>
+
+            {/* Zero-Cost Option: Paste HTML Source Drawer */}
+            <div className="mt-2.5 flex flex-col items-center">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-800 transition-colors py-1 px-3 rounded-full hover:bg-white/60 cursor-pointer"
+              >
+                <span>{showAdvanced ? 'Hide advanced crawl options' : 'Paste HTML source directly (for bot-shielded / Cloudflare sites)'}</span>
+                {showAdvanced ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
+
+              {showAdvanced && (
+                <div className="w-full max-w-2xl mt-2 p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md text-left transition-all space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <Code2 className="w-3.5 h-3.5 text-[#1a73e8]" />
+                      <span>Direct HTML Source Inspection (100% Free & Zero-Cost):</span>
+                    </label>
+                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
+                      Bypasses Cloudflare Captchas & CORS
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-normal">
+                    If an external website blocks automated bot crawlers or challenges visitors with Cloudflare Turnstile, right-click on the webpage in your browser, select <strong>"View Page Source"</strong> (or press Ctrl+U / Cmd+U), and paste the full HTML here. GladSense will audit the exact live DOM with 100% precision.
+                  </p>
+                  <textarea
+                    value={sampleContent}
+                    onChange={(e) => setSampleContent(e.target.value)}
+                    rows={4}
+                    placeholder="Paste <!DOCTYPE html> ... </html> here"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:border-[#1a73e8]"
+                  />
+                  {sampleContent && (
+                    <div className="flex items-center justify-between text-[11px] text-slate-500">
+                      <span>Loaded ~{sampleContent.trim().split(/\s+/).length} words of HTML markup</span>
+                      <button
+                        type="button"
+                        onClick={() => setSampleContent('')}
+                        className="text-rose-600 hover:underline font-medium cursor-pointer"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </form>
 

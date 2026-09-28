@@ -58,7 +58,13 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
 
   // If fetch failed completely (e.g. localhost, Cloudflare DDOS protection, or site down)
   if (fetchFailed || !html) {
-    return generateFetchFallbackResult(normalizedUrl, mode, rejectionReason, fetchErrorMsg, sampleContent);
+    if (sampleContent && sampleContent.includes('<') && sampleContent.includes('>')) {
+      html = sampleContent;
+      fetchFailed = false;
+      fetchErrorMsg = '';
+    } else {
+      return generateFetchFallbackResult(normalizedUrl, mode, rejectionReason, fetchErrorMsg, sampleContent);
+    }
   }
 
   // 3. Parse HTML features
