@@ -1,0 +1,1103 @@
+import React, { useState } from 'react';
+import {
+  SiteAuditMode,
+  RejectionCategory,
+  SiteAuditResult,
+} from '../types';
+import { runClientSideAudit } from '../services/siteAuditorClient';
+import {
+  Stethoscope,
+  ShieldCheck,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Copy,
+  Check,
+  Search,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Sparkles,
+  Info,
+  RefreshCw,
+  HelpCircle,
+  Activity,
+  FileCheck,
+  Layers,
+  ArrowRight,
+  Zap,
+  FileText,
+  DollarSign,
+} from 'lucide-react';
+import { NavTabType } from './Navbar';
+import { KidExplainer } from './KidExplainer';
+import { WebsiteRevenueCard } from './WebsiteRevenueCard';
+
+interface SiteAuditorProps {
+  onSwitchTab?: (tab: NavTabType) => void;
+}
+
+export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
+  const [mode, setMode] = useState<SiteAuditMode>('pre-approval');
+  const [showKidExplainer, setShowKidExplainer] = useState<boolean>(true);
+  const [url, setUrl] = useState<string>('');
+  const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
+  const [customNotes, setCustomNotes] = useState<string>('');
+  const [sampleContent, setSampleContent] = useState<string>('');
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [activeResultTab, setActiveResultTab] = useState<'overview' | 'plan' | 'checklist' | 'revenue' | 'metrics'>('overview');
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<SiteAuditResult | null>(null);
+  const [copiedReport, setCopiedReport] = useState<boolean>(false);
+  const [checkedItems, setCheckedItems] = useState<{ [index: number]: boolean }>({});
+
+  const handleRunAudit = async (customUrl?: string, customMode?: SiteAuditMode, customReason?: RejectionCategory) => {
+    const targetUrl = customUrl || url;
+    const targetMode = customMode || mode;
+    const targetReason = customReason || rejectionReason;
+
+    if (!targetUrl.trim()) {
+      setError('Please enter a website domain or URL to analyze.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      let data: SiteAuditResult;
+      try {
+        const response = await fetch('/api/audit-site', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: targetUrl.trim(),
+            mode: targetMode,
+            rejectionReason: targetReason,
+            customNotes,
+            sampleContent,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+        data = await response.json();
+      } catch (backendErr) {
+        // Cloudflare Pages Static SPA fallback: Run client-side analysis directly in browser
+        console.warn('Backend endpoint unavailable, running GladSense client audit engine:', backendErr);
+        data = await runClientSideAudit({
+          url: targetUrl.trim(),
+          mode: targetMode,
+          rejectionReason: targetReason,
+          customNotes,
+          sampleContent,
+        });
+      }
+
+      setResult(data);
+      setCheckedItems({});
+      setActiveResultTab(targetMode === 'rejection-doctor' ? 'plan' : 'overview');
+
+      // Scroll smoothly down to results
+      setTimeout(() => {
+        const resultsEl = document.getElementById('audit-results-container');
+        if (resultsEl) {
+          resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    } catch (err: any) {
+      console.warn('Audit error:', err);
+      setError('Failed to analyze the website. Please check the URL format and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectInspiration = (domain: string, demoType: 'compliant' | 'thin' | 'rejected' | 'generic') => {
+    setUrl(domain);
+    if (demoType === 'compliant') {
+      setMode('pre-approval');
+      handleRunAudit('demo-compliant', 'pre-approval');
+    } else if (demoType === 'rejected') {
+      setMode('rejection-doctor');
+      setRejectionReason('low-value-content');
+      handleRunAudit('demo-rejected', 'rejection-doctor', 'low-value-content');
+    } else if (demoType === 'thin') {
+      setMode('pre-approval');
+      handleRunAudit('demo-thin', 'pre-approval');
+    } else {
+      setMode('pre-approval');
+      handleRunAudit(domain, 'pre-approval');
+    }
+  };
+
+  const handleCopyReport = () => {
+    if (!result) return;
+    const text = `Google AdSense Site Audit Report
+Website: ${result.url}
+Approval Probability: ${result.approvalProbability}% (${result.overallStatus})
+Analyzed At: ${new Date(result.analyzedAt).toLocaleDateString()}
+
+Verdict:
+${result.verdictSummary}
+
+Score Breakdown:
+- Content Depth & Originality: ${result.scoreBreakdown.contentDepthScore}/100
+- Legal & TOS Compliance: ${result.scoreBreakdown.legalComplianceScore}/100
+- Navigation & UX Health: ${result.scoreBreakdown.navigationUxScore}/100
+- Technical SEO & Indexability: ${result.scoreBreakdown.technicalSeoScore}/100
+
+Critical Blockers:
+${
+  result.criticalBlockers.length > 0
+    ? result.criticalBlockers.map((b, i) => `${i + 1}. [${b.severity.toUpperCase()}] ${b.title}: ${b.fixAdvice}`).join('\n')
+    : 'None! Ready for submission.'
+}
+`;
+    navigator.clipboard.writeText(text);
+    setCopiedReport(true);
+    setTimeout(() => setCopiedReport(false), 2500);
+  };
+
+  const toggleChecklist = (index: number) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  return (
+    <div className="w-full bg-white">
+      {/* BRIGHT PASTEL HERO CANVAS (MATCHING SEMRUSH FREE CHECKER VISUALS) */}
+      <section className="relative w-full pt-16 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 bg-gradient-to-b from-[#eaf4ff] via-[#edf2fc] to-[#f4eefc] overflow-hidden">
+        {/* Subtle Ambient Glow Orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#d0e6ff]/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-[#ebd9ff]/40 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="relative max-w-4xl mx-auto text-center space-y-6">
+          {/* Main Title Header */}
+          <div className="space-y-3">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
+              AdSense Site Checker
+            </h1>
+            <p className="text-xs sm:text-sm font-semibold text-[#1a73e8] uppercase tracking-wider">
+              Instant Pre-Approval Audit & Rejection Doctor for Google AdSense
+            </p>
+          </div>
+
+          <p className="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed font-normal">
+            Enter a domain or website and run an AdSense audit. Find <strong className="text-slate-950 font-bold">policy violations and low-value content issues</strong> across your site and get a clear report with what to fix first.
+          </p>
+
+          {/* Mode Switcher Pill */}
+          <div className="inline-flex items-center bg-white/80 backdrop-blur-xs p-1 rounded-full border border-slate-200 shadow-xs">
+            <button
+              type="button"
+              onClick={() => setMode('pre-approval')}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                mode === 'pre-approval'
+                  ? 'bg-[#1a73e8] text-white shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Pre-Approval Audit</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('rejection-doctor')}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                mode === 'rejection-doctor'
+                  ? 'bg-[#9d62ec] text-white shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5" />
+              <span>Rejection Doctor</span>
+            </button>
+          </div>
+
+          {/* Rejection Reason Dropdown (Rejection Doctor mode) */}
+          {mode === 'rejection-doctor' && (
+            <div className="max-w-xl mx-auto p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-purple-200 shadow-md text-left transition-all">
+              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center justify-between">
+                <span>Specify Google AdSense Rejection Reason:</span>
+                <span className="text-[11px] font-normal text-purple-600 font-medium">Rejection Fix Mode Active</span>
+              </label>
+              <select
+                value={rejectionReason}
+                onChange={(e) => setRejectionReason(e.target.value as RejectionCategory)}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-purple-500"
+              >
+                <option value="low-value-content">Low-value content / Thin content (Most Common)</option>
+                <option value="site-behavior-navigation">Site behavior: Navigation (Broken/dummy links)</option>
+                <option value="site-down-or-unavailable">Site down or unavailable (Bot timeout/WAF)</option>
+                <option value="scraped-unoriginal">Scraped or unoriginal content</option>
+                <option value="policy-violations">Policy violations / YMYL sensitive flags</option>
+                <option value="multiple-unspecified">Multiple violations / General rejection</option>
+              </select>
+            </div>
+          )}
+
+          {/* BRIGHT PILL SEARCH BOX CANVAS (MATCHING SEMRUSH) */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleRunAudit();
+            }}
+            className="max-w-2xl mx-auto pt-2"
+          >
+            <div className="bg-white rounded-full p-2 pl-6 shadow-xl hover:shadow-2xl border border-slate-200/90 flex items-center gap-3 transition-all focus-within:ring-4 focus-within:ring-purple-200 focus-within:border-[#9d62ec]">
+              <input
+                id="search-input-box"
+                type="text"
+                required
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Enter a domain or website URL"
+                className="flex-1 bg-transparent py-2 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none font-normal"
+              />
+
+              {/* SEMRUSH-STYLE BRIGHT VIBRANT BUTTON */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-[#9d62ec] hover:bg-[#8b4de3] text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3 rounded-full transition-all shadow-md hover:shadow-lg whitespace-nowrap flex items-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Analyzing...</span>
+                  </>
+                ) : (
+                  <span>Analyze Website</span>
+                )}
+              </button>
+
+              <span className="pr-3 text-xs text-slate-400 font-mono hidden sm:inline-flex items-center gap-1">
+                1/1
+                <span className="w-3.5 h-3.5 rounded-full border border-slate-300 text-[9px] flex items-center justify-center text-slate-400 font-bold">
+                  ?
+                </span>
+              </span>
+            </div>
+          </form>
+
+          {/* FEATURES TO TRY (ADDED DIRECTLY BELOW SEARCH BAR) */}
+          <div className="pt-5 max-w-4xl mx-auto">
+            <div className="flex items-center justify-center gap-2 mb-3.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                Explore GladSense Monetization & Policy Tools:
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+              {/* 1. 1-Click Fixes */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('single-click');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between w-full mb-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-[#9d62ec] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Zap className="w-3.5 h-3.5 fill-[#9d62ec]" />
+                  </div>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                    New
+                  </span>
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
+                    1-Click Fixes
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    ads.txt & legal pages
+                  </span>
+                </div>
+              </button>
+
+              {/* 2. Niche Ideas */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('niches');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#1a73e8] flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <FileText className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#1a73e8] transition-colors block">
+                    Niche Ideas
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    High RPM blueprints
+                  </span>
+                </div>
+              </button>
+
+              {/* 3. Revenue Planner */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('calculator');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-emerald-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-emerald-600 transition-colors block">
+                    Revenue Planner
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    RPM & CTR simulator
+                  </span>
+                </div>
+              </button>
+
+              {/* 4. Budget & P&L */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('budget');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-amber-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-amber-600 transition-colors block">
+                    Budget & P&L
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    Serverless costs & ROI
+                  </span>
+                </div>
+              </button>
+
+              {/* 5. SEO Keywords */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('kgr');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <Search className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition-colors block">
+                    SEO Keywords
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    KGR ratio formula
+                  </span>
+                </div>
+              </button>
+
+              {/* 6. Compliance Audit */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('audit');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-rose-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <Activity className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-rose-600 transition-colors block">
+                    Compliance Audit
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    Manual checklist
+                  </span>
+                </div>
+              </button>
+
+              {/* 7. AI Evaluator */}
+              <button
+                type="button"
+                onClick={() => {
+                  onSwitchTab && onSwitchTab('ai-evaluator');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between col-span-2 sm:col-span-1"
+              >
+                <div className="w-7 h-7 rounded-lg bg-purple-50 text-[#9d62ec] flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                  <Sparkles className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
+                    AI Evaluator
+                  </span>
+                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                    Niche feasibility
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div className="w-full max-w-2xl mx-auto border-t border-slate-300/60 my-6"></div>
+
+          {/* "YOU WILL SEE:" CHECKLIST (EXACT MATCH TO SEMRUSH IMAGE) */}
+          <div className="text-center space-y-3">
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              You will see:
+            </h3>
+
+            <div className="inline-block text-left space-y-2 text-xs sm:text-sm text-slate-700">
+              <div className="flex items-center gap-2.5">
+                <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
+                <span>An overall approval readiness score for your website's AdSense viability</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
+                <span>Technical, policy, and on-page content depth issues affecting review screening</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
+                <span>Mandatory legal compliance findings (Privacy Policy, About E-E-A-T, and Cookie TOS)</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
+                <span>Prioritized recommendations and 1-Click code fixes for what to resolve first</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Subtext Link */}
+          <div className="pt-2 text-xs text-slate-500">
+            Need more than a free AdSense check? Explore{' '}
+            <button
+              onClick={() => onSwitchTab && onSwitchTab('niches')}
+              className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
+            >
+              Niche Matrix
+            </button>
+            ,{' '}
+            <button
+              onClick={() => onSwitchTab && onSwitchTab('calculator')}
+              className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
+            >
+              Revenue Simulator
+            </button>
+            , or{' '}
+            <button
+              onClick={() => onSwitchTab && onSwitchTab('kgr')}
+              className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
+            >
+              KGR Keyword Tool
+            </button>
+            .
+          </div>
+
+          {error && (
+            <div className="mt-4 p-3 rounded-xl bg-[#fce8e6] border border-[#fad2cf] text-[#c5221f] text-xs flex items-center justify-center gap-2 max-w-xl mx-auto shadow-xs">
+              <AlertTriangle className="w-4 h-4 text-[#ea4335] shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* THREE STEPS TO GET STARTED (EXACTLY MATCHING GOOGLE ADSENSE HOMEPAGE IMAGE) */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white border-b border-[#dadce0]">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-normal text-[#202124] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
+            Three steps to get started
+          </h2>
+          <p className="text-sm text-[#5f6368] mt-2 max-w-xl mx-auto">
+            From zero to your first Google AdSense deposit in 3 guided milestones.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            {/* Step 1 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 rounded-2xl bg-[#e8f0fe] text-[#1a73e8] font-['Google_Sans',sans-serif] text-2xl font-bold flex items-center justify-center shadow-xs">
+                1
+              </div>
+              <h3 className="text-lg font-medium text-[#202124] font-['Google_Sans',sans-serif]">
+                Audit & configure
+              </h3>
+              <p className="text-xs text-[#5f6368] leading-relaxed max-w-xs">
+                Verify your domain with our Site Doctor to ensure you have 30+ compliant pages, zero thin content, and mandatory privacy policies.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 rounded-2xl bg-[#e8f0fe] text-[#1a73e8] font-['Google_Sans',sans-serif] text-2xl font-bold flex items-center justify-center shadow-xs">
+                2
+              </div>
+              <h3 className="text-lg font-medium text-[#202124] font-['Google_Sans',sans-serif]">
+                Take control
+              </h3>
+              <p className="text-xs text-[#5f6368] leading-relaxed max-w-xs">
+                Use our 1-Click Fixes for ads.txt, responsive ad containers with zero layout shift, and automated anti-click-bombing defense.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 rounded-2xl bg-[#e8f0fe] text-[#1a73e8] font-['Google_Sans',sans-serif] text-2xl font-bold flex items-center justify-center shadow-xs">
+                3
+              </div>
+              <h3 className="text-lg font-medium text-[#202124] font-['Google_Sans',sans-serif]">
+                Start earning
+              </h3>
+              <p className="text-xs text-[#5f6368] leading-relaxed max-w-xs">
+                Watch impressions convert into revenue. Model your 12-month net profit using our $0.85/month zero-server budget blueprint.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AUDIT RESULTS REPORT SECTION */}
+      {result && (
+        <section id="audit-results-container" className="py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+            {/* Top Report Header Bar */}
+            <div className="p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 text-white">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span
+                      className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full ${
+                        result.overallStatus === 'ready'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                          : result.overallStatus === 'needs-work'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                      }`}
+                    >
+                      {result.overallStatus === 'ready'
+                        ? 'AdSense Ready (Pass)'
+                        : result.overallStatus === 'needs-work'
+                        ? 'Remediation Required'
+                        : 'Critical Policy Blockers'}
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      • Scanned: <span className="text-slate-200 font-mono font-medium">{result.url}</span>
+                    </span>
+                    {result.isSimulatedDemo && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                        Benchmark Case Study
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                    {result.pageTitle || result.url}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                    {result.verdictSummary}
+                  </p>
+                </div>
+
+                {/* Big Semrush-style Circular/Score Badge */}
+                <div className="flex items-center gap-4 bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800 shrink-0">
+                  <div className="text-right">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      AdSense Approval Probability
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      {result.approvalProbability >= 85
+                        ? 'High Confidence Pass'
+                        : result.approvalProbability >= 60
+                        ? 'Moderate Risk'
+                        : 'Immediate Rejection Risk'}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span
+                      className={`text-4xl sm:text-5xl font-black font-mono tracking-tight ${
+                        result.approvalProbability >= 85
+                          ? 'text-emerald-400'
+                          : result.approvalProbability >= 60
+                          ? 'text-amber-400'
+                          : 'text-rose-400'
+                      }`}
+                    >
+                      {result.approvalProbability}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4 Pillars Scoring Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-8 pt-6 border-t border-slate-800">
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                  <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-slate-300 font-medium">Content Depth & Utility</span>
+                    <span className="font-mono font-bold text-emerald-400">
+                      {result.scoreBreakdown.contentDepthScore}/100
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 rounded-full"
+                      style={{ width: `${result.scoreBreakdown.contentDepthScore}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-2 block">
+                    ~{result.metrics.estimatedWordCount} body words • {result.metrics.paragraphCount} paragraphs
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                  <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-slate-300 font-medium">Legal & TOS Disclosures</span>
+                    <span className="font-mono font-bold text-emerald-400">
+                      {result.scoreBreakdown.legalComplianceScore}/100
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 rounded-full"
+                      style={{ width: `${result.scoreBreakdown.legalComplianceScore}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-2 block">
+                    {result.metrics.legalPagesFound.privacyPolicy ? '✓ Privacy Policy' : '✗ Missing Privacy'} •{' '}
+                    {result.metrics.legalPagesFound.aboutUs ? '✓ About Us' : '✗ Missing About'}
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                  <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-slate-300 font-medium">Navigation & UX Health</span>
+                    <span className="font-mono font-bold text-emerald-400">
+                      {result.scoreBreakdown.navigationUxScore}/100
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 rounded-full"
+                      style={{ width: `${result.scoreBreakdown.navigationUxScore}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-2 block">
+                    {result.metrics.navigationHealth.emptyHashLinks > 0
+                      ? `⚠️ ${result.metrics.navigationHealth.emptyHashLinks} empty dummy href="#" links`
+                      : '✓ Zero broken dummy anchors'}
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                  <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-slate-300 font-medium">Technical SEO & Speed</span>
+                    <span className="font-mono font-bold text-emerald-400">
+                      {result.scoreBreakdown.technicalSeoScore}/100
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 rounded-full"
+                      style={{ width: `${result.scoreBreakdown.technicalSeoScore}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-2 block">
+                    {result.metrics.isHttps ? '✓ HTTPS' : '✗ Insecure'} •{' '}
+                    {result.metrics.hasMobileViewport ? '✓ Responsive' : '✗ Desktop only'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Critical Blockers Callout */}
+            <div className="p-6 sm:p-8 bg-slate-50 border-b border-slate-200">
+              {result.criticalBlockers.length > 0 ? (
+                <div className="p-5 rounded-2xl bg-rose-50 border border-rose-200">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold">
+                      !
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                        {result.criticalBlockers.length} Critical Policy Blocker{result.criticalBlockers.length > 1 ? 's' : ''} Detected
+                      </h3>
+                      <p className="text-xs text-rose-700">
+                        Google automated review bots will reject the site unless these items are resolved first.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mt-4">
+                    {result.criticalBlockers.map((blocker, idx) => (
+                      <div
+                        key={idx}
+                        className="p-4 rounded-xl bg-white border border-rose-200 shadow-sm space-y-2 text-xs"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-slate-900 text-sm">{blocker.title}</span>
+                          <span
+                            className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
+                              blocker.severity === 'critical'
+                                ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                                : 'bg-amber-100 text-amber-700 border border-amber-200'
+                            }`}
+                          >
+                            {blocker.severity}
+                          </span>
+                        </div>
+                        <p className="text-slate-600 text-xs leading-relaxed">{blocker.description}</p>
+                        <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2">
+                          <span className="font-bold shrink-0 text-emerald-700">Fix Action:</span>
+                          <span>{blocker.fixAdvice}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {onSwitchTab && (
+                    <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block">
+                            Fix all 4 blockers and bring this domain to 100% Policy Readiness:
+                          </span>
+                          <span className="text-[11px] text-purple-700">
+                            Injects legal disclosures, E-E-A-T transparency, mobile-first CSS & ads.txt.
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Instant 100% Remediation Simulator
+                            setResult((prev) => {
+                              if (!prev) return null;
+                              return {
+                                ...prev,
+                                approvalProbability: 100,
+                                overallStatus: 'ready',
+                                verdictSummary: 'Outstanding AdSense Readiness (100%). All 4 critical policy blockers successfully resolved! Site fulfills Google Webmaster E-E-A-T, DoubleClick DART legal disclosures, mobile speed, and structured content benchmarks.',
+                                scoreBreakdown: {
+                                  contentDepthScore: 100,
+                                  legalComplianceScore: 100,
+                                  navigationUxScore: 100,
+                                  technicalSeoScore: 100,
+                                },
+                                metrics: {
+                                  ...prev.metrics,
+                                  estimatedWordCount: 1450,
+                                  h1Count: 1,
+                                  h2Count: 4,
+                                  paragraphCount: 16,
+                                  legalPagesFound: {
+                                    privacyPolicy: true,
+                                    termsOfService: true,
+                                    aboutUs: true,
+                                    contactUs: true,
+                                    cookieConsent: true,
+                                  },
+                                  navigationHealth: {
+                                    totalLinks: 24,
+                                    emptyHashLinks: 0,
+                                    internalLinks: 18,
+                                  },
+                                  thinContentRisk: 'Low',
+                                  ymylRisk: 'Low',
+                                },
+                                criticalBlockers: [],
+                                findings: prev.findings.map((f) => ({
+                                  ...f,
+                                  status: 'pass',
+                                  detail: `${f.label} fully verified & 100% compliant with Google Publisher Policies.`,
+                                })),
+                              };
+                            });
+                          }}
+                          className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Simulate 100% Fix</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            onSwitchTab('single-click');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className="px-3 py-1.5 bg-[#1a73e8] hover:bg-[#1557b0] text-white font-bold rounded-lg shrink-0 transition-colors"
+                        >
+                          Export Code & Pages →
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center gap-3.5">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-600 shrink-0" />
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900">Zero Critical Blockers Found</h3>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                      This domain conforms to the essential structural and technical requirements of the Google Publisher Policies.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Navigation Tabs for Deep Findings */}
+            <div className="p-6 sm:p-8 bg-white">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3 gap-2 overflow-x-auto">
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setActiveResultTab('overview')}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      activeResultTab === 'overview'
+                        ? 'bg-slate-900 text-white shadow-sm'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Info className="w-4 h-4" />
+                    <span>Audit Signals</span>
+                  </button>
+
+                  {result.rejectionDiagnosis && (
+                    <button
+                      onClick={() => setActiveResultTab('plan')}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        activeResultTab === 'plan'
+                          ? 'bg-[#9d62ec] text-white shadow-sm'
+                          : 'text-slate-600 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Clock className="w-4 h-4" />
+                      <span>14-Day Recovery Prescription</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => setActiveResultTab('checklist')}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      activeResultTab === 'checklist'
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Pre-Submission Checklist ({Object.values(checkedItems).filter(Boolean).length}/{result.reApplicationChecklist.length})</span>
+                  </button>
+
+                  {/* New Tab: Website AdSense Earnings & Ad Stack */}
+                  {result.revenueEstimation && (
+                    <button
+                      onClick={() => setActiveResultTab('revenue')}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        activeResultTab === 'revenue'
+                          ? 'bg-emerald-600 text-white shadow-sm'
+                          : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100'
+                      }`}
+                    >
+                      <DollarSign className="w-4 h-4" />
+                      <span>Estimated Earnings (~${result.revenueEstimation.estimatedEarnings.avgMonthly.toLocaleString()}/mo)</span>
+                    </button>
+                  )}
+                </div>
+
+                <button
+                  onClick={handleCopyReport}
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0"
+                >
+                  {copiedReport ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedReport ? 'Copied!' : 'Copy Summary'}</span>
+                </button>
+              </div>
+
+              {/* Tab 1: Audit Signals */}
+              {activeResultTab === 'overview' && (
+                <div className="mt-6 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    {result.findings.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3"
+                      >
+                        {item.status === 'pass' ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        ) : item.status === 'warn' ? (
+                          <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                        )}
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-900">{item.label}</span>
+                            <span className="text-[10px] text-slate-500 px-1.5 py-0.2 rounded bg-white border border-slate-200">
+                              {item.category}
+                            </span>
+                          </div>
+                          <p className="text-slate-600 text-xs mt-0.5">{item.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Technical Summary Bar */}
+                  <div className="p-4 rounded-2xl bg-slate-900 text-slate-300 text-xs mt-6">
+                    <h4 className="font-bold text-white mb-2">Technical Page Audit Summary:</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-400">
+                      <div>• Total Links: <strong className="text-white">{result.metrics.navigationHealth.totalLinks}</strong></div>
+                      <div>• Internal Links: <strong className="text-white">{result.metrics.navigationHealth.internalLinks}</strong></div>
+                      <div>• Headings (H1/H2): <strong className="text-white">{result.metrics.h1Count} / {result.metrics.h2Count}</strong></div>
+                      <div>• HTTPS Secured: <strong className="text-white">{result.metrics.isHttps ? 'Yes (SSL)' : 'No'}</strong></div>
+                      <div>• Mobile Viewport: <strong className="text-white">{result.metrics.hasMobileViewport ? 'Present' : 'Missing'}</strong></div>
+                      <div>• Robots Noindex: <strong className="text-white">{result.metrics.hasRobotsNoindex ? 'Blocked!' : 'Clean'}</strong></div>
+                      <div>• Thin Content Risk: <strong className="text-white">{result.metrics.thinContentRisk}</strong></div>
+                      <div>• YMYL Sensitivity: <strong className="text-white">{result.metrics.ymylRisk}</strong></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: 14-Day Recovery Prescription Plan */}
+              {activeResultTab === 'plan' && result.rejectionDiagnosis && (
+                <div className="mt-6 space-y-6">
+                  <div className="p-5 rounded-2xl bg-purple-50 border border-purple-200 space-y-3">
+                    <div className="flex items-center gap-2 text-purple-900">
+                      <Stethoscope className="w-5 h-5 text-[#9d62ec]" />
+                      <h4 className="text-sm font-bold">
+                        Diagnosis: {result.rejectionDiagnosis.rejectionReason}
+                      </h4>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm">
+                        <span className="font-bold text-slate-900 block mb-1">🤖 Googlebot Automated Crawler Perspective:</span>
+                        <p className="text-slate-600 leading-relaxed">
+                          {result.rejectionDiagnosis.googleBotPerspective}
+                        </p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm">
+                        <span className="font-bold text-slate-900 block mb-1">👤 Human Quality Rater Perspective:</span>
+                        <p className="text-slate-600 leading-relaxed">
+                          {result.rejectionDiagnosis.humanReviewerPerspective}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                      Phased 14-Day Re-Approval Action Plan:
+                    </h4>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {result.rejectionDiagnosis.fourteenDayPlan.map((phase, pIdx) => (
+                        <div
+                          key={pIdx}
+                          className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs"
+                        >
+                          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <span className="font-bold text-[#9d62ec] font-mono">{phase.days}</span>
+                            <span className="font-bold text-slate-900">{phase.phase}</span>
+                          </div>
+
+                          <ul className="space-y-1.5 pt-1">
+                            {phase.tasks.map((task, tIdx) => (
+                              <li key={tIdx} className="text-slate-600 flex items-start gap-1.5">
+                                <span className="text-[#9d62ec] font-bold shrink-0">•</span>
+                                <span>{task}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 3: Pre-Submission Checklist */}
+              {activeResultTab === 'checklist' && (
+                <div className="mt-6 space-y-3">
+                  <p className="text-xs text-slate-600 mb-2">
+                    Check off each requirement as you implement it on your website. Once complete, your site will meet the benchmark for first-pass or re-appeal AdSense approval.
+                  </p>
+
+                  <div className="space-y-2">
+                    {result.reApplicationChecklist.map((item, idx) => {
+                      const isChecked = Boolean(checkedItems[idx]);
+                      return (
+                        <div
+                          key={idx}
+                          onClick={() => toggleChecklist(idx)}
+                          className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
+                            isChecked
+                              ? 'bg-emerald-50 border-emerald-300 text-slate-900'
+                              : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
+                                isChecked
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-slate-50'
+                              }`}
+                            >
+                              {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                            </div>
+                            <span className={`text-xs ${isChecked ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}`}>
+                              {item}
+                            </span>
+                          </div>
+
+                          <span className="text-[10px] text-slate-400 font-mono">
+                            {isChecked ? 'Completed' : 'Pending'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 4: AdSense Revenue & Ad Stack Estimation */}
+              {activeResultTab === 'revenue' && result.revenueEstimation && (
+                <div className="mt-6">
+                  <WebsiteRevenueCard
+                    estimation={result.revenueEstimation}
+                    domainUrl={result.url}
+                    onOpenCalculator={() => {
+                      if (onSwitchTab) {
+                        onSwitchTab('calculator');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
