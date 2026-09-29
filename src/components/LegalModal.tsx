@@ -101,6 +101,14 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
               <p>
                 Google, Google AdSense, and Google Search Console are trademarks of Google LLC. GladSense is an independent web application and is not endorsed by, sponsored by, or affiliated with Google LLC.
               </p>
+
+              <h3 className="text-base font-bold text-[#202124]">4. Proprietary Algorithms, Patent Rights & Reverse Engineering Prohibition</h3>
+              <p>
+                The automated crawler simulation pipelines, the 100-point deterministic compliance evaluation matrices, the procedural 1-click code remediation synthesizers, and the Keyword Golden Ratio (KGR) feasibility calculation engines embodied within GladSense are protected by international copyright laws, trade secrets, and pending patent applications.
+              </p>
+              <p>
+                Users are strictly prohibited from reverse-engineering, decompiling, scraping, disassembling, or creating derivative diagnostic engines based upon the scoring weights, heuristic parsing rules, or remediation logic of the GladSense platform without express written authorization from GladSense Technologies.
+              </p>
             </div>
           )}
 
