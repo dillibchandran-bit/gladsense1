@@ -37,6 +37,7 @@ import {
 import { NavTabType } from './Navbar';
 import { KidExplainer } from './KidExplainer';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
+import { HomeExplainerSuite } from './HomeExplainerSuite';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -356,17 +357,17 @@ ${
                   onSwitchTab && onSwitchTab('niche-lab');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-4 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-md rounded-2xl transition-all text-center group cursor-pointer flex flex-col items-center justify-between space-y-3"
               >
-                <div className="flex items-center justify-between w-full mb-2">
-                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1a73e8] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Layers className="w-4 h-4" />
+                <div className="flex flex-col items-center justify-center w-full gap-1.5">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1a73e8] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Layers className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#1a73e8] border border-blue-100">
                     Discovery
                   </span>
                 </div>
-                <div>
+                <div className="text-center">
                   <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#1a73e8] transition-colors block">
                     Niche & Keyword Lab
                   </span>
@@ -383,17 +384,17 @@ ${
                   onSwitchTab && onSwitchTab('revenue-planner');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-emerald-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-4 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-emerald-400 hover:shadow-md rounded-2xl transition-all text-center group cursor-pointer flex flex-col items-center justify-between space-y-3"
               >
-                <div className="flex items-center justify-between w-full mb-2">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <DollarSign className="w-4 h-4" />
+                <div className="flex flex-col items-center justify-center w-full gap-1.5">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <DollarSign className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
                     98% Margins
                   </span>
                 </div>
-                <div>
+                <div className="text-center">
                   <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-600 transition-colors block">
                     Revenue & Profit Planner
                   </span>
@@ -410,17 +411,17 @@ ${
                   onSwitchTab && onSwitchTab('policy-toolkit');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-4 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-400 hover:shadow-md rounded-2xl transition-all text-center group cursor-pointer flex flex-col items-center justify-between space-y-3"
               >
-                <div className="flex items-center justify-between w-full mb-2">
-                  <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#9d62ec] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Zap className="w-4 h-4 fill-[#9d62ec]" />
+                <div className="flex flex-col items-center justify-center w-full gap-1.5">
+                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#9d62ec] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Zap className="w-5 h-5 fill-[#9d62ec]" />
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
                     Toolkit
                   </span>
                 </div>
-                <div>
+                <div className="text-center">
                   <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
                     Policy & 1-Click Toolkit
                   </span>
@@ -434,26 +435,26 @@ ${
 
           <div className="w-full max-w-2xl mx-auto border-t border-slate-300/60 my-6"></div>
 
-          {/* "YOU WILL SEE:" CHECKLIST (EXACT MATCH TO SEMRUSH IMAGE) */}
-          <div className="text-center space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+          {/* "YOU WILL SEE:" CHECKLIST (CENTERED) */}
+          <div className="text-center space-y-3 max-w-xl mx-auto flex flex-col items-center">
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight text-center">
               You will see:
             </h3>
 
-            <div className="inline-block text-left space-y-2 text-xs sm:text-sm text-slate-700">
-              <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-center text-center space-y-2 text-xs sm:text-sm text-slate-700">
+              <div className="flex items-center justify-center gap-2.5 text-center">
                 <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
                 <span>An overall approval readiness score for your website's AdSense viability</span>
               </div>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center gap-2.5 text-center">
                 <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
                 <span>Technical, policy, and on-page content depth issues affecting review screening</span>
               </div>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center gap-2.5 text-center">
                 <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
                 <span>Mandatory legal compliance findings (Privacy Policy, About E-E-A-T, and Cookie TOS)</span>
               </div>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center gap-2.5 text-center">
                 <Check className="w-4 h-4 text-emerald-600 stroke-[2.5] shrink-0" />
                 <span>Prioritized recommendations and 1-Click code fixes for what to resolve first</span>
               </div>
@@ -1488,6 +1489,12 @@ ${
           </div>
         </section>
       )}
+
+      {/* Persistent Comprehensive Enterprise Explainer Suite */}
+      <HomeExplainerSuite
+        onSwitchTab={onSwitchTab}
+        onAuditDemo={(demoUrl) => handleRunAudit(demoUrl, 'pre-approval')}
+      />
     </div>
   );
 };
