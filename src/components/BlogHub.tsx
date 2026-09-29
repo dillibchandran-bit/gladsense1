@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BLOG_POSTS } from '../data/blogPostsData';
+import { GLADSENSE_AUTHORS, GladSenseAuthor } from '../data/authorsData';
 import { BlogPost, BlogCategory } from '../types';
 import {
   BookOpen,
@@ -20,6 +21,10 @@ import {
   Code2,
   AlertTriangle,
   Lightbulb,
+  Building2,
+  Award,
+  Users,
+  Briefcase,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 
@@ -30,6 +35,8 @@ interface BlogHubProps {
 export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedTeam, setSelectedTeam] = useState<string>('All');
+  const [showTeamsOverview, setShowTeamsOverview] = useState(false);
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
@@ -43,15 +50,21 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
     'Technical SEO & $0 Static Architecture',
   ];
 
+  const authorList = Object.values(GLADSENSE_AUTHORS);
+  const teamsList = ['All', ...Array.from(new Set(authorList.map((a) => a.team)))];
+
   // Filter articles
   const filteredPosts = BLOG_POSTS.filter((post) => {
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+    const matchesTeam = selectedTeam === 'All' || post.author.team === selectedTeam;
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.primaryKeyword.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.directAnswerSummary.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+      post.directAnswerSummary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.team.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesTeam && matchesSearch;
   });
 
   const handleCopySlug = (slug: string) => {
@@ -66,32 +79,82 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Find matching author details from registry
+  const getAuthorDetails = (authorName: string): GladSenseAuthor | undefined => {
+    return authorList.find((a) => a.name.toLowerCase() === authorName.toLowerCase());
+  };
+
   return (
     <div className="space-y-8">
       {/* Editorial Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 text-white shadow-xl">
+      <div className="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 text-white shadow-xl space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-3 py-0.5 text-xs font-bold rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40">
                 Official Knowledge Base
               </span>
-              <span className="text-xs text-slate-400">• Google's 100% Quality Standard</span>
-              <span className="text-xs text-emerald-400 font-mono font-bold">• 27 Complete Guides</span>
+              <span className="text-xs text-slate-400">• Institutional E-E-A-T Standard</span>
+              <span className="text-xs text-emerald-400 font-mono font-bold">• 7 Research Divisions</span>
+              <span className="text-xs text-purple-300 font-mono font-bold">• 27 Peer-Reviewed Manuals</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-['Google_Sans',sans-serif]">
-              Google AdSense Compliance & Search Monetization Guides
+              Google AdSense Compliance & Search Monetization Institute
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Every guide below is engineered according to Google's 6 evaluation layers: automated crawlers, Core Ranking Algorithms, Search Quality Raters, search engineers, AdSense bots, and policy inspectors.
+              Every manual is authored by specialized GladSense departmental research units—combining former publisher policy directors, quantitative SEO data scientists, static edge infrastructure engineers, and programmatic ad yield strategists.
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 shrink-0 text-right space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Published Library</div>
+          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 shrink-0 text-center md:text-right space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Institutional Corpus</div>
             <div className="text-2xl font-black font-mono text-emerald-400">27 / 27</div>
-            <div className="text-[11px] text-slate-400">Zero Fluff • 100% Information Gain</div>
+            <div className="text-[11px] text-slate-400">100% Peer-Reviewed • Zero Fluff</div>
           </div>
+        </div>
+
+        {/* Toggleable Organizational Research Divisions Drawer */}
+        <div className="pt-2 border-t border-slate-800/80">
+          <button
+            type="button"
+            onClick={() => setShowTeamsOverview(!showTeamsOverview)}
+            className="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <Building2 className="w-4 h-4 text-blue-400" />
+            <span>
+              {showTeamsOverview
+                ? 'Hide GladSense Research Divisions & Editorial Leadership'
+                : 'Meet the 7 GladSense Research Divisions & Editorial Leadership'}
+            </span>
+            {showTeamsOverview ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+
+          {showTeamsOverview && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 animate-in fade-in duration-200">
+              {authorList.map((author) => (
+                <div
+                  key={author.id}
+                  className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/90 space-y-2 text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-9 h-9 rounded-xl ${author.avatarBg} text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs`}
+                    >
+                      {author.name.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">{author.name}</div>
+                      <div className="text-[10px] text-blue-400 font-semibold">{author.team}</div>
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-medium">{author.role}</div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed pt-1 border-t border-slate-900">
+                    {author.shortBio}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -119,7 +182,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
           </div>
 
           {/* Reader Header */}
-          <div className="p-6 sm:p-10 max-w-4xl mx-auto space-y-4">
+          <div className="p-6 sm:p-10 max-w-4xl mx-auto space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#e8f0fe] text-[#1a73e8]">
                 {activeArticle.category}
@@ -139,108 +202,127 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               {activeArticle.subtitle}
             </p>
 
-            {/* Author Attribution Card (E-E-A-T Standard) */}
-            <div className="flex items-center justify-between gap-3 py-3 border-y border-slate-100 flex-wrap">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#1a73e8] text-white flex items-center justify-center font-bold text-sm shrink-0">
-                  {activeArticle.author.name.charAt(0)}
+            {/* Author & Department Attribution Card (Institutional E-E-A-T Standard) */}
+            {(() => {
+              const authorData = getAuthorDetails(activeArticle.author.name);
+              const avatarClass = authorData ? authorData.avatarBg : 'bg-blue-600';
+              return (
+                <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-12 h-12 rounded-2xl ${avatarClass} text-white flex items-center justify-center font-bold text-base shrink-0 shadow-xs`}
+                      >
+                        {activeArticle.author.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-extrabold text-slate-900 font-['Google_Sans',sans-serif]">
+                            {activeArticle.author.name}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#1a73e8] border border-blue-200">
+                            {activeArticle.author.team}
+                          </span>
+                        </div>
+                        <div className="text-xs text-slate-600 font-medium">
+                          {activeArticle.author.role}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 shrink-0">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      <span>Peer-Reviewed by GladSense Executive Research Council</span>
+                    </div>
+                  </div>
+
+                  {authorData && (
+                    <p className="text-xs text-slate-500 leading-relaxed pt-2 border-t border-slate-200/60">
+                      <strong>Author Profile:</strong> {authorData.shortBio}
+                    </p>
+                  )}
                 </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">{activeArticle.author.name}</div>
-                  <div className="text-[11px] text-slate-500">{activeArticle.author.role}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Peer-Reviewed by GladSense Policy & Monetization Board</span>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* Layer 2 Direct Answer Summary Box (First 200 Words Rule) */}
             <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs sm:text-sm text-slate-800 space-y-2">
-              <div className="flex items-center gap-2 text-[#1a73e8] font-bold text-xs uppercase tracking-wider">
+              <div className="font-bold text-[#1a73e8] flex items-center gap-1.5 uppercase tracking-wide text-xs">
                 <Sparkles className="w-4 h-4" />
-                <span>Executive Answer (Query Resolution in First 200 Words)</span>
+                <span>Executive Answer & Immediate Takeaway:</span>
               </div>
-              <p className="leading-relaxed font-medium">
-                {activeArticle.directAnswerSummary}
-              </p>
+              <p className="leading-relaxed">{activeArticle.directAnswerSummary}</p>
             </div>
 
-            {/* Main Article Sections */}
-            <div className="space-y-8 pt-6">
-              {activeArticle.sections.map((section, idx) => (
-                <section key={idx} className="space-y-4">
-                  <h2 className="text-xl font-bold text-slate-900 font-['Google_Sans',sans-serif] border-b border-slate-100 pb-2">
+            {/* Article Content Sections */}
+            <div className="pt-4 space-y-10 text-slate-800 text-sm sm:text-base leading-relaxed">
+              {activeArticle.sections.map((section, sIdx) => (
+                <section key={sIdx} className="space-y-4">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
                     {section.heading}
                   </h2>
 
-                  <p className="text-sm text-slate-700 leading-relaxed">
-                    {section.content}
-                  </p>
+                  <p className="leading-relaxed text-slate-700">{section.content}</p>
 
-                  {/* Subheadings if present */}
+                  {/* Subheadings */}
                   {section.subheadings && (
-                    <div className="grid grid-cols-1 gap-3 pt-2">
+                    <div className="space-y-4 pt-2">
                       {section.subheadings.map((sub, subIdx) => (
-                        <div key={subIdx} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                          <h3 className="text-sm font-bold text-slate-900">{sub.title}</h3>
-                          <p className="text-xs text-slate-600 leading-relaxed">{sub.content}</p>
+                        <div key={subIdx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+                          <h3 className="font-bold text-slate-900 text-sm sm:text-base font-['Google_Sans',sans-serif]">
+                            {sub.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{sub.content}</p>
                         </div>
                       ))}
                     </div>
                   )}
 
-                  {/* Callout box if present */}
+                  {/* Callout Box */}
                   {section.callout && (
-                    <div className={`p-4 rounded-xl text-xs space-y-1 ${
-                      section.callout.type === 'warning'
-                        ? 'bg-rose-50 border border-rose-200 text-rose-900'
-                        : section.callout.type === 'data'
-                        ? 'bg-blue-50 border border-blue-200 text-blue-950 font-mono'
-                        : section.callout.type === 'checklist'
-                        ? 'bg-emerald-50 border border-emerald-200 text-emerald-950'
-                        : 'bg-purple-50 border border-purple-200 text-purple-900'
-                    }`}>
-                      <div className="font-bold flex items-center gap-1.5 uppercase text-[10px] tracking-wider">
-                        {section.callout.type === 'warning' && <AlertTriangle className="w-3.5 h-3.5" />}
-                        {section.callout.type === 'checklist' && <CheckCircle2 className="w-3.5 h-3.5" />}
-                        {section.callout.type === 'data' && <FileText className="w-3.5 h-3.5" />}
-                        <span>Key Editorial Takeaway</span>
-                      </div>
-                      <p className="leading-relaxed whitespace-pre-line">{section.callout.text}</p>
+                    <div
+                      className={`p-4 rounded-xl border flex items-start gap-3 text-xs sm:text-sm leading-relaxed ${
+                        section.callout.type === 'warning'
+                          ? 'bg-rose-50 border-rose-200 text-rose-900'
+                          : section.callout.type === 'tip'
+                          ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                          : section.callout.type === 'checklist'
+                          ? 'bg-purple-50 border-purple-200 text-purple-900'
+                          : 'bg-amber-50 border-amber-200 text-amber-900'
+                      }`}
+                    >
+                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                      <span>{section.callout.text}</span>
                     </div>
                   )}
 
-                  {/* Code snippet if present */}
+                  {/* Code Snippet */}
                   {section.codeSnippet && (
-                    <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-900 text-slate-200 text-xs font-mono">
-                      <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-                        <span>Code Implementation</span>
-                        <Code2 className="w-3.5 h-3.5" />
-                      </div>
-                      <pre className="p-4 overflow-x-auto whitespace-pre leading-relaxed">
+                    <div className="p-4 rounded-2xl bg-slate-950 text-slate-100 font-mono text-xs overflow-x-auto border border-slate-800">
+                      <pre>
                         <code>{section.codeSnippet}</code>
                       </pre>
                     </div>
                   )}
 
-                  {/* Table data if present */}
+                  {/* Data Table */}
                   {section.tableData && (
-                    <div className="overflow-x-auto border border-slate-200 rounded-xl">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="bg-slate-50 border-b border-slate-200 text-slate-700">
+                    <div className="overflow-x-auto rounded-2xl border border-slate-200 my-4 shadow-xs">
+                      <table className="w-full text-xs text-left border-collapse">
+                        <thead className="bg-slate-100 border-b border-slate-200">
+                          <tr>
                             {section.tableData.headers.map((h, hIdx) => (
-                              <th key={hIdx} className="py-2.5 px-3.5 font-bold uppercase tracking-wider">{h}</th>
+                              <th key={hIdx} className="p-3 font-bold text-slate-900">
+                                {h}
+                              </th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100 text-slate-800">
-                          {section.tableData.rows.map((row, rIdx) => (
-                            <tr key={rIdx} className="hover:bg-slate-50/60">
-                              {row.map((cell, cIdx) => (
-                                <td key={cIdx} className={`py-3 px-3.5 ${cIdx === 0 ? 'font-bold text-slate-900' : ''}`}>
+                        <tbody className="divide-y divide-slate-100 bg-white">
+                          {section.tableData.rows.map((r, rIdx) => (
+                            <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
+                              {r.map((cell, cIdx) => (
+                                <td key={cIdx} className="p-3 text-slate-700">
                                   {cell}
                                 </td>
                               ))}
@@ -317,81 +399,139 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
       ) : (
         /* Blog Directory List View */
         <div className="space-y-6">
-          {/* Controls: Search and Category Pills */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search across all 27 compliance guides and SOPs..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#1a73e8]"
-              />
+          {/* Controls: Search and Department Filters */}
+          <div className="space-y-3">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+              <div className="relative flex-1 max-w-md">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search by topic, keyword, author, or research division..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#1a73e8]"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-slate-500 font-medium">
+                  Showing {filteredPosts.length} of {BLOG_POSTS.length} articles
+                </span>
+                {(selectedCategory !== 'All' || selectedTeam !== 'All' || searchQuery) && (
+                  <button
+                    onClick={() => {
+                      setSelectedCategory('All');
+                      setSelectedTeam('All');
+                      setSearchQuery('');
+                    }}
+                    className="text-xs font-bold text-[#1a73e8] hover:underline cursor-pointer"
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
             </div>
 
-            <span className="text-xs text-slate-500 font-medium">
-              Showing {filteredPosts.length} of {BLOG_POSTS.length} articles
-            </span>
-          </div>
+            {/* Category Filter Pills */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
+                  Category:
+                </span>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`text-xs px-3.5 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
+                      selectedCategory === cat
+                        ? 'bg-slate-900 text-white font-bold shadow-xs'
+                        : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`text-xs px-3.5 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
-                  selectedCategory === cat
-                    ? 'bg-slate-900 text-white font-bold shadow-xs'
-                    : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+              {/* Research Division Filter Pills */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
+                  Division:
+                </span>
+                {teamsList.map((team) => (
+                  <button
+                    key={team}
+                    onClick={() => setSelectedTeam(team)}
+                    className={`text-[11px] px-3 py-1 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
+                      selectedTeam === team
+                        ? 'bg-blue-600 text-white font-bold shadow-xs'
+                        : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200'
+                    }`}
+                  >
+                    {team}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* 27 Articles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                onClick={() => handleOpenArticle(post)}
-                className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md hover:border-slate-300 transition-all cursor-pointer flex flex-col justify-between group"
-              >
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-bold text-[#1a73e8] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 line-clamp-1">
-                      {post.category}
-                    </span>
-                    <span className="text-[11px] text-slate-500 font-mono shrink-0">
-                      {post.readTime}
-                    </span>
+            {filteredPosts.map((post) => {
+              const authorData = getAuthorDetails(post.author.name);
+              const avatarBg = authorData ? authorData.avatarBg : 'bg-blue-600';
+
+              return (
+                <div
+                  key={post.id}
+                  onClick={() => handleOpenArticle(post)}
+                  className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md hover:border-slate-300 transition-all cursor-pointer flex flex-col justify-between group"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[11px] font-bold text-[#1a73e8] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 line-clamp-1">
+                        {post.category}
+                      </span>
+                      <span className="text-[11px] text-slate-500 font-mono shrink-0">
+                        {post.readTime}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#1a73e8] transition-colors line-clamp-2 leading-snug">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                      {post.subtitle}
+                    </p>
+
+                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-[11px] text-slate-700 line-clamp-2 leading-relaxed">
+                      <strong className="text-slate-900">Direct Answer:</strong> {post.directAnswerSummary}
+                    </div>
                   </div>
 
-                  <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#1a73e8] transition-colors line-clamp-2 leading-snug">
-                    {post.title}
-                  </h3>
+                  <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                    {/* Author & Organization Attribution */}
+                    <div className="flex items-center gap-2 overflow-hidden pr-2">
+                      <div
+                        className={`w-6 h-6 rounded-full ${avatarBg} text-white font-bold text-[10px] flex items-center justify-center shrink-0`}
+                      >
+                        {post.author.name.charAt(0)}
+                      </div>
+                      <div className="truncate">
+                        <span className="text-slate-800 font-bold block truncate">{post.author.name}</span>
+                        <span className="text-[10px] text-slate-400 block truncate">{post.author.team}</span>
+                      </div>
+                    </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                    {post.subtitle}
-                  </p>
-
-                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-[11px] text-slate-700 line-clamp-2 leading-relaxed">
-                    <strong className="text-slate-900">Direct Answer:</strong> {post.directAnswerSummary}
+                    <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">
+                      <span>Read</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
-
-                <div className="pt-3 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 font-medium">By {post.author.name}</span>
-                  <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>Read Guide</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

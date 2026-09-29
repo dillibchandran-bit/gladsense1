@@ -328,6 +328,7 @@ export interface BlogPost {
   author: {
     name: string;
     role: string;
+    team: string;
   };
   metaTitle: string;
   metaDescription: string;
