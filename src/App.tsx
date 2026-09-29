@@ -134,12 +134,9 @@ export default function App() {
       <footer className="mt-auto py-8 text-xs border-t border-[#dadce0] bg-[#f8f9fa] text-[#5f6368]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="flex items-center gap-3">
               <span className="font-['Google_Sans_Display','Google_Sans',sans-serif] font-bold text-sm text-[#202124]">
-                Glad<span className="text-[#1a73e8]">Sense</span>™
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                Patent Pending
+                Glad<span className="text-[#1a73e8]">Sense</span>
               </span>
               <span className="text-[#dadce0]">|</span>
               <span className="text-[#5f6368] text-xs">The Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
@@ -213,7 +210,7 @@ export default function App() {
           </div>
           <div className="pt-3 border-t border-[#f1f3f4] text-[11px] text-[#80868b] text-center sm:text-left space-y-1">
             <p>
-              © 2026 GladSense Technologies. All rights reserved. GladSense™ is a trademark and the multi-tier crawler simulation, deterministic policy evaluation matrices, and procedural code remediation systems are subject to pending patent applications.
+              © 2026 GladSense. All rights reserved.
             </p>
             <p>
               Disclaimer: GladSense is an independent analytical tool and web application. GladSense is not affiliated with, endorsed by, sponsored by, or associated with Google LLC. Google and Google AdSense are registered trademarks of Google LLC.
