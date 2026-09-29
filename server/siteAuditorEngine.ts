@@ -14,12 +14,36 @@ const GLADSENSE_STATIC_SHELL = `
   <body>
     <h1>GladSense — Site Auditor & Policy Doctor for Google AdSense</h1>
     <p>GladSense is an enterprise-grade website compliance auditor, rejection diagnostic engine, and revenue modeling lab engineered for Google AdSense publishers, indie webmasters, and utility tool developers.</p>
+    <p>Over 85% of independent website publishers face immediate rejection upon their first Google AdSense application due to preventable policy misunderstandings—such as missing legal disclosures, thin boilerplate content, deceptive navigation anchors, or faulty ads.txt syntax. GladSense standardizes the pre-submission verification process according to Google's dual evaluation pipeline: automated bots and human search quality inspectors.</p>
+    
     <h2>The 100-Point Google AdSense Pre-Submission Audit Framework</h2>
-    <p>Our governance matrix evaluates domains across 5 critical operational pillars, enforcing a strict passing threshold of 85/100 points with an uncompromising Zero-Tolerance Gate on Google Publisher Policy compliance. Category 1 Content Value, Category 2 Policy Compliance, Category 3 Navigation & UX, Category 4 Essential Trust Pages, Category 5 Technical Speed.</p>
+    <p>Our governance matrix evaluates domains across 5 critical operational pillars, enforcing a strict passing threshold of 85/100 points with an uncompromising Zero-Tolerance Gate on Google Publisher Policy compliance:</p>
+    <p>Category 1: Content Value & Utility (35 Points Max) — Originality verification (&lt;15% duplicate), minimum content inventory (15–20 published indexable articles or &gt;300 words of documentation per interactive tool view), and demonstrable E-E-A-T credentials.</p>
+    <p>Category 2: Google Publisher Policy Compliance (25 Points Max — Mandatory Gate) — Zero tolerance for prohibited categories (adult, gambling, violence, dangerous advice), copyright integrity, and elimination of misleading or deceptive UI elements.</p>
+    <p>Category 3: User Experience & Navigation (15 Points Max) — Fully functional header and footer menus with zero 404 routes, no dummy anchor tags (href="#"), mobile viewport touch targets (&ge;48x48px), and Cumulative Layout Shift (CLS) under 0.10.</p>
+    <p>Category 4: Essential Pages & Trust Signals (15 Points Max) — Mandatory Privacy Policy with explicit DoubleClick DART cookies, GDPR, and CCPA clauses; transparent About Us page with verifiable leadership; and functional Contact Us channel with active administrative email.</p>
+    <p>Category 5: Technical Infrastructure & Indexing (10 Points Max) — Valid SSL/TLS HTTPS encryption on all routes, verified XML sitemap and clean robots.txt, and sub-2.5s Largest Contentful Paint (LCP).</p>
+
+    <h2>The 6 Layers of Google Search & AdSense Quality Evaluation</h2>
+    <p>Modern web applications must satisfy six distinct evaluation stages before qualifying for Google AdSense monetization and lasting organic visibility in search results:</p>
+    <p>Layer 1: Googlebot (Technical & Structural Crawling) — Automated bots crawl clean HTML DOM trees, evaluate valid HTTP status codes, parse XML sitemaps, and check Schema.org JSON-LD structured data. Single-page applications must provide pre-rendered semantic HTML shells to prevent crawler timeouts.</p>
+    <p>Layer 2: Core Ranking Algorithms (Semantic Understanding & Information Gain) — Google's RankBrain and Helpful Content Systems reward pages that directly answer search queries within the first 200 words. Content must introduce novel data points, proprietary calculations, or practical case studies rather than paraphrasing existing search results.</p>
+    <p>Layer 3: Human Search Quality Raters (E-E-A-T Verification) — Over 10,000 independent human raters grade sites on Experience, Expertise, Authoritativeness, and Trustworthiness. Reviewers verify identifiable author bios, operational business headquarters, and peer-reviewed editorial standards.</p>
+    <p>Layer 4: Human Search Engineers (Side-by-Side Superiority) — Algorithmic adjustments reward sites that demonstrate superior usability, higher dwell time, and lower bounce rates compared directly against incumbent competitors.</p>
+    <p>Layer 5: Automated AdSense Crawling Bots (Inventory & Density Analysis) — AdSense bots calculate the ratio of original text to markup and advertisements. Pages with fewer than 300 words per tool view or sparse blog inventory trigger automatic "Low Value Content" flags.</p>
+    <p>Layer 6: Policy & Legal Inspectors (Brand Safety & Regulatory Gates) — Zero-tolerance enforcement against adult content, copyright infringement, deceptive button layouts, and non-compliance with privacy regulations including GDPR, CCPA, and Google Consent Mode v2.</p>
+
     <h2>KGR Keyword Research & High-RPM Niche Discovery</h2>
-    <p>GladSense integrates the mathematical Keyword Golden Ratio formula to identify search queries with under 250 monthly search volume and an allintitle ratio under 0.25.</p>
-    <h2>Zero-Cost Static Edge Architecture ($0.85/Month Operations)</h2>
-    <p>By leveraging modern static edge networks such as Cloudflare Pages, web developers eliminate monthly server hosting expenses entirely.</p>
+    <p>GladSense integrates the mathematical Keyword Golden Ratio formula to identify search queries with under 250 monthly search volume and an allintitle ratio under 0.25. Targeting low-competition utility niches—such as HVAC CFM sizing, off-grid solar calculations, epoxy resin mixing ratios, and sourdough baker percentages—allows publishers to achieve Page 1 Google rankings in 14–30 days without backlink building while commanding premium Page RPMs ($18–$45).</p>
+
+    <h2>Step-by-Step Rejection Remediation for Low-Value Content & Navigation</h2>
+    <p>When a site receives an AdSense rejection notice, publishers must systematically address the root cause before resubmitting. For Low Value Content, publish at least 15 to 20 comprehensive articles or accompany each interactive calculator with 800+ words of scientific formulas, worked examples, and practical tolerances. Eliminate high duplicate copy across pages. For Site Behavior: Navigation, audit all menu links to verify zero 404 errors, delete empty category archives containing fewer than 3 articles, and ensure touch targets on mobile devices meet the 48x48 pixel standard.</p>
+
+    <h2>Frequently Asked Questions: AdSense Compliance & Micro-Tool Monetization</h2>
+    <p>How many published pages are needed before applying to Google AdSense? Informational blogs require 15 to 20 original, indexable articles averaging 1,000+ words. Interactive utility web apps require at least 5 to 8 distinct tool views, each supported by 800+ words of technical documentation, worked case studies, and structured FAQ accordions.</p>
+    <p>Why do single-purpose calculators achieve higher AdSense RPMs than blogs? Calculators capture visitors in the middle of active commercial projects (e.g. sizing HVAC ducts or calculating epoxy resin volumes). Extended dwell times of 2 to 4 minutes drive ad viewability above 75%, commanding premium advertiser bids of $20 to $45 Page RPM compared to $3 to $8 on generic lifestyle blogs.</p>
+    <p>How do I resolve the Earnings at risk: ads.txt missing error? Deploy a plain text file at your domain root (yourdomain.com/ads.txt) containing the line: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0. Ensure the file returns HTTP 200 without redirects, has Content-Type text/plain, and allow 48 hours for Googlebot to verify the record.</p>
+
     <footer>
       <a href="/privacy-policy">Privacy Policy</a>
       <a href="/terms-of-service">Terms of Service</a>
