@@ -140,13 +140,19 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </p>
 
             {/* Author Attribution Card (E-E-A-T Standard) */}
-            <div className="flex items-center gap-3 py-3 border-y border-slate-100">
-              <div className="w-10 h-10 rounded-full bg-[#1a73e8] text-white flex items-center justify-center font-bold text-sm shrink-0">
-                {activeArticle.author.name.charAt(0)}
+            <div className="flex items-center justify-between gap-3 py-3 border-y border-slate-100 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#1a73e8] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                  {activeArticle.author.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900">{activeArticle.author.name}</div>
+                  <div className="text-[11px] text-slate-500">{activeArticle.author.role}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs font-bold text-slate-900">{activeArticle.author.name}</div>
-                <div className="text-[11px] text-slate-500">{activeArticle.author.role}</div>
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Peer-Reviewed by GladSense Policy & Monetization Board</span>
               </div>
             </div>
 

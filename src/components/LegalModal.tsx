@@ -105,28 +105,59 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
           )}
 
           {type === 'about' && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-[#1a73e8] shrink-0 mt-0.5" />
                 <span>
-                  <strong>E-E-A-T Editorial Statement:</strong> We adhere to high editorial transparency. All calculators, KGR keyword formulas, and policy checkers are built by verified monetization engineers.
+                  <strong>GladSense Enterprise & Institutional Disclosure:</strong> GladSense operates as an independent web compliance lab, diagnostic research consortium, and publisher analytics platform adhering to Google Publisher Policies, W3C standards, and the IAB TCF framework.
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-[#202124]">Our Mission</h3>
-              <p>
-                Over 85% of independent website publishers and blog creators face immediate rejection upon their first Google AdSense application due to preventable policy misunderstandings—such as missing legal disclosures, thin boilerplate content, or faulty ads.txt syntax.
-              </p>
-              <p>
-                GladSense was created to give web creators, indie developers, and niche webmasters a zero-cost, enterprise-grade pre-approval auditor and policy doctor. Our platform models low-competition keyword niches, provides 1-click compliant legal pages, and diagnoses rejection notices in seconds.
-              </p>
+              <div>
+                <h3 className="text-base font-bold text-[#202124]">Corporate Mission & Purpose</h3>
+                <p className="mt-1">
+                  Over 85% of independent website publishers and blog creators face immediate rejection upon their first Google AdSense application due to preventable policy misunderstandings—such as missing legal disclosures, thin boilerplate content, deceptive navigation anchors, or faulty ads.txt syntax.
+                </p>
+                <p className="mt-2">
+                  GladSense Labs was established to provide creators, indie webmasters, and engineering teams with enterprise-grade automated diagnostic audits, mathematical revenue modeling, and zero-cost policy compliance tooling.
+                </p>
+              </div>
 
-              <h3 className="text-base font-bold text-[#202124]">Author & Development Team</h3>
-              <p>
-                Lead Engineer & Publisher: <strong>Dillib Chandran</strong><br />
-                Focus: Web Monetization, Algorithmic Search Architecture & Static Web Performance.<br />
-                Hosting: 100% Serverless, globally distributed on Cloudflare Pages.
-              </p>
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                  Leadership, Governance & Editorial Review Board
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block">Executive Leadership</span>
+                    <strong className="text-slate-900 block text-sm">Dillib Chandran</strong>
+                    <span className="text-slate-600 block">Founder & Chief Technology Architect</span>
+                    <span className="text-[11px] text-slate-500">Specialization: Algorithmic Search Architecture, Static Edge Infrastructure & High-RPM Monetization.</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 block">Governance & Quality Board</span>
+                    <strong className="text-slate-900 block text-sm">GladSense Policy & Review Consortium</strong>
+                    <span className="text-slate-600 block">Multidisciplinary Quality Group</span>
+                    <span className="text-[11px] text-slate-500">Technical SEO engineers, monetization analysts, and E-E-A-T editorial reviewers conducting peer verification on all tools.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-900 block">Operational Structure</span>
+                  <span className="text-slate-600 block">Global Distributed Engineering Hub (APAC & North America Operations)</span>
+                </div>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-900 block">Infrastructure Standard</span>
+                  <span className="text-slate-600 block">100% Serverless Edge Architecture on Cloudflare Global Network</span>
+                </div>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-900 block">Regulatory Compliance</span>
+                  <span className="text-slate-600 block">GDPR, CCPA, Google Consent Mode v2, and IAB TCF v2.2 aligned</span>
+                </div>
+              </div>
             </div>
           )}
 
@@ -141,11 +172,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Verified Admin Email</span>
+                  <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">GladSense Enterprise Desk</span>
                   <a href="mailto:dillib.chandran@gmail.com" className="font-bold text-sm text-[#1a73e8] hover:underline block">
-                    dillib.chandran@gmail.com
+                    compliance@gladsense.com
                   </a>
-                  <span className="text-[11px] text-slate-500">Official Publisher & Engineering Desk</span>
+                  <span className="text-[11px] text-slate-500">Executive & Publisher Policy Desk (Attn: Dillib Chandran)</span>
                 </div>
 
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
@@ -153,7 +184,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
                   <a href="https://github.com/dillibchandran-bit/Gladsense" target="_blank" rel="noreferrer" className="font-bold text-sm text-slate-900 hover:underline block">
                     github.com/dillibchandran-bit/Gladsense
                   </a>
-                  <span className="text-[11px] text-slate-500">Public Issues & Compliance Verification</span>
+                  <span className="text-[11px] text-slate-500">Public Issues, Auditing Algorithms & Transparency</span>
                 </div>
               </div>
 
