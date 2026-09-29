@@ -75,12 +75,12 @@ async function startServer() {
 
       const ai = new GoogleGenAI({ apiKey });
       const prompt = `You are a world-class Google AdSense Monetization and Organic SEO Architect.
-A creator wants to launch a website on a strict ultra-low budget (only domain cost ~$10/yr, $0 free static hosting like Cloudflare Pages) that achieves rapid Google AdSense approval and sustainable organic traffic with minimal competition.
+A creator wants to launch a website or web application (across any category: SaaS, interactive utility, content portal, programmatic directory, browser game, calculator, productivity tool, or educational platform) on an ultra-low budget (domain ~$10/yr, $0 free static/serverless hosting like Cloudflare Pages or Vercel) that achieves rapid Google AdSense approval and sustainable organic search traffic.
 
-Evaluate this proposed niche:
-Niche: "${nicheName}"
-Target Audience: "${targetAudience || 'General online searchers'}"
-Description / Concept: "${description || 'Utility tools or informational guides in this niche'}"
+Evaluate this proposed web app concept:
+Web App / Concept Name: "${nicheName}"
+Target Audience: "${targetAudience || 'General online users / specific web app visitors'}"
+Features / Concept Structure: "${description || 'Interactive web app features and informational guides'}"
 
 Return ONLY valid JSON matching this exact structure:
 {
@@ -89,7 +89,7 @@ Return ONLY valid JSON matching this exact structure:
   "competitionSummary": "Brief 1-2 sentence explanation of competitor weakness or saturation",
   "estimatedRPM": { "min": 8, "max": 24, "average": 15 },
   "policyApprovalRisk": "Low" | "Medium" | "High",
-  "policyRiskExplanation": "Why Google AdSense will approve or might flag (mention YMYL, thin content risks)",
+  "policyRiskExplanation": "Why Google AdSense will approve or might flag (mention YMYL, thin content risks, or copyrighted material)",
   "approvalProbability": 94, // Percentage 0 - 100 estimated probability of passing Google AdSense manual & bot review
   "approvalFactors": {
     "policyCompliance": 96,
@@ -97,21 +97,21 @@ Return ONLY valid JSON matching this exact structure:
     "ymylSafety": 98,
     "commercialDemand": 90
   },
-  "hostingCostFeasibility": "Explain why this can easily run on $0 static hosting (JS micro-tools, SSG)",
-  "recommendedModel": "Client-side interactive calculator/tool paired with 1,000-word guides",
+  "hostingCostFeasibility": "Explain why this web app can easily run on $0 static/serverless hosting (client-side JS, edge API, static SSG)",
+  "recommendedModel": "Tailored architecture (e.g., SPA web app, searchable directory, browser game, or interactive calculator) paired with educational guides",
   "trafficPotentialMonthly": "15,000 - 80,000 pageviews within 6-9 months",
   "kgrKeywords": [
-    { "keyword": "example low competition long tail query", "estimatedVolume": 210, "kgrScore": 0.18, "intent": "High utility calculation" },
-    { "keyword": "example second long tail query", "estimatedVolume": 160, "kgrScore": 0.22, "intent": "Formula / step by step solver" },
-    { "keyword": "example third long tail query", "estimatedVolume": 320, "kgrScore": 0.24, "intent": "Troubleshooting conversion" }
+    { "keyword": "example low competition long tail query", "estimatedVolume": 210, "kgrScore": 0.18, "intent": "High utility user intent" },
+    { "keyword": "example second long tail query", "estimatedVolume": 160, "kgrScore": 0.22, "intent": "Feature workflow solver" },
+    { "keyword": "example third long tail query", "estimatedVolume": 320, "kgrScore": 0.24, "intent": "Comparative alternative search" }
   ],
   "monetizationBlueprint": {
     "recommendedAdDensity": "3 ad units + 1 anchor unit",
-    "dwellTimeAdvantage": "How the interactive nature keeps users on page for 2+ minutes",
-    "topAdPlacements": ["Above tool fold (responsive)", "Immediately below calculation result", "Mid-article educational section"]
+    "dwellTimeAdvantage": "How the web application workflow keeps users engaged for 2+ minutes",
+    "topAdPlacements": ["Above app canvas (responsive)", "Immediately adjacent to main export or action area", "In documentation / guides section"]
   },
   "verdictScore": 88,
-  "verdictReasoning": "Summarize overall viability in 2 sentences"
+  "verdictReasoning": "Summarize overall web app viability and monetization potential in 2 sentences"
 }`;
 
       const response = await ai.models.generateContent({
