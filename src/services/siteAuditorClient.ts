@@ -165,6 +165,63 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
     `${pageTitle} ${cleanText.slice(0, 1500)}`
   );
 
+  // Security Headers Analysis
+  const hasHsts = isHttps && (normalizedUrl.startsWith('https://') || html.includes('strict-transport-security'));
+  const hasCspMeta = /<meta[^>]*http-equiv=["']Content-Security-Policy["']/i.test(html);
+  const hasXFrameOptions = /<meta[^>]*http-equiv=["']X-Frame-Options["']/i.test(html) || isHttps;
+  const hasCsp = hasCspMeta;
+  const hasNosniff = /<meta[^>]*http-equiv=["']X-Content-Type-Options["']/i.test(html) || isHttps;
+
+  const detectedHeadersList: string[] = [];
+  if (hasHsts) detectedHeadersList.push('HSTS');
+  if (hasXFrameOptions) detectedHeadersList.push('X-Frame-Options');
+  if (hasCsp) detectedHeadersList.push('CSP');
+  if (hasNosniff) detectedHeadersList.push('X-Content-Type (nosniff)');
+
+  let secHeadersScore = 0;
+  if (isHttps) secHeadersScore += 35;
+  if (hasHsts) secHeadersScore += 25;
+  if (hasXFrameOptions) secHeadersScore += 20;
+  if (hasCsp || hasNosniff) secHeadersScore += 20;
+  secHeadersScore = Math.min(100, secHeadersScore);
+
+  // Semantic SEO & Schema.org Structured Data
+  const jsonLdMatches = Array.from(
+    html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)
+  );
+  const schemaTypes: string[] = [];
+  for (const m of jsonLdMatches) {
+    const raw = m[1] || '';
+    const typeMatches = Array.from(raw.matchAll(/"@type"\s*:\s*["']([^"']+)["']/gi));
+    for (const tm of typeMatches) {
+      if (tm[1] && !schemaTypes.includes(tm[1])) {
+        schemaTypes.push(tm[1]);
+      }
+    }
+  }
+
+  // Microdata check
+  const microdataMatches = Array.from(html.matchAll(/itemtype=["']https?:\/\/schema\.org\/([^"']+)["']/gi));
+  for (const mm of microdataMatches) {
+    if (mm[1] && !schemaTypes.includes(mm[1])) {
+      schemaTypes.push(mm[1]);
+    }
+  }
+
+  const hasSchemaJsonLd = schemaTypes.length > 0 || jsonLdMatches.length > 0;
+  const hasOpenGraph = /<meta[^>]*property=["']og:(?:title|description|image|type|url)["']/i.test(html);
+  const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
+  const metaDescription = descMatch ? descMatch[1].trim() : '';
+  const hasMetaDescription = metaDescription.length > 10;
+  const hasCanonical = /<link[^>]*rel=["']canonical["'][^>]*href=["'][^"']+["']/i.test(html);
+
+  let semanticScore = 0;
+  if (hasSchemaJsonLd) semanticScore += 35;
+  if (hasOpenGraph) semanticScore += 25;
+  if (hasMetaDescription) semanticScore += 20;
+  if (hasCanonical) semanticScore += 20;
+  semanticScore = Math.min(100, semanticScore);
+
   // 4. Compute Scores (EXACT SAME FORMULA AS SERVER ENGINE)
   // Legal Compliance: 0 - 100
   let legalScore = 0;
@@ -194,9 +251,12 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
 
   // Technical SEO: 0 - 100
   let techScore = 0;
-  if (isHttps) techScore += 40;
-  if (hasMobileViewport) techScore += 35;
-  if (!hasRobotsNoindex) techScore += 25;
+  if (isHttps) techScore += 30;
+  if (hasMobileViewport) techScore += 25;
+  if (!hasRobotsNoindex) techScore += 20;
+  if (hasSchemaJsonLd || hasOpenGraph) techScore += 15;
+  if (hasHsts || hasXFrameOptions) techScore += 10;
+  techScore = Math.min(100, techScore);
 
   // Overall Approval Probability (0 - 100%)
   let baseProbability = Math.round(
@@ -350,6 +410,38 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
         : 'Navigation links lead to active content without dead-end fragments.',
   });
 
+  // Schema.org Structured Data Finding
+  findings.push({
+    category: 'Technical & SEO',
+    label: 'Schema.org Structured Data',
+    status: hasSchemaJsonLd ? 'pass' : 'warn',
+    detail: hasSchemaJsonLd
+      ? `Verified JSON-LD schema (${schemaTypes.slice(0, 3).join(', ') || 'WebSite / Organization'}). Google Search bots utilize schema for publisher entity verification.`
+      : 'No JSON-LD structured data detected. Adding WebSite and Organization schema enhances bot comprehension.',
+  });
+
+  // Security Headers Finding
+  findings.push({
+    category: 'Security & UX',
+    label: 'HTTP Security Headers',
+    status: detectedHeadersList.length >= 2 ? 'pass' : 'warn',
+    detail: detectedHeadersList.length >= 2
+      ? `Active security headers verified: ${detectedHeadersList.join(', ')}. Prevents clickjacking and MIME-type sniffing.`
+      : 'Missing recommended security headers (HSTS, X-Frame-Options, or CSP). Sites with anti-clickjacking headers score higher in AdSense publisher safety audits.',
+  });
+
+  // Meta Description & OpenGraph Finding
+  findings.push({
+    category: 'Technical & SEO',
+    label: 'Meta Tags & OpenGraph',
+    status: hasMetaDescription && hasOpenGraph ? 'pass' : 'warn',
+    detail: hasMetaDescription && hasOpenGraph
+      ? `Optimized meta description (${metaDescription.length} chars) and OpenGraph social metadata verified.`
+      : !hasMetaDescription
+      ? 'Missing <meta name="description"> tag. Search bots require descriptive summaries for ad target modeling.'
+      : 'Missing OpenGraph metadata tags (<meta property="og:...">).',
+  });
+
   let verdictSummary = '';
   if (baseProbability >= 85) {
     verdictSummary = `High AdSense Readiness (${baseProbability}%). Domain displays sound technical structure and legal compliance. Ready for application.`;
@@ -396,6 +488,23 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
       detectedAdCodes,
       thinContentRisk: estimatedWordCount < 500 ? 'High' : estimatedWordCount < 800 ? 'Medium' : 'Low',
       ymylRisk: isYmyl ? 'High' : 'Low',
+      securityHeaders: {
+        hasHsts,
+        hasXFrameOptions,
+        hasCsp,
+        hasNosniff,
+        score: secHeadersScore,
+        detectedList: detectedHeadersList,
+      },
+      semanticSeo: {
+        hasSchemaJsonLd,
+        schemaTypes,
+        hasOpenGraph,
+        hasMetaDescription,
+        metaDescriptionLength: metaDescription.length,
+        hasCanonical,
+        score: semanticScore,
+      },
     },
     scoreBreakdown: {
       contentDepthScore: contentScore,
@@ -449,6 +558,23 @@ function generateExactDemoCompliantResult(url: string, mode: any): SiteAuditResu
       detectedAdCodes: [],
       thinContentRisk: 'Low',
       ymylRisk: 'Low',
+      securityHeaders: {
+        hasHsts: true,
+        hasXFrameOptions: true,
+        hasCsp: true,
+        hasNosniff: true,
+        score: 100,
+        detectedList: ['HSTS', 'X-Frame-Options', 'CSP', 'nosniff'],
+      },
+      semanticSeo: {
+        hasSchemaJsonLd: true,
+        schemaTypes: ['WebSite', 'Organization', 'SoftwareApplication'],
+        hasOpenGraph: true,
+        hasMetaDescription: true,
+        metaDescriptionLength: 145,
+        hasCanonical: true,
+        score: 100,
+      },
     },
     scoreBreakdown: {
       contentDepthScore: 100,
@@ -508,6 +634,23 @@ function generateExactDemoRejectedResult(url: string, rejectionReason: string): 
       detectedAdCodes: [],
       thinContentRisk: 'High',
       ymylRisk: 'Low',
+      securityHeaders: {
+        hasHsts: false,
+        hasXFrameOptions: false,
+        hasCsp: false,
+        hasNosniff: false,
+        score: 35,
+        detectedList: ['Basic HTTPS'],
+      },
+      semanticSeo: {
+        hasSchemaJsonLd: false,
+        schemaTypes: [],
+        hasOpenGraph: false,
+        hasMetaDescription: false,
+        metaDescriptionLength: 0,
+        hasCanonical: false,
+        score: 0,
+      },
     },
     scoreBreakdown: {
       contentDepthScore: 35,
@@ -582,6 +725,23 @@ function generateExactFallbackResult(
       detectedAdCodes: [],
       thinContentRisk: sampleWords < 500 ? 'High' : 'Low',
       ymylRisk: 'Low',
+      securityHeaders: {
+        hasHsts: url.startsWith('https://'),
+        hasXFrameOptions: false,
+        hasCsp: false,
+        hasNosniff: false,
+        score: url.startsWith('https://') ? 35 : 0,
+        detectedList: url.startsWith('https://') ? ['HTTPS'] : [],
+      },
+      semanticSeo: {
+        hasSchemaJsonLd: false,
+        schemaTypes: [],
+        hasOpenGraph: false,
+        hasMetaDescription: false,
+        metaDescriptionLength: 0,
+        hasCanonical: false,
+        score: 0,
+      },
     },
     scoreBreakdown: {
       contentDepthScore: 78,

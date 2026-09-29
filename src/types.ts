@@ -255,6 +255,23 @@ export interface SiteAuditResult {
     detectedAdCodes: string[];
     thinContentRisk: 'Low' | 'Medium' | 'High';
     ymylRisk: 'Low' | 'Medium' | 'High';
+    securityHeaders?: {
+      hasHsts: boolean;
+      hasXFrameOptions: boolean;
+      hasCsp: boolean;
+      hasNosniff: boolean;
+      score: number; // 0 - 100
+      detectedList: string[];
+    };
+    semanticSeo?: {
+      hasSchemaJsonLd: boolean;
+      schemaTypes: string[];
+      hasOpenGraph: boolean;
+      hasMetaDescription: boolean;
+      metaDescriptionLength: number;
+      hasCanonical: boolean;
+      score: number; // 0 - 100
+    };
   };
   scoreBreakdown: {
     contentDepthScore: number; // 0 - 100

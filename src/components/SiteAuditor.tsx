@@ -1007,6 +1007,91 @@ ${
                     ))}
                   </div>
 
+                  {/* Security Protocols & Semantic SEO Deep-Dive Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
+                    {/* Security Headers Card */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                          <span className="font-bold text-xs text-slate-900">Security Protocols & Headers</span>
+                        </div>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            (result.metrics.securityHeaders?.score ?? 0) >= 70
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                          }`}
+                        >
+                          Score: {result.metrics.securityHeaders?.score ?? 50}/100
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600">
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.securityHeaders?.hasHsts ? 'text-emerald-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.securityHeaders?.hasHsts ? '✓' : '○'} HSTS Active
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.securityHeaders?.hasXFrameOptions ? 'text-emerald-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.securityHeaders?.hasXFrameOptions ? '✓' : '○'} X-Frame Defense
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.securityHeaders?.hasCsp ? 'text-emerald-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.securityHeaders?.hasCsp ? '✓' : '○'} Content-Security-Policy
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.securityHeaders?.hasNosniff ? 'text-emerald-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.securityHeaders?.hasNosniff ? '✓' : '○'} nosniff Protection
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Semantic Architecture & Schema Card */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Code2 className="w-4 h-4 text-[#1a73e8]" />
+                          <span className="font-bold text-xs text-slate-900">Semantic & Structured Data</span>
+                        </div>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            (result.metrics.semanticSeo?.score ?? 0) >= 60
+                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                          }`}
+                        >
+                          Score: {result.metrics.semanticSeo?.score ?? 40}/100
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600">
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.semanticSeo?.hasSchemaJsonLd ? 'text-blue-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.semanticSeo?.hasSchemaJsonLd ? '✓' : '○'} Schema.org JSON-LD {result.metrics.semanticSeo?.schemaTypes?.length ? `(${result.metrics.semanticSeo.schemaTypes.slice(0, 2).join(', ')})` : ''}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.semanticSeo?.hasOpenGraph ? 'text-blue-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.semanticSeo?.hasOpenGraph ? '✓' : '○'} OpenGraph Social
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.semanticSeo?.hasMetaDescription ? 'text-blue-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.semanticSeo?.hasMetaDescription ? '✓' : '○'} Meta Description ({result.metrics.semanticSeo?.metaDescriptionLength || 0}c)
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={result.metrics.semanticSeo?.hasCanonical ? 'text-blue-600 font-bold' : 'text-slate-400'}>
+                            {result.metrics.semanticSeo?.hasCanonical ? '✓' : '○'} Canonical URL
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Technical Summary Bar */}
                   <div className="p-4 rounded-2xl bg-slate-900 text-slate-300 text-xs mt-6">
                     <h4 className="font-bold text-white mb-2">Technical Page Audit Summary:</h4>
