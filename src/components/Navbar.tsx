@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'niche-lab', label: 'Niche & Keyword Lab', icon: Layers },
     { id: 'revenue-planner', label: 'Revenue & Profit Planner', icon: DollarSign },
     { id: 'policy-toolkit', label: 'Compliance & SOP Suite', icon: Scale, badge: 'SOP 2.0' },
-    { id: 'blog', label: 'Knowledge Base (27)', icon: BookOpen, badge: '100% Quality' },
+    { id: 'blog', label: 'Knowledge Base (27)', icon: BookOpen },
   ];
 
   const isTabActive = (itemId: NavTabType) => {
@@ -107,13 +107,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Suite: Corporate Buttons & Mobile Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
-              onClick={() => handleNavClick('policy-toolkit')}
-              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-lg border border-emerald-200 transition-colors cursor-pointer"
-            >
-              <span>Score: {readinessPercent}%</span>
-            </button>
-
             {/* Corporate Outline Sign In */}
             <button
               onClick={() => handleNavClick('site-doctor')}
