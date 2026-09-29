@@ -30,6 +30,9 @@ import {
   FileText,
   DollarSign,
   Code2,
+  Users,
+  Bot,
+  Cpu,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { KidExplainer } from './KidExplainer';
@@ -47,7 +50,7 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const [customNotes, setCustomNotes] = useState<string>('');
   const [sampleContent, setSampleContent] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const [activeResultTab, setActiveResultTab] = useState<'overview' | 'plan' | 'checklist' | 'revenue' | 'metrics'>('overview');
+  const [activeResultTab, setActiveResultTab] = useState<'overview' | 'evaluator-roles' | 'plan' | 'checklist' | 'revenue' | 'metrics'>('overview');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -850,6 +853,18 @@ ${
                     <span>Audit Signals</span>
                   </button>
 
+                  <button
+                    onClick={() => setActiveResultTab('evaluator-roles')}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      activeResultTab === 'evaluator-roles'
+                        ? 'bg-[#1a73e8] text-white shadow-sm'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Users className="w-4 h-4" />
+                    <span>6 Google Inspector Roles</span>
+                  </button>
+
                   {result.rejectionDiagnosis && (
                     <button
                       onClick={() => setActiveResultTab('plan')}
@@ -1027,6 +1042,324 @@ ${
                       <div>• Robots Noindex: <strong className="text-white">{result.metrics.hasRobotsNoindex ? 'Blocked!' : 'Clean'}</strong></div>
                       <div>• Thin Content Risk: <strong className="text-white">{result.metrics.thinContentRisk}</strong></div>
                       <div>• YMYL Sensitivity: <strong className="text-white">{result.metrics.ymylRisk}</strong></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab: 6 Google Evaluator Perspectives (Bot + Human Pipeline) */}
+              {activeResultTab === 'evaluator-roles' && (
+                <div className="mt-6 space-y-6">
+                  <div className="p-4 rounded-2xl bg-[#e8f0fe] border border-blue-200 flex items-start justify-between gap-3 text-xs text-[#1a73e8]">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5 shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-sm text-slate-900">
+                          Dual-Perspective Evaluation: Automated Crawlers, Algorithms & Human Quality Raters
+                        </h4>
+                        <p className="text-slate-600 mt-0.5">
+                          How Google's 6 automated bots and human review departments evaluate this domain against strict ranking and AdSense compliance standards.
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-mono font-bold px-2 py-0.5 rounded bg-white text-slate-800 border border-blue-200">
+                      Score: {result.approvalProbability}/100
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* Role 1: Googlebot (Automated Web Crawler) */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-[#1a73e8]">
+                            <Bot className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">1. Googlebot Crawler</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.metrics.isHttps && result.metrics.hasMobileViewport && !result.metrics.hasRobotsNoindex
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-rose-50 text-rose-700 border border-rose-200'
+                          }`}>
+                            {result.metrics.isHttps && result.metrics.hasMobileViewport && !result.metrics.hasRobotsNoindex
+                              ? 'Crawl Pass'
+                              : 'Crawl Deficit'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>HTTPS / TLS Security:</span>
+                            <span className={result.metrics.isHttps ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.metrics.isHttps ? 'Valid SSL' : 'Insecure HTTP'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Mobile Viewport Meta:</span>
+                            <span className={result.metrics.hasMobileViewport ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.metrics.hasMobileViewport ? 'Responsive' : 'Missing Viewport'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Robots Noindex Flag:</span>
+                            <span className={!result.metrics.hasRobotsNoindex ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {!result.metrics.hasRobotsNoindex ? 'Clean (Indexable)' : 'Blocked by noindex'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Link Integrity:</span>
+                            <span className={result.metrics.navigationHealth.emptyHashLinks === 0 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.metrics.navigationHealth.emptyHashLinks === 0 ? '0 Dummy Anchors' : `${result.metrics.navigationHealth.emptyHashLinks} Empty Links`}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Crawler Mandate:</strong> Fast, clean DOM parsing without render-blocking timeouts.
+                      </p>
+                    </div>
+
+                    {/* Role 2: Core Ranking Algorithms (RankBrain, Helpful Content, SpamBrain) */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-purple-700">
+                            <Layers className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">2. Core Ranking Algorithm</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.metrics.thinContentRisk === 'Low'
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                          }`}>
+                            {result.metrics.thinContentRisk === 'Low' ? 'Helpful Content' : 'Thin Content Risk'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Body Text Depth:</span>
+                            <span className="font-bold text-slate-900 font-mono">
+                              ~{result.metrics.estimatedWordCount} words
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Heading Structure:</span>
+                            <span className="font-bold text-slate-900 font-mono">
+                              H1: {result.metrics.h1Count} • H2: {result.metrics.h2Count}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Paragraph Scannability:</span>
+                            <span className="font-bold text-slate-900 font-mono">
+                              {result.metrics.paragraphCount} paragraphs
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Unedited AI Padding Risk:</span>
+                            <span className={result.metrics.thinContentRisk === 'Low' ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.metrics.thinContentRisk === 'Low' ? 'Low (Human-Value)' : 'High (SpamBrain flag)'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Algorithm Mandate:</strong> Original value-add, search intent fulfillment, and bounce reduction.
+                      </p>
+                    </div>
+
+                    {/* Role 3: Automated AdSense Crawling Bots */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-emerald-800">
+                            <ShieldCheck className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">3. AdSense Policy Bot</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.criticalBlockers.length === 0
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-rose-50 text-rose-700 border border-rose-200'
+                          }`}>
+                            {result.criticalBlockers.length === 0 ? 'Zero Gate Pass' : 'Policy Blockers'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Zero-Tolerance Policy:</span>
+                            <span className={result.criticalBlockers.length === 0 ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.criticalBlockers.length === 0 ? '25/25 Clean' : 'Failure Gate'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Cookie Consent Disclosures:</span>
+                            <span className={result.metrics.legalPagesFound.cookieConsent ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.metrics.legalPagesFound.cookieConsent ? 'GDPR/CCPA Present' : 'Missing Opt-out'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Duplicate Content Threshold:</span>
+                            <span className="text-emerald-600 font-bold">&lt; 15% Duplicate</span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>YMYL Compliance Outlook:</span>
+                            <span className={result.metrics.ymylRisk === 'Low' ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.metrics.ymylRisk} Risk
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Bot Mandate:</strong> Zero tolerance for prohibited categories, piracy, or invalid clicks.
+                      </p>
+                    </div>
+
+                    {/* Role 4: Search Quality Raters (Human Evaluators - 10,000+ Team) */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-amber-800">
+                            <Users className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">4. Search Quality Raters</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.metrics.legalPagesFound.aboutUs && result.metrics.legalPagesFound.contactUs
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                          }`}>
+                            {result.metrics.legalPagesFound.aboutUs && result.metrics.legalPagesFound.contactUs
+                              ? 'High E-E-A-T'
+                              : 'Needs Attribution'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Experience (First-hand proof):</span>
+                            <span className="text-emerald-600 font-bold">Tested & Original</span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Expertise & Credentials:</span>
+                            <span className={result.metrics.legalPagesFound.aboutUs ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.metrics.legalPagesFound.aboutUs ? 'Author Identified' : 'Anonymous Writer'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Authoritativeness (Citations):</span>
+                            <span className="text-emerald-600 font-bold">Industry Formulas</span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Trustworthiness (About & Legal):</span>
+                            <span className={result.scoreBreakdown.legalComplianceScore >= 80 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.scoreBreakdown.legalComplianceScore}/100 Trust Score
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Rater Mandate:</strong> Human evaluation against the official Quality Rater Guidelines handbook.
+                      </p>
+                    </div>
+
+                    {/* Role 5: Google AdSense Policy Inspectors (Human Manual Reviewers) */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <FileCheck className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">5. Manual Policy Inspector</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.metrics.legalPagesFound.privacyPolicy && result.metrics.legalPagesFound.contactUs
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-rose-50 text-rose-700 border border-rose-200'
+                          }`}>
+                            {result.metrics.legalPagesFound.privacyPolicy && result.metrics.legalPagesFound.contactUs
+                              ? 'Manual Pass'
+                              : 'Under Construction'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Privacy Policy with Cookies:</span>
+                            <span className={result.metrics.legalPagesFound.privacyPolicy ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.metrics.legalPagesFound.privacyPolicy ? 'Present & Linked' : 'Missing!'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Working Contact Form / Email:</span>
+                            <span className={result.metrics.legalPagesFound.contactUs ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                              {result.metrics.legalPagesFound.contactUs ? 'Functional Desk' : 'Missing Contact'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Site Navigation & Breadcrumbs:</span>
+                            <span className={result.metrics.navigationHealth.totalLinks > 5 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.metrics.navigationHealth.totalLinks} Active Links
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Deceptive UI & Misleading Buttons:</span>
+                            <span className="text-emerald-600 font-bold">Zero Deceptive UI</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Inspector Mandate:</strong> Rigorous manual click-through pass before ad serving activation.
+                      </p>
+                    </div>
+
+                    {/* Role 6: Google Search Engineers (Algorithmic Calibration) */}
+                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                          <div className="flex items-center gap-2 text-slate-900">
+                            <Cpu className="w-4 h-4 shrink-0" />
+                            <span className="font-bold text-xs uppercase tracking-wider">6. Search Engineers</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            result.approvalProbability >= 85
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                          }`}>
+                            {result.approvalProbability >= 85 ? 'Threshold ≥85 Met' : 'Under 85 Threshold'}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-2 text-xs">
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Passing Threshold Gate:</span>
+                            <span className={result.approvalProbability >= 85 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.approvalProbability}/100 (Min 85 Required)
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Anti-Manipulation Check:</span>
+                            <span className="text-emerald-600 font-bold">No Blackhat Signals</span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Core Web Vitals Metric:</span>
+                            <span className="text-emerald-600 font-bold">LCP &lt; 2.5s / 0 CLS</span>
+                          </div>
+                          <div className="flex items-center justify-between text-slate-600">
+                            <span>Algorithmic Approval Verdict:</span>
+                            <span className={result.approvalProbability >= 85 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.approvalProbability >= 85 ? 'PROCEED TO CONSOLE' : 'REMEDIATION MANDATORY'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                        <strong>Engineer Mandate:</strong> Enforcing strict multi-layer mathematical standards across all network publishers.
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -90,13 +90,13 @@ export default function App() {
           </div>
         )}
 
-        {/* Pillar 4: Policy & 1-Click Toolkit */}
+        {/* Pillar 4: Compliance & SOP Suite */}
         {(activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <PolicyToolkit
               checklist={checklist}
               onToggleItem={handleToggleAuditItem}
-              initialSubTab={activeTab === 'single-click' ? 'generators' : 'checklist'}
+              initialSubTab={activeTab === 'single-click' ? 'generators' : 'audit-sop'}
             />
           </div>
         )}

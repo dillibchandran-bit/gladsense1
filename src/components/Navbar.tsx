@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'site-doctor', label: 'Home' },
     { id: 'niche-lab', label: 'Niche & Keyword Lab' },
     { id: 'revenue-planner', label: 'Revenue & Profit Planner' },
-    { id: 'policy-toolkit', label: 'Policy & 1-Click Toolkit', badge: 'New' },
+    { id: 'policy-toolkit', label: 'Compliance & SOP Suite', badge: 'SOP 2.0' },
   ];
 
   const isTabActive = (itemId: NavTabType) => {

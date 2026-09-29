@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import { AuditItem } from '../types';
-import { AdSenseAudit } from './AdSenseAudit';
+import { AdSenseComplianceAuditFramework } from './AdSenseComplianceAuditFramework';
+import { ContentDevelopmentSop } from './ContentDevelopmentSop';
 import { SingleClickSolutions } from './SingleClickSolutions';
-import { ShieldCheck, Zap, FileCheck, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Zap, FileCheck, BookOpen, Layers } from 'lucide-react';
 
 interface PolicyToolkitProps {
-  checklist: AuditItem[];
-  onToggleItem: (id: string) => void;
-  initialSubTab?: 'checklist' | 'generators';
+  checklist?: AuditItem[];
+  onToggleItem?: (id: string) => void;
+  initialSubTab?: 'audit-sop' | 'content-sop' | 'generators';
 }
 
 export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
-  checklist,
-  onToggleItem,
-  initialSubTab = 'checklist',
+  initialSubTab = 'audit-sop',
 }) => {
-  const [subTab, setSubTab] = useState<'checklist' | 'generators'>(initialSubTab);
-
-  const passedCount = checklist.filter((item) => item.isPassed).length;
-  const scorePercent = Math.round((passedCount / checklist.length) * 100);
+  const [subTab, setSubTab] = useState<'audit-sop' | 'content-sop' | 'generators'>(initialSubTab);
 
   return (
     <div className="space-y-6">
@@ -30,26 +26,38 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
           </div>
           <div>
             <h2 className="text-sm font-bold text-slate-900 leading-tight">
-              Policy & 1-Click Toolkit
+              AdSense Compliance & Editorial SOP Suite
             </h2>
             <p className="text-[11px] text-slate-500">
-              Audit your domain against Google Publisher Policies and deploy instant 1-click code fixes.
+              Audit domains against the 100-Point AdSense Pre-Submission SOP, verify Content Development & E-E-A-T standards, and deploy 1-click code fixes.
             </p>
           </div>
         </div>
 
-        {/* 2 Unified Sub-Tabs */}
-        <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200/80 shadow-xs w-full sm:w-auto justify-center">
+        {/* 3 Unified Operational Sub-Tabs */}
+        <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200/80 shadow-xs w-full sm:w-auto justify-center flex-wrap gap-1">
           <button
-            onClick={() => setSubTab('checklist')}
+            onClick={() => setSubTab('audit-sop')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-              subTab === 'checklist'
+              subTab === 'audit-sop'
                 ? 'bg-[#1a73e8] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             <FileCheck className="w-3.5 h-3.5" />
-            <span>20-Point Checklist ({scorePercent}%)</span>
+            <span>AdSense Pre-Submission Audit (100-Pt SOP)</span>
+          </button>
+
+          <button
+            onClick={() => setSubTab('content-sop')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              subTab === 'content-sop'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Content Development SOP (E-E-A-T)</span>
           </button>
 
           <button
@@ -66,15 +74,13 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
         </div>
       </div>
 
-      {/* Sub-Tool 1: 20-Point Compliance Audit Checklist */}
-      {subTab === 'checklist' && (
-        <AdSenseAudit
-          checklist={checklist}
-          onToggleItem={onToggleItem}
-        />
-      )}
+      {/* Sub-Tool 1: Google AdSense Compliance & Pre-Submission Audit Framework (100-Pt SOP) */}
+      {subTab === 'audit-sop' && <AdSenseComplianceAuditFramework />}
 
-      {/* Sub-Tool 2: 1-Click Code Solutions & Generators */}
+      {/* Sub-Tool 2: Content Development SOP & Interactive Pre-Publishing Checklist (SOP v2.0) */}
+      {subTab === 'content-sop' && <ContentDevelopmentSop />}
+
+      {/* Sub-Tool 3: 1-Click Code Solutions & Legal Suite */}
       {subTab === 'generators' && <SingleClickSolutions />}
     </div>
   );
