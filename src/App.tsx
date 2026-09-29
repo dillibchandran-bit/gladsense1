@@ -142,44 +142,63 @@ export default function App() {
               <span className="text-[#5f6368]">The Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
             </div>
             <div className="flex flex-wrap items-center gap-5 text-[12px] text-[#5f6368]">
-              <button
-                type="button"
-                onClick={() => {
+              <a
+                href="#blog"
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveTab('blog');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-bold text-[#1a73e8]"
               >
                 Knowledge Base (27 Guides)
-              </button>
-              <button
-                type="button"
-                onClick={() => setLegalModalType('privacy')}
+              </a>
+              <a
+                href="#privacy-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalType('privacy');
+                }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
                 Privacy Policy
-              </button>
-              <button
-                type="button"
-                onClick={() => setLegalModalType('terms')}
+              </a>
+              <a
+                href="#terms-of-service"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalType('terms');
+                }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
                 Terms of Service
-              </button>
-              <button
-                type="button"
-                onClick={() => setLegalModalType('about')}
+              </a>
+              <a
+                href="#about-us"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalType('about');
+                }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
                 About Us (E-E-A-T)
-              </button>
-              <button
-                type="button"
-                onClick={() => setLegalModalType('contact')}
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalType('contact');
+                }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
-                Contact
-              </button>
+                Contact Us
+              </a>
+              <a
+                href="mailto:compliance@gladsense.com"
+                className="hover:text-[#1a73e8] transition-colors font-medium text-slate-700"
+              >
+                compliance@gladsense.com
+              </a>
               <span className="text-slate-300">|</span>
               <a href="https://support.google.com/adsense/answer/48182" target="_blank" rel="noreferrer" className="hover:text-[#1a73e8] transition-colors">
                 Google Policies

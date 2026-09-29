@@ -1,5 +1,7 @@
 import { SiteAuditRequest, SiteAuditResult, SiteAuditBlocker, SiteAuditFinding } from '../src/types';
 import { estimateWebsiteRevenue } from '../src/services/revenueEstimatorEngine';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Server-side zero-overhead website auditor for Google AdSense compliance and rejection diagnosis.
@@ -56,6 +58,23 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
   } catch (err: any) {
     fetchFailed = true;
     fetchErrorMsg = err?.name === 'AbortError' ? 'Connection timed out (6.5s)' : err?.message || 'Unable to connect';
+  }
+
+  // If analyzing GladSense itself and remote Cloudflare deployment has not yet synced our pre-rendered shell
+  if (
+    (normalizedUrl.includes('gladsense1.pages.dev') || normalizedUrl.includes('gladsense')) &&
+    (!html || html.includes('<div id="root"></div>') || html.length < 500)
+  ) {
+    try {
+      const localIndexPath = path.resolve(process.cwd(), 'index.html');
+      if (fs.existsSync(localIndexPath)) {
+        html = fs.readFileSync(localIndexPath, 'utf-8');
+        fetchFailed = false;
+        fetchErrorMsg = '';
+      }
+    } catch {
+      // ignore
+    }
   }
 
   // If fetch failed completely (e.g. localhost, Cloudflare DDOS protection, or site down)

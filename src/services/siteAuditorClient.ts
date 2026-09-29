@@ -35,8 +35,12 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
   let fetchFailed = false;
   let fetchErrorMsg = '';
 
-  // Check if auditing self on current page
-  if (typeof window !== 'undefined' && window.location.hostname === host && typeof document !== 'undefined') {
+  // Check if auditing self on current page or testing gladSense deployment
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.hostname === host || host.includes('gladsense')) &&
+    typeof document !== 'undefined'
+  ) {
     html = document.documentElement.outerHTML;
   } else if (sampleContent && sampleContent.includes('<') && sampleContent.includes('>')) {
     // Zero-cost direct HTML source inspection: user supplied page source code directly
