@@ -7,41 +7,53 @@ import { KgrCalculator } from './KgrCalculator';
 import { Sparkles, Compass, Search, Lightbulb } from 'lucide-react';
 
 interface NicheKeywordLabProps {
-  initialSubTab?: 'matrix' | 'ai-evaluator' | 'kgr';
+  initialSubTab?: 'ai-evaluator' | 'matrix' | 'kgr';
   onSelectNiche: (niche: Niche) => void;
   onSimulateInCalculator: (rpm: number) => void;
 }
 
 export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
-  initialSubTab = 'matrix',
+  initialSubTab = 'ai-evaluator',
   onSelectNiche,
   onSimulateInCalculator,
 }) => {
-  const [subTab, setSubTab] = useState<'matrix' | 'ai-evaluator' | 'kgr'>(initialSubTab);
+  const [subTab, setSubTab] = useState<'ai-evaluator' | 'matrix' | 'kgr'>(initialSubTab);
 
   return (
     <div className="space-y-6">
       {/* Top Unified Suite Navigation Bar */}
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-2 sm:p-2.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-2 pl-2">
-          <div className="w-8 h-8 rounded-xl bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center font-bold">
-            <Compass className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-xl bg-[#f3e8ff] text-[#9d62ec] flex items-center justify-center font-bold">
+            <Sparkles className="w-4 h-4 text-[#9d62ec]" />
           </div>
           <div>
             <h2 className="text-sm font-bold text-slate-900 leading-tight">
               Niche & Keyword Lab
             </h2>
             <p className="text-[11px] text-slate-500">
-              Discover high-RPM niches, run automated feasibility audits, and find page-1 KGR keywords.
+              Evaluate custom niches with AI, explore 30+ pre-vetted blueprints, and uncover low-competition KGR keywords.
             </p>
           </div>
         </div>
 
-        {/* 3 Unified Sub-Tabs */}
+        {/* 3 Unified Sub-Tabs (Idea Evaluator is 1st) */}
         <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200/80 shadow-xs w-full sm:w-auto justify-center">
           <button
+            onClick={() => setSubTab('ai-evaluator')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              subTab === 'ai-evaluator'
+                ? 'bg-[#9d62ec] text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Niche Evaluator</span>
+          </button>
+
+          <button
             onClick={() => setSubTab('matrix')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
               subTab === 'matrix'
                 ? 'bg-[#1a73e8] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -52,20 +64,8 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
           </button>
 
           <button
-            onClick={() => setSubTab('ai-evaluator')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-              subTab === 'ai-evaluator'
-                ? 'bg-[#9d62ec] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Idea Evaluator</span>
-          </button>
-
-          <button
             onClick={() => setSubTab('kgr')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
               subTab === 'kgr'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -77,7 +77,12 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
         </div>
       </div>
 
-      {/* Sub-Tool 1: Curated Niche Explorer & Matrix */}
+      {/* Sub-Tool 1: AI Idea Feasibility Evaluator (1st Tool) */}
+      {subTab === 'ai-evaluator' && (
+        <AiNicheEvaluator onSimulateRpm={onSimulateInCalculator} />
+      )}
+
+      {/* Sub-Tool 2: Curated Niche Explorer & Matrix */}
       {subTab === 'matrix' && (
         <NicheExplorer
           niches={NICHES_DATA}
@@ -85,11 +90,6 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
           onSimulateInCalculator={onSimulateInCalculator}
           onOpenAiIdea={() => setSubTab('ai-evaluator')}
         />
-      )}
-
-      {/* Sub-Tool 2: AI Idea Feasibility Evaluator */}
-      {subTab === 'ai-evaluator' && (
-        <AiNicheEvaluator onSimulateRpm={onSimulateInCalculator} />
       )}
 
       {/* Sub-Tool 3: Keyword Golden Ratio (KGR) Search */}

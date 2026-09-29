@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
 import { AiEvaluationResult } from '../types';
 import { evaluateNicheClientSide } from '../services/aiEvaluatorClient';
-import { Sparkles, Loader2, CheckCircle2, AlertTriangle, ShieldCheck, DollarSign, Cpu, TrendingUp, Copy, Check, ExternalLink, Receipt, Wallet, HelpCircle } from 'lucide-react';
+import {
+  Sparkles,
+  Loader2,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+  DollarSign,
+  Cpu,
+  TrendingUp,
+  Copy,
+  Check,
+  ExternalLink,
+  Receipt,
+  Wallet,
+  HelpCircle,
+  Search,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
 
 interface AiNicheEvaluatorProps {
@@ -18,6 +36,36 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
   const [warningMsg, setWarningMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copiedKeyword, setCopiedKeyword] = useState<string | null>(null);
+  const [showQuickGuide, setShowQuickGuide] = useState<boolean>(false);
+
+  const sampleIdeas = [
+    {
+      name: 'Epoxy Resin & Woodworking Volume Estimators',
+      audience: 'Woodworkers, DIY river table makers, hobbyist epoxy crafters',
+      desc: 'Client-side volume, mixing ratio, and cost estimators for epoxy pours with educational curing guides.',
+    },
+    {
+      name: 'Off-Grid Solar Panel Angle & Battery Storage Sizing',
+      audience: 'Off-grid homeowners, RV campers, DIY solar installers',
+      desc: 'Calculators for solar azimuth angles, winter tilt, lithium battery bank capacity, and inverter wattages.',
+    },
+    {
+      name: 'EV Home Charging Cost & Time Calculator',
+      audience: 'Electric vehicle buyers, Tesla/Rivian owners, clean energy enthusiasts',
+      desc: 'Level 1 vs Level 2 charging rate calculator with peak-hour electricity rate comparison and fuel savings.',
+    },
+    {
+      name: 'HVAC Duct Sizing & CFM Airflow Estimator',
+      audience: 'HVAC technicians, DIY home remodelers, ventilation builders',
+      desc: 'Friction rate, CFM airflow, and round-to-rectangular duct dimension sizing tools.',
+    },
+  ];
+
+  const handleApplySample = (sample: typeof sampleIdeas[0]) => {
+    setNicheName(sample.name);
+    setTargetAudience(sample.audience);
+    setDescription(sample.desc);
+  };
 
   const handleEvaluate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,11 +125,11 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
       <div className="p-6 rounded-2xl bg-white border border-[#dadce0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#1a73e8]" />
-              AI Feasibility Evaluator
+            <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#f3e8ff] text-[#9d62ec] flex items-center gap-1 font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-[#9d62ec]" />
+              AI Niche Feasibility Evaluator
             </span>
-            <span className="text-xs text-[#5f6368] font-normal">• Gemini Publisher Policy Analysis</span>
+            <span className="text-xs text-[#5f6368] font-normal">• Gemini & Algorithmic Policy Analysis</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-normal text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
             Custom Niche & AdSense Viability Assessment
@@ -90,33 +138,66 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
             Test any website idea against Google AdSense Publisher Policies, estimated Page RPM, low-competition KGR keywords, and $0 static hosting feasibility.
           </p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setShowQuickGuide(!showQuickGuide)}
+          className="text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 px-3.5 py-2 rounded-xl border border-purple-200 transition-colors flex items-center gap-1.5 self-start md:self-auto cursor-pointer shrink-0"
+        >
+          <HelpCircle className="w-4 h-4 text-[#9d62ec]" />
+          <span>{showQuickGuide ? 'Hide Guide' : 'How It Works'}</span>
+          {showQuickGuide ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+        </button>
       </div>
 
-      <KidExplainer
-        title="AI Niche Feasibility Evaluator"
-        what="An intelligence engine that analyzes custom website concepts against Google's publisher policies and advertiser auction benchmarks."
-        why="Building an entire site takes substantial effort. Validating your niche beforehand prevents investing in restricted topics."
-        how="Enter your concept, target audience, and brief description below, then click 'Run Evaluation'."
-        result="Receive an approval score, projected Page RPM range, low-competition keyword angles, and structural blueprint suggestions."
-      />
-
-      {/* Input Form */}
-      <form onSubmit={handleEvaluate} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
-              Niche or Website Name / Topic *
+      {/* Prominent High-Visibility Search & Evaluation Box (Top 1st Position) */}
+      <form onSubmit={handleEvaluate} className="p-6 rounded-2xl bg-white border-2 border-purple-200/90 hover:border-purple-300 shadow-md shadow-purple-500/5 space-y-4 transition-all">
+        {/* Main Search Bar */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+              <Search className="w-4 h-4 text-[#9d62ec]" />
+              <span>Niche or Website Name / Topic *</span>
             </label>
+            <span className="text-[11px] text-purple-700 font-semibold hidden sm:inline">
+              Instant AdSense policy & RPM feasibility check
+            </span>
+          </div>
+
+          <div className="relative">
             <input
               type="text"
               required
               value={nicheName}
               onChange={(e) => setNicheName(e.target.value)}
-              placeholder="e.g. Solar panel angle and battery storage sizing"
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#9d62ec]"
+              placeholder="e.g. Epoxy Resin & Woodworking Volume Estimators, Solar Panel Sizing..."
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-[#9d62ec] focus:ring-4 focus:ring-purple-100 rounded-xl text-sm sm:text-base text-slate-900 font-medium placeholder-slate-400 transition-all outline-none"
             />
+            <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
+          {/* Quick Idea Suggestion Pills */}
+          <div className="flex items-center gap-1.5 flex-wrap pt-1 text-xs">
+            <span className="text-slate-500 font-medium text-[11px]">Try sample:</span>
+            {sampleIdeas.map((s, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleApplySample(s)}
+                className={`text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
+                  nicheName === s.name
+                    ? 'bg-purple-100 text-purple-900 border-purple-300 font-bold'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200/80 font-medium'
+                }`}
+              >
+                {s.name.split(' ')[0]} {s.name.split(' ')[1]}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Secondary Inputs: Audience & Content Structure */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div className="space-y-1.5">
             <label className="block text-xs font-semibold text-slate-700">
               Target Audience
@@ -125,33 +206,36 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
               type="text"
               value={targetAudience}
               onChange={(e) => setTargetAudience(e.target.value)}
-              placeholder="e.g. Off-grid homeowners, RV campers, DIY solar installers"
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#9d62ec]"
+              placeholder="e.g. Woodworkers, DIY river table makers, hobbyist epoxy crafters"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#9d62ec] transition-colors"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="block text-xs font-semibold text-slate-700">
+              Proposed Tool Concept or Content Structure
+            </label>
+            <textarea
+              rows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe what calculators, interactive tools, or guides you want to offer..."
+              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#9d62ec] transition-colors"
             />
           </div>
         </div>
 
-        <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700">
-            Proposed Tool Concept or Content Structure
-          </label>
-          <textarea
-            rows={2}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe what calculators or guides you want to offer..."
-            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#9d62ec]"
-          />
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
-          <div className="text-xs text-slate-500">
-            Evaluated against Google AdSense Thin Content & YMYL policy guidelines.
+        {/* Action Row */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
+          <div className="text-xs text-slate-500 flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Audited against Google AdSense Thin Content, YMYL & E-E-A-T policies.</span>
           </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2.5 bg-[#9d62ec] hover:bg-[#8b4de3] disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-full transition-all shadow-md shadow-purple-500/20 flex items-center gap-2 cursor-pointer"
+            className="w-full sm:w-auto px-7 py-3 bg-[#9d62ec] hover:bg-[#8b4de3] disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
           >
             {loading ? (
               <>
@@ -160,13 +244,24 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>Evaluate Niche Viability</span>
               </>
             )}
           </button>
         </div>
       </form>
+
+      {/* Collapsible Quick Guide / Explainer (Below Search Form) */}
+      {showQuickGuide && (
+        <KidExplainer
+          title="AI Niche Feasibility Evaluator"
+          what="An intelligence engine that analyzes custom website concepts against Google's publisher policies and advertiser auction benchmarks."
+          why="Building an entire site takes substantial effort. Validating your niche beforehand prevents investing in restricted topics."
+          how="Enter your concept, target audience, and brief description below, then click 'Run Evaluation'."
+          result="Receive an approval score, projected Page RPM range, low-competition keyword angles, and structural blueprint suggestions."
+        />
+      )}
 
       {error && (
         <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-center gap-2">

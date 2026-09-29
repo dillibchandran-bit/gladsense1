@@ -73,7 +73,7 @@ export default function App() {
         {(activeTab === 'niche-lab' || activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <NicheKeywordLab
-              initialSubTab={activeTab === 'ai-evaluator' ? 'ai-evaluator' : activeTab === 'kgr' ? 'kgr' : 'matrix'}
+              initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
               onSelectNiche={(niche) => setSelectedNiche(niche)}
               onSimulateInCalculator={handleSimulateInCalculator}
             />
