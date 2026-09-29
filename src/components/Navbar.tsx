@@ -6,6 +6,7 @@ export type NavTabType =
   | 'niche-lab'
   | 'revenue-planner'
   | 'policy-toolkit'
+  | 'blog'
   | 'single-click'
   | 'budget'
   | 'niches'
@@ -34,6 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'niche-lab', label: 'Niche & Keyword Lab' },
     { id: 'revenue-planner', label: 'Revenue & Profit Planner' },
     { id: 'policy-toolkit', label: 'Compliance & SOP Suite', badge: 'SOP 2.0' },
+    { id: 'blog', label: 'Knowledge Base (27)', badge: '100% Quality' },
   ];
 
   const isTabActive = (itemId: NavTabType) => {

@@ -295,3 +295,47 @@ export interface SiteAuditResult {
   reApplicationChecklist: string[];
 }
 
+export type BlogCategory =
+  | 'AdSense Approval & Rejection Doctor'
+  | 'E-E-A-T & Google Search Quality'
+  | 'High-RPM Niches & KGR Keyword Research'
+  | 'Legal Compliance & Privacy Disclosures'
+  | 'Technical SEO & $0 Static Architecture';
+
+export interface BlogPostFaq {
+  question: string;
+  answer: string;
+}
+
+export interface BlogPostSection {
+  heading: string;
+  subheadings?: { title: string; content: string }[];
+  content: string;
+  codeSnippet?: string;
+  tableData?: { headers: string[]; rows: string[][] };
+  callout?: { type: 'tip' | 'warning' | 'data' | 'checklist'; text: string };
+}
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  category: BlogCategory;
+  intent: 'Informational' | 'Transactional' | 'Navigational';
+  readTime: string;
+  publishDate: string;
+  author: {
+    name: string;
+    role: string;
+  };
+  metaTitle: string;
+  metaDescription: string;
+  primaryKeyword: string;
+  secondaryKeywords: string[];
+  directAnswerSummary: string; // Layer 2 & checklist requirement: immediate answer within 200 words
+  sections: BlogPostSection[];
+  faqs: BlogPostFaq[];
+  relatedToolLinks: { label: string; tabId: string }[];
+}
+

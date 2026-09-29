@@ -11,6 +11,7 @@ import { SiteAuditor } from './components/SiteAuditor';
 import { NicheKeywordLab } from './components/NicheKeywordLab';
 import { RevenueProfitPlanner } from './components/RevenueProfitPlanner';
 import { PolicyToolkit } from './components/PolicyToolkit';
+import { BlogHub } from './components/BlogHub';
 import { NicheDetailModal } from './components/NicheDetailModal';
 import { LegalModal } from './components/LegalModal';
 
@@ -100,6 +101,18 @@ export default function App() {
             />
           </div>
         )}
+
+        {/* Pillar 5: Knowledge Base & Compliance Guides (27 Blog Posts) */}
+        {activeTab === 'blog' && (
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <BlogHub
+              onNavigateToTab={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
+        )}
       </main>
 
       {/* Blueprint Detail Modal */}
@@ -129,6 +142,16 @@ export default function App() {
               <span className="text-[#5f6368]">The Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
             </div>
             <div className="flex flex-wrap items-center gap-5 text-[12px] text-[#5f6368]">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('blog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="hover:text-[#1a73e8] transition-colors cursor-pointer font-bold text-[#1a73e8]"
+              >
+                Knowledge Base (27 Guides)
+              </button>
               <button
                 type="button"
                 onClick={() => setLegalModalType('privacy')}
