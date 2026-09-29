@@ -344,162 +344,85 @@ ${
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
-              {/* 1. 1-Click Fixes */}
+            {/* THREE CORE POWER SUITES (STREAMLINED 3-SUITE LAYOUT) */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              {/* 1. Niche & Keyword Lab */}
               <button
                 type="button"
                 onClick={() => {
-                  onSwitchTab && onSwitchTab('single-click');
+                  onSwitchTab && onSwitchTab('niche-lab');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
               >
-                <div className="flex items-center justify-between w-full mb-1.5">
-                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-[#9d62ec] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Zap className="w-3.5 h-3.5 fill-[#9d62ec]" />
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1a73e8] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Layers className="w-4 h-4" />
                   </div>
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700">
-                    New
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#1a73e8] border border-blue-100">
+                    Discovery
                   </span>
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
-                    1-Click Fixes
+                  <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#1a73e8] transition-colors block">
+                    Niche & Keyword Lab
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    ads.txt & legal pages
+                  <span className="text-[11px] text-slate-500 leading-tight block mt-0.5">
+                    30+ Blueprints, AI Feasibility, and KGR Keyword Search
                   </span>
                 </div>
               </button>
 
-              {/* 2. Niche Ideas */}
+              {/* 2. Revenue & Profit Planner */}
               <button
                 type="button"
                 onClick={() => {
-                  onSwitchTab && onSwitchTab('niches');
+                  onSwitchTab && onSwitchTab('revenue-planner');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-emerald-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
               >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#1a73e8] flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <FileText className="w-3.5 h-3.5" />
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <DollarSign className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                    98% Margins
+                  </span>
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#1a73e8] transition-colors block">
-                    Niche Ideas
+                  <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-600 transition-colors block">
+                    Revenue & Profit Planner
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    High RPM blueprints
+                  <span className="text-[11px] text-slate-500 leading-tight block mt-0.5">
+                    Traffic/RPM Simulator & $10/yr Zero-Cost Edge P&L
                   </span>
                 </div>
               </button>
 
-              {/* 3. Revenue Planner */}
+              {/* 3. Policy & 1-Click Toolkit */}
               <button
                 type="button"
                 onClick={() => {
-                  onSwitchTab && onSwitchTab('calculator');
+                  onSwitchTab && onSwitchTab('policy-toolkit');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-emerald-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
+                className="p-3.5 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-400 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
               >
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#9d62ec] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Zap className="w-4 h-4 fill-[#9d62ec]" />
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                    Toolkit
+                  </span>
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-emerald-600 transition-colors block">
-                    Revenue Planner
+                  <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
+                    Policy & 1-Click Toolkit
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    RPM & CTR simulator
-                  </span>
-                </div>
-              </button>
-
-              {/* 4. Budget & P&L */}
-              <button
-                type="button"
-                onClick={() => {
-                  onSwitchTab && onSwitchTab('budget');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-amber-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
-              >
-                <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-amber-600 transition-colors block">
-                    Budget & P&L
-                  </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    Serverless costs & ROI
-                  </span>
-                </div>
-              </button>
-
-              {/* 5. SEO Keywords */}
-              <button
-                type="button"
-                onClick={() => {
-                  onSwitchTab && onSwitchTab('kgr');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
-              >
-                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <Search className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition-colors block">
-                    SEO Keywords
-                  </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    KGR ratio formula
-                  </span>
-                </div>
-              </button>
-
-              {/* 6. Compliance Audit */}
-              <button
-                type="button"
-                onClick={() => {
-                  onSwitchTab && onSwitchTab('audit');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-rose-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between"
-              >
-                <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <Activity className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-rose-600 transition-colors block">
-                    Compliance Audit
-                  </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    Manual checklist
-                  </span>
-                </div>
-              </button>
-
-              {/* 7. AI Evaluator */}
-              <button
-                type="button"
-                onClick={() => {
-                  onSwitchTab && onSwitchTab('ai-evaluator');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="p-3 bg-white/95 hover:bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-md rounded-2xl transition-all text-left group cursor-pointer flex flex-col justify-between col-span-2 sm:col-span-1"
-              >
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-[#9d62ec] flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
-                  <Sparkles className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-900 group-hover:text-[#9d62ec] transition-colors block">
-                    AI Evaluator
-                  </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
-                    Niche feasibility
+                  <span className="text-[11px] text-slate-500 leading-tight block mt-0.5">
+                    20-Point Audit, Legal Suite, Anti-Ban & Micro-Apps
                   </span>
                 </div>
               </button>
@@ -538,24 +461,24 @@ ${
           <div className="pt-2 text-xs text-slate-500">
             Need more than a free AdSense check? Explore{' '}
             <button
-              onClick={() => onSwitchTab && onSwitchTab('niches')}
-              className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
+              onClick={() => onSwitchTab && onSwitchTab('niche-lab')}
+              className="text-slate-900 font-bold underline hover:text-[#1a73e8] transition-colors cursor-pointer"
             >
-              Niche Matrix
+              Niche & Keyword Lab
             </button>
             ,{' '}
             <button
-              onClick={() => onSwitchTab && onSwitchTab('calculator')}
-              className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
+              onClick={() => onSwitchTab && onSwitchTab('revenue-planner')}
+              className="text-slate-900 font-bold underline hover:text-emerald-600 transition-colors cursor-pointer"
             >
-              Revenue Simulator
+              Revenue & Profit Planner
             </button>
             , or{' '}
             <button
-              onClick={() => onSwitchTab && onSwitchTab('kgr')}
+              onClick={() => onSwitchTab && onSwitchTab('policy-toolkit')}
               className="text-slate-900 font-bold underline hover:text-[#9d62ec] transition-colors cursor-pointer"
             >
-              KGR Keyword Tool
+              Policy & 1-Click Toolkit
             </button>
             .
           </div>
@@ -887,7 +810,7 @@ ${
                         </button>
                         <button
                           onClick={() => {
-                            onSwitchTab('single-click');
+                            onSwitchTab('policy-toolkit');
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
                           className="px-3 py-1.5 bg-[#1a73e8] hover:bg-[#1557b0] text-white font-bold rounded-lg shrink-0 transition-colors"

@@ -3,6 +3,9 @@ import { GoogleAdSenseLogo } from './GoogleAdSenseLogo';
 
 export type NavTabType =
   | 'site-doctor'
+  | 'niche-lab'
+  | 'revenue-planner'
+  | 'policy-toolkit'
   | 'single-click'
   | 'budget'
   | 'niches'
@@ -28,14 +31,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems: { id: NavTabType; label: string; badge?: string }[] = [
     { id: 'site-doctor', label: 'Home' },
-    { id: 'single-click', label: '1-Click Fixes', badge: 'New' },
-    { id: 'niches', label: 'Niche Ideas' },
-    { id: 'calculator', label: 'Revenue Planner' },
-    { id: 'budget', label: 'Budget & P&L' },
-    { id: 'kgr', label: 'SEO Keywords' },
-    { id: 'audit', label: 'Compliance Audit' },
-    { id: 'ai-evaluator', label: 'AI Evaluator' },
+    { id: 'niche-lab', label: 'Niche & Keyword Lab' },
+    { id: 'revenue-planner', label: 'Revenue & Profit Planner' },
+    { id: 'policy-toolkit', label: 'Policy & 1-Click Toolkit', badge: 'New' },
   ];
+
+  const isTabActive = (itemId: NavTabType) => {
+    if (activeTab === itemId) return true;
+    if (itemId === 'niche-lab' && (activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr')) return true;
+    if (itemId === 'revenue-planner' && (activeTab === 'calculator' || activeTab === 'budget')) return true;
+    if (itemId === 'policy-toolkit' && (activeTab === 'audit' || activeTab === 'single-click')) return true;
+    return false;
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#e5e7eb] text-[#1f2937]">
@@ -49,15 +56,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             <GoogleAdSenseLogo />
           </div>
 
-          {/* Center: Clean Corporate Single-Line Navigation */}
-          <nav className="flex items-center space-x-0.5 sm:space-x-1 overflow-x-auto scrollbar-none h-14 py-0 flex-1 justify-center max-w-4xl">
+          {/* Center: Clean Corporate 4-Pillar Single-Line Navigation */}
+          <nav className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-none h-14 py-0 flex-1 justify-center max-w-3xl">
             {navItems.map((item) => {
-              const isActive = activeTab === item.id;
+              const isActive = isTabActive(item.id);
               return (
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`relative h-14 px-2.5 lg:px-3 text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  className={`relative h-14 px-3 lg:px-4 text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     isActive
                       ? 'text-[#1a73e8] font-semibold'
                       : 'text-[#4b5563] hover:text-[#111827] hover:bg-slate-50'
@@ -81,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Right Action Suite: Corporate Buttons */}
           <div className="flex items-center gap-2 shrink-0">
             <button
-              onClick={() => setActiveTab('audit')}
+              onClick={() => setActiveTab('policy-toolkit')}
               className="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-lg border border-emerald-200 transition-colors cursor-pointer"
             >
               <span>Score: {readinessPercent}%</span>
@@ -98,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Corporate Solid Brand Button */}
             <button
               onClick={() => {
-                setActiveTab('single-click');
+                setActiveTab('policy-toolkit');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap"

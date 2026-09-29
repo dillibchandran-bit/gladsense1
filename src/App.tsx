@@ -5,19 +5,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Niche, AuditItem } from './types';
-import { NICHES_DATA, ADSENSE_READINESS_CHECKLIST } from './data/nichesData';
-import { Navbar } from './components/Navbar';
-import { NicheExplorer } from './components/NicheExplorer';
-import { NicheDetailModal } from './components/NicheDetailModal';
-import { RevenueCalculator } from './components/RevenueCalculator';
-import { KgrCalculator } from './components/KgrCalculator';
-import { AdSenseAudit } from './components/AdSenseAudit';
-import { BudgetBlueprint } from './components/BudgetBlueprint';
-import { AiNicheEvaluator } from './components/AiNicheEvaluator';
+import { ADSENSE_READINESS_CHECKLIST } from './data/nichesData';
+import { Navbar, NavTabType } from './components/Navbar';
 import { SiteAuditor } from './components/SiteAuditor';
-import { SingleClickSolutions } from './components/SingleClickSolutions';
+import { NicheKeywordLab } from './components/NicheKeywordLab';
+import { RevenueProfitPlanner } from './components/RevenueProfitPlanner';
+import { PolicyToolkit } from './components/PolicyToolkit';
+import { NicheDetailModal } from './components/NicheDetailModal';
 import { LegalModal } from './components/LegalModal';
-import { NavTabType } from './components/Navbar';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTabType>('site-doctor');
@@ -51,7 +46,7 @@ export default function App() {
 
   const handleSimulateInCalculator = (rpm: number) => {
     setCalculatorRpm(rpm);
-    setActiveTab('calculator');
+    setActiveTab('revenue-planner');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -67,43 +62,42 @@ export default function App() {
         totalAuditCount={checklist.length}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area: 4-Pillar Architecture */}
       <main className="flex-1 w-full bg-white">
+        {/* Pillar 1: Flagship Site Doctor */}
         {activeTab === 'site-doctor' && (
           <SiteAuditor onSwitchTab={(tab) => setActiveTab(tab)} />
         )}
 
-        {activeTab !== 'site-doctor' && (
+        {/* Pillar 2: Niche & Keyword Lab */}
+        {(activeTab === 'niche-lab' || activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {activeTab === 'single-click' && <SingleClickSolutions />}
+            <NicheKeywordLab
+              initialSubTab={activeTab === 'ai-evaluator' ? 'ai-evaluator' : activeTab === 'kgr' ? 'kgr' : 'matrix'}
+              onSelectNiche={(niche) => setSelectedNiche(niche)}
+              onSimulateInCalculator={handleSimulateInCalculator}
+            />
+          </div>
+        )}
 
-            {activeTab === 'budget' && <BudgetBlueprint />}
+        {/* Pillar 3: Revenue & Profit Planner */}
+        {(activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget') && (
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <RevenueProfitPlanner
+              initialRpm={calculatorRpm}
+              initialSubTab={activeTab === 'budget' ? 'zero-cost-pnl' : 'revenue-sim'}
+            />
+          </div>
+        )}
 
-            {activeTab === 'niches' && (
-              <NicheExplorer
-                niches={NICHES_DATA}
-                onSelectNiche={(niche) => setSelectedNiche(niche)}
-                onSimulateInCalculator={handleSimulateInCalculator}
-                onOpenAiIdea={() => setActiveTab('ai-evaluator')}
-              />
-            )}
-
-            {activeTab === 'calculator' && (
-              <RevenueCalculator initialRpm={calculatorRpm} />
-            )}
-
-            {activeTab === 'kgr' && <KgrCalculator />}
-
-            {activeTab === 'audit' && (
-              <AdSenseAudit
-                checklist={checklist}
-                onToggleItem={handleToggleAuditItem}
-              />
-            )}
-
-            {activeTab === 'ai-evaluator' && (
-              <AiNicheEvaluator onSimulateRpm={handleSimulateInCalculator} />
-            )}
+        {/* Pillar 4: Policy & 1-Click Toolkit */}
+        {(activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click') && (
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <PolicyToolkit
+              checklist={checklist}
+              onToggleItem={handleToggleAuditItem}
+              initialSubTab={activeTab === 'single-click' ? 'generators' : 'checklist'}
+            />
           </div>
         )}
       </main>
