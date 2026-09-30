@@ -286,51 +286,72 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
   if (hasCanonical) semanticScore += 20;
   semanticScore = Math.min(100, semanticScore);
 
-  // 4. Compute Scores
-  // Legal Compliance: 0 - 100
-  let legalScore = 0;
-  if (hasPrivacyPolicy) legalScore += 35;
-  if (hasTerms) legalScore += 25;
-  if (hasAbout) legalScore += 20;
-  if (hasContact) legalScore += 20;
+  // 4. Compute 5 Core Google Audit Pillars (100% Total Weight)
+  // Pillar 1: Content Value & Depth (Weight: 35%)
+  let contentValueScore = 25;
+  if (estimatedWordCount >= 1200) contentValueScore = 95;
+  else if (estimatedWordCount >= 800) contentValueScore = 85;
+  else if (estimatedWordCount >= 500) contentValueScore = 70;
+  else if (estimatedWordCount >= 300) contentValueScore = 50;
+  else contentValueScore = 25;
 
-  // Content Depth: 0 - 100
-  let contentScore = 20;
-  if (estimatedWordCount >= 1200) contentScore = 95;
-  else if (estimatedWordCount >= 800) contentScore = 85;
-  else if (estimatedWordCount >= 500) contentScore = 70;
-  else if (estimatedWordCount >= 300) contentScore = 50;
-  else contentScore = 25;
+  if (h1Matches.length === 1) contentValueScore += 5;
+  if (h2Matches.length >= 2) contentValueScore += 5;
+  contentValueScore = Math.min(100, Math.max(15, contentValueScore));
 
-  if (h1Matches.length === 1) contentScore += 5;
-  if (h2Matches.length >= 2) contentScore += 5;
-  contentScore = Math.min(100, contentScore);
+  // Pillar 2: Policy & Compliance (Weight: 25%)
+  let policyComplianceScore = 15;
+  if (hasPrivacyPolicy) policyComplianceScore += 50; // Google DART + GDPR/CCPA
+  if (hasTerms) policyComplianceScore += 25; // Acceptable Use / TOS
+  if (detectedAdCodes.length === 0 || detectedAdCodes.length <= 4) policyComplianceScore += 10; // Safe ad density
+  policyComplianceScore = Math.min(100, Math.max(10, policyComplianceScore));
 
-  // Navigation UX: 0 - 100
-  let navScore = 75;
-  if (emptyHashLinks > 3) navScore -= 25;
-  else if (emptyHashLinks > 0) navScore -= 10;
-  if (totalLinks >= 6 && internalLinks >= 4) navScore += 25;
-  navScore = Math.max(20, Math.min(100, navScore));
+  // Pillar 3: UX & Navigation (Weight: 15%)
+  let uxNavigationScore = 40;
+  if (emptyHashLinks === 0) uxNavigationScore += 35;
+  else if (emptyHashLinks <= 2) uxNavigationScore += 15;
+  if (totalLinks >= 6 && internalLinks >= 4) uxNavigationScore += 25;
+  uxNavigationScore = Math.min(100, Math.max(15, uxNavigationScore));
 
-  // Technical SEO: 0 - 100 (incorporates security headers and semantic structure)
-  let techScore = 0;
-  if (isHttps) techScore += 30;
-  if (hasMobileViewport) techScore += 25;
-  if (!hasRobotsNoindex) techScore += 20;
-  if (hasSchemaJsonLd || hasOpenGraph) techScore += 15;
-  if (hasHsts || hasXFrameOptions) techScore += 10;
-  techScore = Math.min(100, techScore);
+  // Pillar 4: Essential Pages & Trust (Weight: 15%)
+  let essentialPagesScore = 15;
+  if (hasAbout) essentialPagesScore += 45; // Dedicated About page with mission/author
+  if (hasContact) essentialPagesScore += 40; // Direct contact channel (mailto / page)
+  essentialPagesScore = Math.min(100, Math.max(10, essentialPagesScore));
 
-  // Overall Approval Probability (0 - 100%)
+  // Pillar 5: Technical Infrastructure (Weight: 10%)
+  let technicalInfraScore = 10;
+  if (isHttps) technicalInfraScore += 35; // Valid SSL/TLS
+  if (hasMobileViewport) technicalInfraScore += 25; // Responsive viewport
+  if (!hasRobotsNoindex) technicalInfraScore += 20; // Search bot indexable
+  if (hasSchemaJsonLd || hasOpenGraph) technicalInfraScore += 10; // Semantic metadata
+  if (hasHsts || hasXFrameOptions || hasNosniff) technicalInfraScore += 10; // Security headers
+  technicalInfraScore = Math.min(100, Math.max(10, technicalInfraScore));
+
+  // Overall Approval Probability (5 Pillars weighted formula = 100%)
   let baseProbability = Math.round(
-    legalScore * 0.35 + contentScore * 0.35 + navScore * 0.15 + techScore * 0.15
+    contentValueScore * 0.35 +
+    policyComplianceScore * 0.25 +
+    uxNavigationScore * 0.15 +
+    essentialPagesScore * 0.15 +
+    technicalInfraScore * 0.10
   );
 
   if (hasRobotsNoindex) baseProbability = Math.min(baseProbability, 20);
   if (!hasPrivacyPolicy) baseProbability = Math.min(baseProbability, 45);
   if (estimatedWordCount < 350) baseProbability = Math.min(baseProbability, 40);
   if (isYmyl) baseProbability = Math.max(30, baseProbability - 20);
+
+  // When all 5 pillars are fully satisfied (e.g., FreshCommits)
+  if (
+    contentValueScore >= 85 &&
+    policyComplianceScore === 100 &&
+    uxNavigationScore >= 90 &&
+    essentialPagesScore === 100 &&
+    technicalInfraScore === 100
+  ) {
+    baseProbability = 100;
+  }
 
   if (mode === 'rejection-doctor') {
     // If site is already rejected, probability starts from an honest baseline
@@ -657,10 +678,16 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
       },
     },
     scoreBreakdown: {
-      contentDepthScore: contentScore,
-      legalComplianceScore: legalScore,
-      navigationUxScore: navScore,
-      technicalSeoScore: techScore,
+      contentValueScore,
+      policyComplianceScore,
+      uxNavigationScore,
+      essentialPagesScore,
+      technicalInfraScore,
+      // Compatibility aliases
+      contentDepthScore: contentValueScore,
+      legalComplianceScore: policyComplianceScore,
+      navigationUxScore: uxNavigationScore,
+      technicalSeoScore: technicalInfraScore,
     },
     criticalBlockers,
     findings,
@@ -854,6 +881,11 @@ function generateFetchFallbackResult(
       },
     },
     scoreBreakdown: {
+      contentValueScore: sampleWords > 800 ? 85 : 60,
+      policyComplianceScore: 50,
+      uxNavigationScore: 70,
+      essentialPagesScore: 50,
+      technicalInfraScore: 65,
       contentDepthScore: sampleWords > 800 ? 85 : 60,
       legalComplianceScore: 50,
       navigationUxScore: 70,
@@ -943,6 +975,11 @@ function generateDemoCompliantResult(url: string, mode: string): SiteAuditResult
       },
     },
     scoreBreakdown: {
+      contentValueScore: 98,
+      policyComplianceScore: 100,
+      uxNavigationScore: 96,
+      essentialPagesScore: 98,
+      technicalInfraScore: 98,
       contentDepthScore: 98,
       legalComplianceScore: 100,
       navigationUxScore: 96,
@@ -1017,6 +1054,11 @@ function generateDemoThinAffiliateResult(url: string, mode: string): SiteAuditRe
       },
     },
     scoreBreakdown: {
+      contentValueScore: 32,
+      policyComplianceScore: 20,
+      uxNavigationScore: 45,
+      essentialPagesScore: 25,
+      technicalInfraScore: 85,
       contentDepthScore: 32,
       legalComplianceScore: 20,
       navigationUxScore: 45,
@@ -1111,6 +1153,11 @@ function generateDemoRejectionDoctorResult(url: string, rejectionReason: string)
       },
     },
     scoreBreakdown: {
+      contentValueScore: 48,
+      policyComplianceScore: 70,
+      uxNavigationScore: 55,
+      essentialPagesScore: 60,
+      technicalInfraScore: 92,
       contentDepthScore: 48,
       legalComplianceScore: 70,
       navigationUxScore: 55,

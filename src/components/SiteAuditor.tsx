@@ -621,83 +621,159 @@ ${
                 </div>
               </div>
 
-              {/* 4 Pillars Scoring Metric Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-8 pt-6 border-t border-slate-800">
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-slate-300 font-medium">Content Depth & Utility</span>
-                    <span className="font-mono font-bold text-emerald-400">
-                      {result.scoreBreakdown.contentDepthScore}/100
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-400 rounded-full"
-                      style={{ width: `${result.scoreBreakdown.contentDepthScore}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-2 block">
-                    ~{result.metrics.estimatedWordCount} body words • {result.metrics.paragraphCount} paragraphs
-                  </span>
-                </div>
+              {/* 5 Google Core Pillars Scoring Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8 pt-6 border-t border-slate-800">
+                {/* Pillar 1: Content Value & Depth (35%) */}
+                {(() => {
+                  const s = result.scoreBreakdown.contentValueScore ?? result.scoreBreakdown.contentDepthScore ?? 0;
+                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                  return (
+                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="1. Content Value & Depth">
+                            1. Content Value
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            35%
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="text-[10px] text-slate-400">Depth & Utility</span>
+                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                        ~{result.metrics.estimatedWordCount} words • {result.metrics.h1Count} H1 / {result.metrics.h2Count} H2
+                      </span>
+                    </div>
+                  );
+                })()}
 
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-slate-300 font-medium">Legal & TOS Disclosures</span>
-                    <span className="font-mono font-bold text-emerald-400">
-                      {result.scoreBreakdown.legalComplianceScore}/100
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-400 rounded-full"
-                      style={{ width: `${result.scoreBreakdown.legalComplianceScore}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-2 block">
-                    {result.metrics.legalPagesFound.privacyPolicy ? '✓ Privacy Policy' : '✗ Missing Privacy'} •{' '}
-                    {result.metrics.legalPagesFound.aboutUs ? '✓ About Us' : '✗ Missing About'}
-                  </span>
-                </div>
+                {/* Pillar 2: Policy & Compliance (25%) */}
+                {(() => {
+                  const s = result.scoreBreakdown.policyComplianceScore ?? result.scoreBreakdown.legalComplianceScore ?? 0;
+                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                  return (
+                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="2. Policy & Compliance">
+                            2. Policy & TOS
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            25%
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="text-[10px] text-slate-400">DART & Ad Rules</span>
+                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                        {result.metrics.legalPagesFound.privacyPolicy ? '✓ Privacy Policy' : '✗ Missing Privacy'} • {result.metrics.legalPagesFound.termsOfService ? '✓ TOS' : '✗ No TOS'}
+                      </span>
+                    </div>
+                  );
+                })()}
 
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-slate-300 font-medium">Navigation & UX Health</span>
-                    <span className="font-mono font-bold text-emerald-400">
-                      {result.scoreBreakdown.navigationUxScore}/100
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-400 rounded-full"
-                      style={{ width: `${result.scoreBreakdown.navigationUxScore}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-2 block">
-                    {result.metrics.navigationHealth.emptyHashLinks > 0
-                      ? `⚠️ ${result.metrics.navigationHealth.emptyHashLinks} empty dummy href="#" links`
-                      : '✓ Zero broken dummy anchors'}
-                  </span>
-                </div>
+                {/* Pillar 3: UX & Navigation (15%) */}
+                {(() => {
+                  const s = result.scoreBreakdown.uxNavigationScore ?? result.scoreBreakdown.navigationUxScore ?? 0;
+                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                  return (
+                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="3. UX & Navigation">
+                            3. UX & Nav
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            15%
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="text-[10px] text-slate-400">Links & Layout</span>
+                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                        {result.metrics.navigationHealth.emptyHashLinks > 0
+                          ? `⚠️ ${result.metrics.navigationHealth.emptyHashLinks} empty # links`
+                          : '✓ 0 broken anchors'} • {result.metrics.navigationHealth.internalLinks} internal
+                      </span>
+                    </div>
+                  );
+                })()}
 
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-slate-300 font-medium">Technical SEO & Speed</span>
-                    <span className="font-mono font-bold text-emerald-400">
-                      {result.scoreBreakdown.technicalSeoScore}/100
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-400 rounded-full"
-                      style={{ width: `${result.scoreBreakdown.technicalSeoScore}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-2 block">
-                    {result.metrics.isHttps ? '✓ HTTPS' : '✗ Insecure'} •{' '}
-                    {result.metrics.hasMobileViewport ? '✓ Responsive' : '✗ Desktop only'}
-                  </span>
-                </div>
+                {/* Pillar 4: Essential Pages & Trust (15%) */}
+                {(() => {
+                  const s = result.scoreBreakdown.essentialPagesScore ?? (result.metrics.legalPagesFound.aboutUs && result.metrics.legalPagesFound.contactUs ? 100 : result.metrics.legalPagesFound.aboutUs ? 60 : 30);
+                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                  return (
+                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="4. Essential Pages & Trust">
+                            4. Trust & Pages
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            15%
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="text-[10px] text-slate-400">About & Contact</span>
+                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                        About: {result.metrics.legalPagesFound.aboutUs ? '✓ E-E-A-T' : '✗ None'} • Contact: {result.metrics.legalPagesFound.contactUs ? '✓ OK' : '✗ None'}
+                      </span>
+                    </div>
+                  );
+                })()}
+
+                {/* Pillar 5: Technical Infrastructure (10%) */}
+                {(() => {
+                  const s = result.scoreBreakdown.technicalInfraScore ?? result.scoreBreakdown.technicalSeoScore ?? 0;
+                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                  return (
+                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="5. Technical Infrastructure">
+                            5. Technical Infra
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            10%
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="text-[10px] text-slate-400">SSL, Mobile & SEO</span>
+                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                        {result.metrics.isHttps ? '✓ SSL' : '✗ HTTP'} • {result.metrics.hasMobileViewport ? '✓ Responsive' : '✗ Desktop'}
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
@@ -772,6 +848,11 @@ ${
                                 overallStatus: 'ready',
                                 verdictSummary: 'Outstanding AdSense Readiness (100%). All 4 critical policy blockers successfully resolved! Site fulfills Google Webmaster E-E-A-T, DoubleClick DART legal disclosures, mobile speed, and structured content benchmarks.',
                                 scoreBreakdown: {
+                                  contentValueScore: 100,
+                                  policyComplianceScore: 100,
+                                  uxNavigationScore: 100,
+                                  essentialPagesScore: 100,
+                                  technicalInfraScore: 100,
                                   contentDepthScore: 100,
                                   legalComplianceScore: 100,
                                   navigationUxScore: 100,
@@ -1274,8 +1355,8 @@ ${
                           </div>
                           <div className="flex items-center justify-between text-slate-600">
                             <span>Trustworthiness (About & Legal):</span>
-                            <span className={result.scoreBreakdown.legalComplianceScore >= 80 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
-                              {result.scoreBreakdown.legalComplianceScore}/100 Trust Score
+                            <span className={(result.scoreBreakdown.essentialPagesScore ?? result.scoreBreakdown.legalComplianceScore ?? 0) >= 80 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
+                              {result.scoreBreakdown.essentialPagesScore ?? result.scoreBreakdown.legalComplianceScore ?? 0}/100 Trust Score
                             </span>
                           </div>
                         </div>

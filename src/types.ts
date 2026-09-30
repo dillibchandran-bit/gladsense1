@@ -288,10 +288,17 @@ export interface SiteAuditResult {
     };
   };
   scoreBreakdown: {
-    contentDepthScore: number; // 0 - 100
-    legalComplianceScore: number; // 0 - 100
-    navigationUxScore: number; // 0 - 100
-    technicalSeoScore: number; // 0 - 100
+    // 5 Google Core Pillars
+    contentValueScore: number; // 35% Weight: Content Value & Depth
+    policyComplianceScore: number; // 25% Weight: Policy & Compliance
+    uxNavigationScore: number; // 15% Weight: UX & Navigation
+    essentialPagesScore: number; // 15% Weight: Essential Pages & Trust
+    technicalInfraScore: number; // 10% Weight: Technical Infrastructure
+    // Compatibility aliases
+    contentDepthScore?: number;
+    legalComplianceScore?: number;
+    navigationUxScore?: number;
+    technicalSeoScore?: number;
   };
   criticalBlockers: SiteAuditBlocker[];
   findings: SiteAuditFinding[];
