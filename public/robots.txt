@@ -1,0 +1,23 @@
+# Google AdSense & Search Engine Robots Configuration
+# Master SOP v4.1 Compliance - Domain I: Technical Infrastructure
+
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# Canonical XML Sitemap
+Sitemap: https://gladsenseedu.com/sitemap.xml

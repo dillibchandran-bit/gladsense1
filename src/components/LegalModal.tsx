@@ -80,7 +80,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
               <h3 className="text-base font-bold text-[#202124]">4. Direct Inquiries</h3>
               <p>
-                If you have questions regarding our privacy practices or data handling, please contact our privacy compliance desk at <code className="px-2 py-0.5 bg-slate-100 rounded text-slate-800">privacy@gladsense.pages.dev</code>.
+                If you have questions regarding our privacy practices or data handling, please contact our privacy compliance desk at <code className="px-2 py-0.5 bg-slate-100 rounded text-slate-800">compliance@gladsenseedu.com</code>.
               </p>
             </div>
           )}
@@ -119,6 +119,15 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
                 <span>
                   <strong>GladSense Enterprise & Institutional Disclosure:</strong> GladSense operates as an independent web compliance lab, diagnostic research consortium, and publisher analytics platform adhering to Google Publisher Policies, W3C standards, and the IAB TCF framework.
                 </span>
+              </div>
+
+              <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 text-xs text-purple-900 space-y-1">
+                <span className="font-bold block text-purple-950">
+                  Mandatory Editorial & AI Transparency Disclosure (Master SOP v4.1 Compliant):
+                </span>
+                <p className="italic text-purple-800 leading-relaxed">
+                  "Editorial Disclosure: We utilize automated research and linguistic tools to assist our editorial workflow. Every piece of content is fact-checked, structured, and reviewed by human domain specialists prior to publication."
+                </p>
               </div>
 
               <div>

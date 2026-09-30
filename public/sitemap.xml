@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!-- Core Application & Diagnostic Hub -->
+  <url>
+    <loc>https://gladsenseedu.com/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <!-- Flagship Site Doctor & Policy Auditor -->
+  <url>
+    <loc>https://gladsenseedu.com/#site-doctor</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <!-- Niche & Keyword Lab (30+ Blueprints, KGR Calculator) -->
+  <url>
+    <loc>https://gladsenseedu.com/#niche-lab</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <!-- Revenue & Profit Planner ($10/yr Zero-Cost Edge P&L) -->
+  <url>
+    <loc>https://gladsenseedu.com/#revenue-planner</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <!-- Policy & 1-Click Toolkit (ads.txt, GDPR, Master SOP) -->
+  <url>
+    <loc>https://gladsenseedu.com/#policy-toolkit</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <!-- Knowledge Base & Compliance Guides (27 Blog Posts) -->
+  <url>
+    <loc>https://gladsenseedu.com/#blog</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Mandatory Legal & Trust Architecture -->
+  <url>
+    <loc>https://gladsenseedu.com/#privacy-policy</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://gladsenseedu.com/#terms-of-service</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://gladsenseedu.com/#about-us</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://gladsenseedu.com/#contact</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+</urlset>

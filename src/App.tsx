@@ -209,6 +209,9 @@ export default function App() {
             </div>
           </div>
           <div className="pt-3 border-t border-[#f1f3f4] text-[11px] text-[#80868b] text-center sm:text-left space-y-1">
+            <p className="text-[11px] text-[#5f6368] italic border-b border-[#f1f3f4] pb-2">
+              <strong>Editorial Disclosure:</strong> We utilize automated research and linguistic tools to assist our editorial workflow. Every piece of content is fact-checked, structured, and reviewed by human domain specialists prior to publication.
+            </p>
             <p>
               © 2026 GladSense. All rights reserved.
             </p>
