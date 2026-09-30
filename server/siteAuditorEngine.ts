@@ -286,6 +286,83 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
   if (hasCanonical) semanticScore += 20;
   semanticScore = Math.min(100, semanticScore);
 
+  // 3.5 AI Content, Lexical Burstiness & Information Gain Analysis
+  const aiClicheRegexes = [
+    { phrase: "in today's fast-paced digital world", regex: /in today'?s (?:fast-paced|ever-evolving|modern) (?:digital )?world/i },
+    { phrase: "delve into / delving into", regex: /delv(?:e|ing) into (?:the realm|the world|the intricacies)?/i },
+    { phrase: "it is important/crucial to note", regex: /it is (?:crucial|important|essential|imperative) to (?:remember|note|understand|keep in mind)/i },
+    { phrase: "a testament to", regex: /(?:a )?testament to (?:the power|the dedication)?/i },
+    { phrase: "rich tapestry of", regex: /rich tapestry of/i },
+    { phrase: "in conclusion, it is evident", regex: /in conclusion,?\s+(?:it is evident|we can see|delving)/i },
+    { phrase: "a myriad of", regex: /a myriad of/i },
+    { phrase: "a beacon of", regex: /a beacon of/i },
+    { phrase: "embark on a journey", regex: /embark on a(?:n exciting)? journey/i },
+    { phrase: "plays a pivotal role", regex: /plays? a (?:pivotal|crucial|vital) role in/i },
+    { phrase: "seamlessly integrate", regex: /seamlessly (?:integrat|blend)/i },
+    { phrase: "game-changer", regex: /a true game-changer/i }
+  ];
+
+  const detectedClichePhrases: string[] = [];
+  let clicheHits = 0;
+  for (const item of aiClicheRegexes) {
+    if (item.regex.test(cleanText) || item.regex.test(html)) {
+      detectedClichePhrases.push(item.phrase);
+      clicheHits++;
+    }
+  }
+
+  const tableMatches = html.match(/<table[^>]*>/gi) || [];
+  const listMatches = html.match(/<(ul|ol)[^>]*>/gi) || [];
+  const imgMatches = html.match(/<img[^>]*>/gi) || [];
+  const tableCount = tableMatches.length;
+  const listCount = listMatches.length;
+  const imageCount = imgMatches.length;
+
+  const hasAuthorBio = /class=["'][^"']*(author|bio|byline|writer|profile)[^"']*["']/i.test(html) ||
+    /written by|author:|by [A-Z][a-z]+/i.test(cleanText.slice(0, 3000));
+  
+  const hasEditorialTransparency = /editorial policy|editorial standards|editorial methodology|fact-check|fact-checking|reviewed by|ai policy|transparency/i.test(html);
+
+  // Compute Information Gain Score (0 - 100)
+  let infoGainScore = 20;
+  if (tableCount >= 1) infoGainScore += 25;
+  if (listCount >= 2) infoGainScore += 20;
+  if (imageCount >= 1) infoGainScore += 15;
+  if (hasAuthorBio) infoGainScore += 20;
+  if (hasEditorialTransparency) infoGainScore += 20;
+  infoGainScore = Math.min(100, Math.max(10, infoGainScore));
+
+  // Compute Cliche Score (0 - 100: higher = more robotic AI signatures)
+  const clicheScore = Math.min(100, clicheHits * 25);
+
+  // Determine Risk Level
+  let aiRiskLevel: 'Low' | 'Moderate' | 'High' | 'Severe' = 'Low';
+  if (clicheScore >= 50 && infoGainScore < 45) {
+    aiRiskLevel = 'Severe';
+  } else if (clicheScore >= 35 || (clicheHits >= 2 && !hasAuthorBio)) {
+    aiRiskLevel = 'High';
+  } else if (clicheHits >= 1 || infoGainScore < 40) {
+    aiRiskLevel = 'Moderate';
+  } else {
+    aiRiskLevel = 'Low';
+  }
+
+  let aiVerdict = '';
+  let aiActionPlan = '';
+  if (aiRiskLevel === 'Severe') {
+    aiVerdict = `High probability of Google "Low Value Content" or "Unoriginal / Scraped" policy rejection. Scanned text contains multiple automated AI linguistic footprints (${detectedClichePhrases.join(', ')}) with minimal original data formatting.`;
+    aiActionPlan = 'Prune unoriginal articles, inject unique first-party test results, add comparison tables, and publish an official Editorial & AI Transparency Disclosure.';
+  } else if (aiRiskLevel === 'High') {
+    aiVerdict = `Elevated AI Footprint Risk (${detectedClichePhrases.length} formulaic patterns detected). Reviewers may judge the content as generic summary without information gain.`;
+    aiActionPlan = 'Add original tables, author credentials, first-person experiences, and human editorial review disclosures.';
+  } else if (aiRiskLevel === 'Moderate') {
+    aiVerdict = 'Moderate originality signals. Content is readable but could benefit from richer data density, author bylines, and structured comparison tables.';
+    aiActionPlan = 'Enhance articles with original diagrams, bulleted step-by-steps, and verified author profiles.';
+  } else {
+    aiVerdict = 'Strong original content profile. Clean lexical diversity, minimal boilerplate clichés, and positive information gain indicators.';
+    aiActionPlan = 'Maintain this standard of unique analysis, first-person insights, and structured formatting.';
+  }
+
   // 4. Compute 5 Core Google Audit Pillars (100% Total Weight)
   // Pillar 1: Content Value & Depth (Weight: 35%)
   let contentValueScore = 25;
@@ -297,6 +374,15 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
 
   if (h1Matches.length === 1) contentValueScore += 5;
   if (h2Matches.length >= 2) contentValueScore += 5;
+
+  // Penalize content score if Severe or High AI footprints
+  if (aiRiskLevel === 'Severe') {
+    contentValueScore = Math.max(20, contentValueScore - 30);
+  } else if (aiRiskLevel === 'High') {
+    contentValueScore = Math.max(30, contentValueScore - 15);
+  } else if (infoGainScore >= 70) {
+    contentValueScore += 5;
+  }
   contentValueScore = Math.min(100, Math.max(15, contentValueScore));
 
   // Pillar 2: Policy & Compliance (Weight: 25%)
@@ -606,6 +692,30 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
     });
   }
 
+  // AI Content Quality & Originality Finding
+  if (aiRiskLevel === 'Low') {
+    findings.push({
+      category: 'Content Depth',
+      label: 'AI Content & Originality Analysis',
+      status: 'pass',
+      detail: `Low AI Cliché Footprint (${clicheScore}% density, ${infoGainScore}/100 Information Gain). Demonstrates authentic human voice and specialized editorial value.`,
+    });
+  } else if (aiRiskLevel === 'Moderate') {
+    findings.push({
+      category: 'Content Depth',
+      label: 'AI Content & Originality Analysis',
+      status: 'warn',
+      detail: `Moderate AI Phrasing Density (${clicheScore}%). Found patterns like "${detectedClichePhrases.slice(0, 2).join('", "')}". Add richer first-party data and tables.`,
+    });
+  } else {
+    findings.push({
+      category: 'Content Depth',
+      label: 'AI Content & Originality Analysis',
+      status: 'fail',
+      detail: `High AI Footprint Risk (${clicheScore}% density, ${detectedClichePhrases.length} robotic clichés detected). High risk under Google Helpful Content & Low Value Content policies.`,
+    });
+  }
+
   // 6. Generate Rejection Doctor Diagnosis if in Mode 2
   let rejectionDiagnosis = undefined;
   if (mode === 'rejection-doctor') {
@@ -675,6 +785,28 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
         metaDescriptionLength: metaDescription.length,
         hasCanonical,
         score: semanticScore,
+      },
+      aiContentRisk: {
+        riskLevel: aiRiskLevel,
+        clicheScore,
+        detectedPhrases: detectedClichePhrases,
+        informationGainScore: infoGainScore,
+        hasAuthorBio,
+        hasEditorialTransparency,
+        hasRichMedia: tableCount > 0 || listCount > 0,
+        tableCount,
+        listCount,
+        imageCount,
+        verdict: aiVerdict,
+        actionPlan: aiActionPlan,
+      },
+      aiDetection: {
+        aiRiskLevel,
+        clicheScore,
+        informationGainScore: infoGainScore,
+        detectedCliches: detectedClichePhrases,
+        actionPlan: aiActionPlan,
+        verdict: aiVerdict,
       },
     },
     scoreBreakdown: {

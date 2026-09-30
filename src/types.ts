@@ -286,6 +286,14 @@ export interface SiteAuditResult {
       verdict: string;
       actionPlan: string;
     };
+    aiDetection?: {
+      aiRiskLevel: 'Low' | 'Moderate' | 'High' | 'Severe';
+      clicheScore: number; // 0 - 100
+      informationGainScore: number; // 0 - 100
+      detectedCliches: string[];
+      actionPlan: string;
+      verdict: string;
+    };
   };
   scoreBreakdown: {
     // 5 Google Core Pillars

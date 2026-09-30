@@ -661,6 +661,14 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
         verdict: aiVerdict,
         actionPlan: aiActionPlan,
       },
+      aiDetection: {
+        aiRiskLevel,
+        clicheScore,
+        informationGainScore: infoGainScore,
+        detectedCliches: detectedClichePhrases,
+        actionPlan: aiActionPlan,
+        verdict: aiVerdict,
+      },
     },
     scoreBreakdown: {
       contentValueScore,

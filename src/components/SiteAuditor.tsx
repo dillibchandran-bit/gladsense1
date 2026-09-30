@@ -33,6 +33,7 @@ import {
   Users,
   Bot,
   Cpu,
+  Share2,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { KidExplainer } from './KidExplainer';
@@ -140,32 +141,77 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
     }
   };
 
+  const [copiedAiScore, setCopiedAiScore] = useState(false);
+
   const handleCopyReport = () => {
     if (!result) return;
-    const text = `Google AdSense Site Audit Report
+    const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+      riskLevel: result.metrics.aiDetection.aiRiskLevel,
+      clicheScore: result.metrics.aiDetection.clicheScore,
+      informationGainScore: result.metrics.aiDetection.informationGainScore,
+      detectedPhrases: result.metrics.aiDetection.detectedCliches,
+      verdict: result.metrics.aiDetection.verdict,
+    } : null);
+
+    const text = `Google AdSense Site Audit Report (5-Pillar Standard)
 Website: ${result.url}
-Approval Probability: ${result.approvalProbability}% (${result.overallStatus})
+Overall Approval Probability: ${result.approvalProbability}% (${result.overallStatus.toUpperCase()})
 Analyzed At: ${new Date(result.analyzedAt).toLocaleDateString()}
 
 Verdict:
 ${result.verdictSummary}
 
-Score Breakdown:
-- Content Depth & Originality: ${result.scoreBreakdown.contentDepthScore}/100
-- Legal & TOS Compliance: ${result.scoreBreakdown.legalComplianceScore}/100
-- Navigation & UX Health: ${result.scoreBreakdown.navigationUxScore}/100
-- Technical SEO & Indexability: ${result.scoreBreakdown.technicalSeoScore}/100
+5 Core Google Audit Pillars (100% Total):
+1. Content Value & Depth (35%): ${result.scoreBreakdown.contentValueScore ?? result.scoreBreakdown.contentDepthScore ?? 0}/100
+2. Policy & Compliance (25%): ${result.scoreBreakdown.policyComplianceScore ?? result.scoreBreakdown.legalComplianceScore ?? 0}/100
+3. UX & Navigation (15%): ${result.scoreBreakdown.uxNavigationScore ?? result.scoreBreakdown.navigationUxScore ?? 0}/100
+4. Essential Pages & Trust (15%): ${result.scoreBreakdown.essentialPagesScore ?? 100}/100
+5. Technical Infrastructure (10%): ${result.scoreBreakdown.technicalInfraScore ?? result.scoreBreakdown.technicalSeoScore ?? 0}/100
 
+${ai ? `🤖 AI Content & Originality Analysis:
+• AI Rejection Risk: ${ai.riskLevel} Risk
+• AI Cliché Density: ${ai.clicheScore}% (Target: <15%)
+• Information Gain Score: ${ai.informationGainScore}/100 (Target: >75)
+• AI Patterns Detected: ${ai.detectedPhrases?.length > 0 ? ai.detectedPhrases.join(', ') : 'Zero (Clean human voice)'}
+` : ''}
 Critical Blockers:
 ${
   result.criticalBlockers.length > 0
     ? result.criticalBlockers.map((b, i) => `${i + 1}. [${b.severity.toUpperCase()}] ${b.title}: ${b.fixAdvice}`).join('\n')
     : 'None! Ready for submission.'
 }
+
+Audited by GladSense — Google AdSense Readiness Platform
 `;
     navigator.clipboard.writeText(text);
     setCopiedReport(true);
     setTimeout(() => setCopiedReport(false), 2500);
+  };
+
+  const handleShareAiScore = () => {
+    if (!result) return;
+    const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+      riskLevel: result.metrics.aiDetection.aiRiskLevel,
+      clicheScore: result.metrics.aiDetection.clicheScore,
+      informationGainScore: result.metrics.aiDetection.informationGainScore,
+      detectedPhrases: result.metrics.aiDetection.detectedCliches,
+      verdict: result.metrics.aiDetection.verdict,
+    } : null);
+
+    const shareCard = `🤖 Google AI Content & Originality Scorecard
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Site: ${result.url}
+AI Rejection Risk: ${(ai?.riskLevel || 'LOW').toUpperCase()} RISK
+• AI Cliché Density: ${ai?.clicheScore ?? 0}% ${((ai?.clicheScore ?? 0) < 15) ? '(Clean & Natural)' : '(Repetitive Patterns)'}
+• Information Gain Score: ${ai?.informationGainScore ?? 85}/100 (Original Utility)
+• Google HCU Status: ${((ai?.riskLevel || 'Low') === 'Low') ? 'SAFE (Human-First Value)' : 'ATTENTION RECOMMENDED'}
+• Pillar 1 (Content Value): ${result.scoreBreakdown.contentValueScore ?? result.scoreBreakdown.contentDepthScore ?? 0}/100
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Verified by GladSense AI Auditor`;
+
+    navigator.clipboard.writeText(shareCard);
+    setCopiedAiScore(true);
+    setTimeout(() => setCopiedAiScore(false), 2500);
   };
 
   const toggleChecklist = (index: number) => {
@@ -646,9 +692,20 @@ ${
                           <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
                         </div>
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
-                        ~{result.metrics.estimatedWordCount} words • {result.metrics.h1Count} H1 / {result.metrics.h2Count} H2
-                      </span>
+                      {(() => {
+                        const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+                          riskLevel: result.metrics.aiDetection.aiRiskLevel,
+                          clicheScore: result.metrics.aiDetection.clicheScore,
+                        } : null);
+                        return (
+                          <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 leading-tight">
+                            <span>~{result.metrics.estimatedWordCount} words</span>
+                            <span className={ai?.riskLevel === 'Low' ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+                              {ai ? `AI: ${ai.riskLevel} Risk` : 'Original Voice'}
+                            </span>
+                          </div>
+                        );
+                      })()}
                     </div>
                   );
                 })()}
@@ -989,32 +1046,72 @@ ${
                   )}
 
                   {/* Tab: AI & Originality Analysis */}
-                  {result.metrics.aiContentRisk && (
-                    <button
-                      onClick={() => setActiveResultTab('ai-content')}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        activeResultTab === 'ai-content'
-                          ? 'bg-purple-600 text-white shadow-sm'
-                          : result.metrics.aiContentRisk.riskLevel === 'Severe' || result.metrics.aiContentRisk.riskLevel === 'High'
-                          ? 'text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200'
-                          : 'text-slate-600 hover:bg-slate-100'
-                      }`}
-                    >
-                      <Bot className="w-4 h-4" />
-                      <span>
-                        AI & Originality Analysis ({result.metrics.aiContentRisk.riskLevel} Risk)
-                      </span>
-                    </button>
-                  )}
+                  {(() => {
+                    const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+                      riskLevel: result.metrics.aiDetection.aiRiskLevel,
+                      clicheScore: result.metrics.aiDetection.clicheScore,
+                      informationGainScore: result.metrics.aiDetection.informationGainScore,
+                      detectedPhrases: result.metrics.aiDetection.detectedCliches,
+                      verdict: result.metrics.aiDetection.verdict,
+                      actionPlan: result.metrics.aiDetection.actionPlan,
+                      tableCount: 0,
+                      listCount: 0,
+                      imageCount: 0,
+                      hasAuthorBio: false,
+                      hasEditorialTransparency: false,
+                      hasRichMedia: false,
+                    } : {
+                      riskLevel: 'Low' as const,
+                      clicheScore: 0,
+                      informationGainScore: 85,
+                      detectedPhrases: [],
+                      verdict: 'Original content profile detected.',
+                      actionPlan: 'Maintain authentic voice and unique insights.',
+                      tableCount: 0,
+                      listCount: 0,
+                      imageCount: 0,
+                      hasAuthorBio: false,
+                      hasEditorialTransparency: false,
+                      hasRichMedia: false,
+                    });
+
+                    return (
+                      <button
+                        onClick={() => setActiveResultTab('ai-content')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'ai-content'
+                            ? 'bg-purple-600 text-white shadow-sm'
+                            : ai.riskLevel === 'Severe' || ai.riskLevel === 'High'
+                            ? 'text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200'
+                            : 'text-purple-700 bg-purple-50/60 hover:bg-purple-100 border border-purple-200/60'
+                        }`}
+                      >
+                        <Bot className="w-4 h-4 text-purple-600" />
+                        <span>
+                          AI & Originality Analysis ({ai.riskLevel} Risk)
+                        </span>
+                      </button>
+                    );
+                  })()}
                 </div>
 
-                <button
-                  onClick={handleCopyReport}
-                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0"
-                >
-                  {copiedReport ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedReport ? 'Copied!' : 'Copy Summary'}</span>
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={handleShareAiScore}
+                    className="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                    title="Copy AI Content Scorecard to clipboard"
+                  >
+                    {copiedAiScore ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Sparkles className="w-3.5 h-3.5 text-purple-600" />}
+                    <span>{copiedAiScore ? 'AI Score Copied!' : 'Share AI Score'}</span>
+                  </button>
+                  <button
+                    onClick={handleCopyReport}
+                    className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                  >
+                    {copiedReport ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedReport ? 'Copied!' : 'Copy Summary'}</span>
+                  </button>
+                </div>
               </div>
 
               {/* Tab 1: Audit Signals */}
@@ -1587,180 +1684,218 @@ ${
               )}
 
               {/* Tab 5: AI & Originality Analysis (Low-Value Content Defense) */}
-              {activeResultTab === 'ai-content' && result.metrics.aiContentRisk && (
-                <div className="mt-6 space-y-6">
-                  {/* Top Status Banner */}
-                  <div
-                    className={`p-5 rounded-2xl border ${
-                      result.metrics.aiContentRisk.riskLevel === 'Severe'
-                        ? 'bg-rose-50 border-rose-200 text-rose-900'
-                        : result.metrics.aiContentRisk.riskLevel === 'High'
-                        ? 'bg-amber-50 border-amber-200 text-amber-900'
-                        : result.metrics.aiContentRisk.riskLevel === 'Moderate'
-                        ? 'bg-blue-50 border-blue-200 text-blue-900'
-                        : 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex items-start gap-3">
-                        <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold ${
-                            result.metrics.aiContentRisk.riskLevel === 'Severe'
-                              ? 'bg-rose-200 text-rose-700'
-                              : result.metrics.aiContentRisk.riskLevel === 'High'
-                              ? 'bg-amber-200 text-amber-700'
-                              : result.metrics.aiContentRisk.riskLevel === 'Moderate'
-                              ? 'bg-blue-200 text-blue-700'
-                              : 'bg-emerald-200 text-emerald-700'
-                          }`}
-                        >
-                          <Bot className="w-5 h-5" />
+              {activeResultTab === 'ai-content' && (() => {
+                const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+                  riskLevel: result.metrics.aiDetection.aiRiskLevel,
+                  clicheScore: result.metrics.aiDetection.clicheScore,
+                  informationGainScore: result.metrics.aiDetection.informationGainScore,
+                  detectedPhrases: result.metrics.aiDetection.detectedCliches,
+                  verdict: result.metrics.aiDetection.verdict,
+                  actionPlan: result.metrics.aiDetection.actionPlan,
+                  tableCount: 0,
+                  listCount: 0,
+                  imageCount: 0,
+                  hasAuthorBio: false,
+                  hasEditorialTransparency: false,
+                  hasRichMedia: false,
+                } : {
+                  riskLevel: 'Low' as const,
+                  clicheScore: 0,
+                  informationGainScore: 85,
+                  detectedPhrases: [],
+                  verdict: 'Original content profile detected with natural linguistic variation.',
+                  actionPlan: 'Maintain authentic voice, first-person insights, and structured formatting.',
+                  tableCount: 0,
+                  listCount: 0,
+                  imageCount: 0,
+                  hasAuthorBio: false,
+                  hasEditorialTransparency: false,
+                  hasRichMedia: false,
+                });
+
+                return (
+                  <div className="mt-6 space-y-6">
+                    {/* Top Status Banner */}
+                    <div
+                      className={`p-5 rounded-2xl border ${
+                        ai.riskLevel === 'Severe'
+                          ? 'bg-rose-50 border-rose-200 text-rose-900'
+                          : ai.riskLevel === 'High'
+                          ? 'bg-amber-50 border-amber-200 text-amber-900'
+                          : ai.riskLevel === 'Moderate'
+                          ? 'bg-blue-50 border-blue-200 text-blue-900'
+                          : 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                      }`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-3">
+                          <div
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold ${
+                              ai.riskLevel === 'Severe'
+                                ? 'bg-rose-200 text-rose-700'
+                                : ai.riskLevel === 'High'
+                                ? 'bg-amber-200 text-amber-700'
+                                : ai.riskLevel === 'Moderate'
+                                ? 'bg-blue-200 text-blue-700'
+                                : 'bg-emerald-200 text-emerald-700'
+                            }`}
+                          >
+                            <Bot className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-bold text-sm text-slate-900">
+                                AI Footprint & Information Gain Evaluation
+                              </h4>
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                                  ai.riskLevel === 'Severe'
+                                    ? 'bg-rose-100 text-rose-800 border border-rose-300'
+                                    : ai.riskLevel === 'High'
+                                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                    : ai.riskLevel === 'Moderate'
+                                    ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                                    : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                }`}
+                              >
+                                {ai.riskLevel} AI Rejection Risk
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                              {ai.verdict}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h4 className="font-bold text-sm text-slate-900">
-                              AI Footprint & Information Gain Evaluation
-                            </h4>
+
+                        <div className="flex items-center gap-3 shrink-0">
+                          <button
+                            onClick={handleShareAiScore}
+                            className="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                          >
+                            {copiedAiScore ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5 text-purple-600" />}
+                            <span>{copiedAiScore ? 'Scorecard Copied!' : 'Copy AI Card'}</span>
+                          </button>
+                          <div className="text-right bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-xs">
+                            <span className="text-[10px] uppercase font-bold text-slate-500 block">
+                              Information Gain
+                            </span>
                             <span
-                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
-                                result.metrics.aiContentRisk.riskLevel === 'Severe'
-                                  ? 'bg-rose-100 text-rose-800 border border-rose-300'
-                                  : result.metrics.aiContentRisk.riskLevel === 'High'
-                                  ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                  : result.metrics.aiContentRisk.riskLevel === 'Moderate'
-                                  ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                                  : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                              className={`text-2xl font-black font-mono ${
+                                ai.informationGainScore >= 60
+                                  ? 'text-emerald-600'
+                                  : ai.informationGainScore >= 40
+                                  ? 'text-amber-600'
+                                  : 'text-rose-600'
                               }`}
                             >
-                              {result.metrics.aiContentRisk.riskLevel} AI Rejection Risk
+                              {ai.informationGainScore}/100
                             </span>
                           </div>
-                          <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                            {result.metrics.aiContentRisk.verdict}
-                          </p>
                         </div>
                       </div>
-
-                      <div className="text-right shrink-0 bg-white/80 p-3 rounded-xl border border-slate-200/60 shadow-xs">
-                        <span className="text-[10px] uppercase font-bold text-slate-500 block">
-                          Information Gain
-                        </span>
-                        <span
-                          className={`text-2xl font-black font-mono ${
-                            result.metrics.aiContentRisk.informationGainScore >= 60
-                              ? 'text-emerald-600'
-                              : result.metrics.aiContentRisk.informationGainScore >= 40
-                              ? 'text-amber-600'
-                              : 'text-rose-600'
-                          }`}
-                        >
-                          {result.metrics.aiContentRisk.informationGainScore}/100
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 3 Metric Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* 1. Cliché Signature Score */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                          <Cpu className="w-4 h-4 text-purple-600" />
-                          Formulaic AI Clichés
-                        </span>
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            result.metrics.aiContentRisk.clicheScore > 40
-                              ? 'bg-rose-100 text-rose-700'
-                              : result.metrics.aiContentRisk.clicheScore > 0
-                              ? 'bg-amber-100 text-amber-700'
-                              : 'bg-emerald-100 text-emerald-700'
-                          }`}
-                        >
-                          {result.metrics.aiContentRisk.clicheScore}% Cliché Density
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-600">
-                        {result.metrics.aiContentRisk.detectedPhrases.length > 0
-                          ? `Found ${result.metrics.aiContentRisk.detectedPhrases.length} robotic transition clichés characteristic of unedited LLM prompts.`
-                          : 'Zero repetitive AI linguistic signatures detected. Clean syntactical burstiness.'}
-                      </p>
                     </div>
 
-                    {/* 2. Structured Information Density */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                          <Layers className="w-4 h-4 text-[#1a73e8]" />
-                          Data Density & Tables
-                        </span>
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            result.metrics.aiContentRisk.tableCount > 0
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : 'bg-amber-100 text-amber-700'
-                          }`}
-                        >
-                          {result.metrics.aiContentRisk.tableCount} Tables • {result.metrics.aiContentRisk.listCount} Lists
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-600">
-                        Google Quality Raters reward structured comparison tables, formulas, and bulleted takeaways over unbroken text walls.
-                      </p>
-                    </div>
-
-                    {/* 3. Author E-E-A-T & Provenance */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                          <Users className="w-4 h-4 text-emerald-600" />
-                          Author E-E-A-T & Policy
-                        </span>
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            result.metrics.aiContentRisk.hasAuthorBio || result.metrics.aiContentRisk.hasEditorialTransparency
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : 'bg-rose-100 text-rose-700'
-                          }`}
-                        >
-                          {result.metrics.aiContentRisk.hasEditorialTransparency
-                            ? 'Editorial Policy OK'
-                            : result.metrics.aiContentRisk.hasAuthorBio
-                            ? 'Author Byline OK'
-                            : 'Missing Credentials'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-600">
-                        {result.metrics.aiContentRisk.hasEditorialTransparency
-                          ? 'Site transparently documents its editorial standards and human review methodology.'
-                          : 'AdSense reviewers penalize anonymous publishers. Add verifiable author bios and an AI & Editorial disclosure.'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Detected Clichés Warning Box if any found */}
-                  {result.metrics.aiContentRisk.detectedPhrases.length > 0 && (
-                    <div className="p-4 rounded-2xl bg-rose-50/80 border border-rose-200 space-y-2 text-xs">
-                      <div className="flex items-center gap-2 text-rose-800 font-bold">
-                        <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                        <span>Flagged Robotic Transition Footprints:</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {result.metrics.aiContentRisk.detectedPhrases.map((phrase, pIdx) => (
-                          <span
-                            key={pIdx}
-                            className="px-2.5 py-1 rounded-lg bg-white border border-rose-200 text-rose-700 font-mono text-[11px] shadow-xs"
-                          >
-                            "{phrase}"
+                    {/* 3 Metric Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* 1. Cliché Signature Score */}
+                      <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <Cpu className="w-4 h-4 text-purple-600" />
+                            Formulaic AI Clichés
                           </span>
-                        ))}
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              ai.clicheScore > 40
+                                ? 'bg-rose-100 text-rose-700'
+                                : ai.clicheScore > 0
+                                ? 'bg-amber-100 text-amber-700'
+                                : 'bg-emerald-100 text-emerald-700'
+                            }`}
+                          >
+                            {ai.clicheScore}% Cliché Density
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600">
+                          {ai.detectedPhrases.length > 0
+                            ? `Found ${ai.detectedPhrases.length} robotic transition clichés characteristic of unedited LLM prompts.`
+                            : 'Zero repetitive AI linguistic signatures detected. Clean syntactical burstiness.'}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-rose-600 mt-1">
-                        Replace these automated transitions with direct conversational hooks, original field tests, or specific quantitative data.
-                      </p>
+
+                      {/* 2. Structured Information Density */}
+                      <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <Layers className="w-4 h-4 text-[#1a73e8]" />
+                            Data Density & Tables
+                          </span>
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              ai.tableCount > 0
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : 'bg-amber-100 text-amber-700'
+                            }`}
+                          >
+                            {ai.tableCount} Tables • {ai.listCount} Lists
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600">
+                          Google Quality Raters reward structured comparison tables, formulas, and bulleted takeaways over unbroken text walls.
+                        </p>
+                      </div>
+
+                      {/* 3. Author E-E-A-T & Provenance */}
+                      <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <Users className="w-4 h-4 text-emerald-600" />
+                            Author E-E-A-T & Policy
+                          </span>
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              ai.hasAuthorBio || ai.hasEditorialTransparency
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : 'bg-rose-100 text-rose-700'
+                            }`}
+                          >
+                            {ai.hasEditorialTransparency
+                              ? 'Editorial Policy OK'
+                              : ai.hasAuthorBio
+                              ? 'Author Byline OK'
+                              : 'Missing Credentials'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600">
+                          {ai.hasEditorialTransparency
+                            ? 'Site transparently documents its editorial standards and human review methodology.'
+                            : 'AdSense reviewers penalize anonymous publishers. Add verifiable author bios and an AI & Editorial disclosure.'}
+                        </p>
+                      </div>
                     </div>
-                  )}
+
+                    {/* Detected Clichés Warning Box if any found */}
+                    {ai.detectedPhrases.length > 0 && (
+                      <div className="p-4 rounded-2xl bg-rose-50/80 border border-rose-200 space-y-2 text-xs">
+                        <div className="flex items-center gap-2 text-rose-800 font-bold">
+                          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                          <span>Flagged Robotic Transition Footprints:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {ai.detectedPhrases.map((phrase, pIdx) => (
+                            <span
+                              key={pIdx}
+                              className="px-2.5 py-1 rounded-lg bg-white border border-rose-200 text-rose-700 font-mono text-[11px] shadow-xs"
+                            >
+                              "{phrase}"
+                            </span>
+                          ))}
+                        </div>
+                        <p className="text-[11px] text-rose-600 mt-1">
+                          Replace these automated transitions with direct conversational hooks, original field tests, or specific quantitative data.
+                        </p>
+                      </div>
+                    )}
 
                   {/* Action Plan & 1-Click Fix Button */}
                   <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-4">
@@ -1820,7 +1955,8 @@ ${
                     </div>
                   </div>
                 </div>
-              )}
+              );
+            })()}
             </div>
           </div>
         </section>
