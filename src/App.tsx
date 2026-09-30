@@ -194,10 +194,10 @@ export default function App() {
                 Contact Us
               </a>
               <a
-                href="mailto:compliance@gladsense.com"
+                href="mailto:compliance@gladsenseedu.com"
                 className="hover:text-[#1a73e8] transition-colors font-medium text-slate-700"
               >
-                compliance@gladsense.com
+                compliance@gladsenseedu.com
               </a>
               <span className="text-slate-300">|</span>
               <a href="https://support.google.com/adsense/answer/48182" target="_blank" rel="noreferrer" className="hover:text-[#1a73e8] transition-colors">

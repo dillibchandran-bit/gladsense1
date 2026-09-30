@@ -181,8 +181,8 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                   <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">GladSense Enterprise Desk</span>
-                  <a href="mailto:dillib.chandran@gmail.com" className="font-bold text-sm text-[#1a73e8] hover:underline block">
-                    compliance@gladsense.com
+                  <a href="mailto:compliance@gladsenseedu.com" className="font-bold text-sm text-[#1a73e8] hover:underline block">
+                    compliance@gladsenseedu.com
                   </a>
                   <span className="text-[11px] text-slate-500">Executive & Publisher Policy Desk (Attn: Dillib Chandran)</span>
                 </div>

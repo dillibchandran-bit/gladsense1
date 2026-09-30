@@ -189,7 +189,7 @@ export interface SiteAuditBlocker {
 }
 
 export interface SiteAuditFinding {
-  category: 'Legal & TOS' | 'Content Depth' | 'Navigation & UX' | 'Technical' | 'Security & UX' | 'Technical & SEO';
+  category: 'Legal & TOS' | 'Content Depth' | 'Navigation & UX' | 'Technical' | 'Security & UX' | 'Technical & SEO' | 'Content Originality & AI';
   label: string;
   status: 'pass' | 'fail' | 'warn';
   detail: string;
@@ -271,6 +271,20 @@ export interface SiteAuditResult {
       metaDescriptionLength: number;
       hasCanonical: boolean;
       score: number; // 0 - 100
+    };
+    aiContentRisk?: {
+      riskLevel: 'Low' | 'Moderate' | 'High' | 'Severe';
+      clicheScore: number; // 0 - 100 (higher = more formulaic AI patterns)
+      detectedPhrases: string[];
+      informationGainScore: number; // 0 - 100
+      hasAuthorBio: boolean;
+      hasEditorialTransparency: boolean;
+      hasRichMedia: boolean;
+      tableCount: number;
+      listCount: number;
+      imageCount: number;
+      verdict: string;
+      actionPlan: string;
     };
   };
   scoreBreakdown: {

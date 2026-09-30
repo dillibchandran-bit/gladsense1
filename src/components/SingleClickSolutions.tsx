@@ -69,7 +69,7 @@ export const SingleClickSolutions: React.FC = () => {
   const [legalSiteUrl, setLegalSiteUrl] = useState<string>('https://nichecalc.com');
   const [legalContactEmail, setLegalContactEmail] = useState<string>('contact@nichecalc.com');
   const [legalOwnerName, setLegalOwnerName] = useState<string>('NicheCalc Editorial Team');
-  const [activeLegalDoc, setActiveLegalDoc] = useState<'privacy' | 'terms' | 'disclaimer' | 'about'>('privacy');
+  const [activeLegalDoc, setActiveLegalDoc] = useState<'privacy' | 'terms' | 'disclaimer' | 'about' | 'ai-transparency'>('privacy');
 
   const generatePrivacyPolicy = () => {
     return `<!DOCTYPE html>
@@ -162,6 +162,37 @@ export const SingleClickSolutions: React.FC = () => {
 </html>`;
   };
 
+  const generateAiTransparencyPolicy = () => {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Editorial Standards & AI Transparency Policy - ${legalSiteName}</title>
+</head>
+<body>
+  <h1>Editorial Standards, Fact-Checking & AI Transparency Policy</h1>
+  <p>Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+  
+  <h2>1. Editorial Mission & People-First Standards</h2>
+  <p>At ${legalSiteName} (<a href="${legalSiteUrl}">${legalSiteUrl}</a>), operated by ${legalOwnerName}, our editorial objective is to deliver accurate, reliable, and practically useful reference materials, interactive calculators, and instructional guides. We adhere strictly to Google's Search Quality Evaluator Guidelines (E-E-A-T: Experience, Expertise, Authoritativeness, and Trustworthiness).</p>
+  
+  <h2>2. AI Usage & Automation Disclosure</h2>
+  <p>In accordance with responsible webmaster standards and digital transparency guidelines:</p>
+  <ul>
+    <li><strong>Research & Structure Assistance:</strong> Our editorial staff may utilize generative AI tools (such as large language models) for research aggregation, outline preparation, and data classification.</li>
+    <li><strong>Mandatory Human-in-the-Loop Review:</strong> We strictly prohibit unattended automated mass-publishing. Every published article, guide, and interactive tool undergoes thorough manual review, factual cross-examination, and structural verification by human editors.</li>
+    <li><strong>Information Gain Standard:</strong> Content on ${legalSiteName} must deliver measurable information gain beyond existing search results. We require all articles to include original data tables, comparative benchmarks, or actionable formulas.</li>
+  </ul>
+
+  <h2>3. Original Data, Calculations & Primary Sources</h2>
+  <p>All interactive formulas, data tables, and diagrams published on ${legalSiteName} undergo mathematical validation against industry benchmarks before deployment.</p>
+
+  <h2>4. Corrections & Reader Feedback</h2>
+  <p>We invite readers and subject-matter experts to alert us to any factual discrepancies, policy concerns, or suggestions for expansion. Please submit corrections or inquiries to our editorial team at <a href="mailto:${legalContactEmail}">${legalContactEmail}</a>.</p>
+</body>
+</html>`;
+  };
+
   const currentLegalContent =
     activeLegalDoc === 'privacy'
       ? generatePrivacyPolicy()
@@ -169,7 +200,9 @@ export const SingleClickSolutions: React.FC = () => {
       ? generateTermsOfService()
       : activeLegalDoc === 'disclaimer'
       ? generateDisclaimer()
-      : generateAboutUs();
+      : activeLegalDoc === 'about'
+      ? generateAboutUs()
+      : generateAiTransparencyPolicy();
 
   // ==========================================
   // 3. INVALID TRAFFIC / CLICK-BOMBING SHIELD STATE
@@ -1044,6 +1077,19 @@ export const SingleClickSolutions: React.FC = () => {
                   }`}
                 >
                   <span>👤 About & E-E-A-T</span>
+                </button>
+                <button
+                  onClick={() => setActiveLegalDoc('ai-transparency')}
+                  className={`col-span-2 p-2 rounded-lg border text-left flex items-center justify-between ${
+                    activeLegalDoc === 'ai-transparency'
+                      ? 'bg-purple-100 text-purple-900 border-purple-400 font-bold shadow-xs'
+                      : 'bg-purple-50/60 text-purple-800 border-purple-200 hover:bg-purple-100'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <span>🤖 AI Usage & Editorial Policy</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-200 text-purple-900 font-bold">Anti-Low-Value</span>
+                  </span>
                 </button>
               </div>
             </div>

@@ -226,6 +226,83 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
   if (hasCanonical) semanticScore += 20;
   semanticScore = Math.min(100, semanticScore);
 
+  // 3.5 AI Content, Lexical Burstiness & Information Gain Analysis
+  const aiClicheRegexes = [
+    { phrase: "in today's fast-paced digital world", regex: /in today'?s (?:fast-paced|ever-evolving|modern) (?:digital )?world/i },
+    { phrase: "delve into / delving into", regex: /delv(?:e|ing) into (?:the realm|the world|the intricacies)?/i },
+    { phrase: "it is important/crucial to note", regex: /it is (?:crucial|important|essential|imperative) to (?:remember|note|understand|keep in mind)/i },
+    { phrase: "a testament to", regex: /(?:a )?testament to (?:the power|the dedication)?/i },
+    { phrase: "rich tapestry of", regex: /rich tapestry of/i },
+    { phrase: "in conclusion, it is evident", regex: /in conclusion,?\s+(?:it is evident|we can see|delving)/i },
+    { phrase: "a myriad of", regex: /a myriad of/i },
+    { phrase: "a beacon of", regex: /a beacon of/i },
+    { phrase: "embark on a journey", regex: /embark on a(?:n exciting)? journey/i },
+    { phrase: "plays a pivotal role", regex: /plays? a (?:pivotal|crucial|vital) role in/i },
+    { phrase: "seamlessly integrate", regex: /seamlessly (?:integrat|blend)/i },
+    { phrase: "game-changer", regex: /a true game-changer/i }
+  ];
+
+  const detectedClichePhrases: string[] = [];
+  let clicheHits = 0;
+  for (const item of aiClicheRegexes) {
+    if (item.regex.test(cleanText) || item.regex.test(html)) {
+      detectedClichePhrases.push(item.phrase);
+      clicheHits++;
+    }
+  }
+
+  const tableMatches = html.match(/<table[^>]*>/gi) || [];
+  const listMatches = html.match(/<(ul|ol)[^>]*>/gi) || [];
+  const imgMatches = html.match(/<img[^>]*>/gi) || [];
+  const tableCount = tableMatches.length;
+  const listCount = listMatches.length;
+  const imageCount = imgMatches.length;
+
+  const hasAuthorBio = /class=["'][^"']*(author|bio|byline|writer|profile)[^"']*["']/i.test(html) ||
+    /written by|author:|by [A-Z][a-z]+/i.test(cleanText.slice(0, 3000));
+  
+  const hasEditorialTransparency = /editorial policy|editorial standards|editorial methodology|fact-check|fact-checking|reviewed by|ai policy|transparency/i.test(html);
+
+  // Compute Information Gain Score (0 - 100)
+  let infoGainScore = 20;
+  if (tableCount >= 1) infoGainScore += 25;
+  if (listCount >= 2) infoGainScore += 20;
+  if (imageCount >= 1) infoGainScore += 15;
+  if (hasAuthorBio) infoGainScore += 20;
+  if (hasEditorialTransparency) infoGainScore += 20;
+  infoGainScore = Math.min(100, Math.max(10, infoGainScore));
+
+  // Compute Cliche Score (0 - 100: higher = more robotic AI signatures)
+  const clicheScore = Math.min(100, clicheHits * 25);
+
+  // Determine Risk Level
+  let aiRiskLevel: 'Low' | 'Moderate' | 'High' | 'Severe' = 'Low';
+  if (clicheScore >= 50 && infoGainScore < 45) {
+    aiRiskLevel = 'Severe';
+  } else if (clicheScore >= 35 || (clicheHits >= 2 && !hasAuthorBio)) {
+    aiRiskLevel = 'High';
+  } else if (clicheHits >= 1 || infoGainScore < 40) {
+    aiRiskLevel = 'Moderate';
+  } else {
+    aiRiskLevel = 'Low';
+  }
+
+  let aiVerdict = '';
+  let aiActionPlan = '';
+  if (aiRiskLevel === 'Severe') {
+    aiVerdict = `High probability of Google "Low Value Content" or "Unoriginal / Scraped" policy rejection. Scanned text contains multiple automated AI linguistic footprints (${detectedClichePhrases.join(', ')}) with minimal original data formatting.`;
+    aiActionPlan = 'Prune unoriginal articles, inject unique first-party test results, add comparison tables, and publish an official Editorial & AI Transparency Disclosure.';
+  } else if (aiRiskLevel === 'High') {
+    aiVerdict = `Elevated AI Footprint Risk (${detectedClichePhrases.length} formulaic patterns detected). Reviewers may judge the content as generic summary without information gain.`;
+    aiActionPlan = 'Add original tables, author credentials, first-person experiences, and human editorial review disclosures.';
+  } else if (aiRiskLevel === 'Moderate') {
+    aiVerdict = 'Moderate originality signals. Content is readable but could benefit from richer data density, author bylines, and structured comparison tables.';
+    aiActionPlan = 'Enhance articles with original diagrams, bulleted step-by-steps, and verified author profiles.';
+  } else {
+    aiVerdict = 'Strong original content profile. Clean lexical diversity, minimal boilerplate clichés, and positive information gain indicators.';
+    aiActionPlan = 'Maintain this standard of unique analysis, first-person insights, and structured formatting.';
+  }
+
   // 4. Compute Scores (EXACT SAME FORMULA AS SERVER ENGINE)
   // Legal Compliance: 0 - 100
   let legalScore = 0;
@@ -244,6 +321,13 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
 
   if (h1Matches.length === 1) contentScore += 5;
   if (h2Matches.length >= 2) contentScore += 5;
+
+  // Penalize content score if Severe or High AI footprints with low information gain
+  if (aiRiskLevel === 'Severe') {
+    contentScore = Math.max(25, contentScore - 25);
+  } else if (aiRiskLevel === 'High') {
+    contentScore = Math.max(35, contentScore - 15);
+  }
   contentScore = Math.min(100, contentScore);
 
   // Navigation UX: 0 - 100
@@ -381,6 +465,42 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
     });
   }
 
+  // AI Footprint & Information Gain Evaluation
+  if (aiRiskLevel === 'Severe' || aiRiskLevel === 'High') {
+    criticalBlockers.push({
+      title: 'High Risk of "Low Value Content" Rejection (AI / Generic Footprints)',
+      description: `Detected formulaic AI linguistic patterns (${detectedClichePhrases.slice(0, 3).join(', ') || 'generic syntax'}) with low information gain formatting (${tableCount} tables, missing editorial review standards). Google automated review bots flag this as unoriginal content.`,
+      severity: aiRiskLevel === 'Severe' ? 'critical' : 'warning',
+      fixAdvice:
+        'Inject first-person experiences, add structured comparison tables, create author bylines, and publish an official Editorial & AI Transparency policy.',
+    });
+  }
+
+  findings.push({
+    category: 'Content Originality & AI',
+    label: 'AI Footprint & Syntax Burstiness',
+    status: aiRiskLevel === 'Severe' ? 'fail' : aiRiskLevel === 'High' ? 'warn' : 'pass',
+    detail: aiVerdict,
+  });
+
+  findings.push({
+    category: 'Content Originality & AI',
+    label: 'Media & Table Information Density',
+    status: infoGainScore >= 50 ? 'pass' : 'warn',
+    detail: `Found ${tableCount} data table(s), ${listCount} list(s), and ${imageCount} image(s). Information Gain Score: ${infoGainScore}/100.`,
+  });
+
+  findings.push({
+    category: 'Content Originality & AI',
+    label: 'Author E-E-A-T & Editorial Policy',
+    status: hasAuthorBio || hasEditorialTransparency ? 'pass' : 'warn',
+    detail: hasEditorialTransparency
+      ? 'Verified Editorial & Transparency policy in DOM.'
+      : hasAuthorBio
+      ? 'Author byline detected in DOM.'
+      : 'No author credentials or editorial review policy detected. Google raters penalize anonymous content.',
+  });
+
   findings.push({
     category: 'Technical & SEO',
     label: 'Indexing & Search Console',
@@ -509,6 +629,20 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
         hasCanonical,
         score: semanticScore,
       },
+      aiContentRisk: {
+        riskLevel: aiRiskLevel,
+        clicheScore,
+        detectedPhrases: detectedClichePhrases,
+        informationGainScore: infoGainScore,
+        hasAuthorBio,
+        hasEditorialTransparency,
+        hasRichMedia: tableCount > 0 || listCount > 0,
+        tableCount,
+        listCount,
+        imageCount,
+        verdict: aiVerdict,
+        actionPlan: aiActionPlan,
+      },
     },
     scoreBreakdown: {
       contentDepthScore: contentScore,
@@ -578,6 +712,20 @@ function generateExactDemoCompliantResult(url: string, mode: any): SiteAuditResu
         metaDescriptionLength: 145,
         hasCanonical: true,
         score: 100,
+      },
+      aiContentRisk: {
+        riskLevel: 'Low',
+        clicheScore: 0,
+        detectedPhrases: [],
+        informationGainScore: 95,
+        hasAuthorBio: true,
+        hasEditorialTransparency: true,
+        hasRichMedia: true,
+        tableCount: 3,
+        listCount: 6,
+        imageCount: 4,
+        verdict: 'High-authority human technical copy. Zero AI cliché signatures and comprehensive information gain elements.',
+        actionPlan: 'Maintain current editorial standards.',
       },
     },
     scoreBreakdown: {
@@ -654,6 +802,20 @@ function generateExactDemoRejectedResult(url: string, rejectionReason: string): 
         metaDescriptionLength: 0,
         hasCanonical: false,
         score: 0,
+      },
+      aiContentRisk: {
+        riskLevel: 'Severe',
+        clicheScore: 75,
+        detectedPhrases: ["in today's fast-paced digital world", "delve into the realm", "it is important to remember", "a testament to"],
+        informationGainScore: 25,
+        hasAuthorBio: false,
+        hasEditorialTransparency: false,
+        hasRichMedia: false,
+        tableCount: 0,
+        listCount: 1,
+        imageCount: 0,
+        verdict: 'High probability of "Low Value Content" rejection. Repetitive AI introductory clichés with 0 comparison tables or author credentials.',
+        actionPlan: 'Prune repetitive filler, add custom tables and recipes, and inject verified author bio with Editorial & AI policy.',
       },
     },
     scoreBreakdown: {
@@ -745,6 +907,20 @@ function generateExactFallbackResult(
         metaDescriptionLength: 0,
         hasCanonical: false,
         score: 0,
+      },
+      aiContentRisk: {
+        riskLevel: 'Moderate',
+        clicheScore: 20,
+        detectedPhrases: [],
+        informationGainScore: 55,
+        hasAuthorBio: true,
+        hasEditorialTransparency: false,
+        hasRichMedia: false,
+        tableCount: 1,
+        listCount: 2,
+        imageCount: 1,
+        verdict: 'Moderate originality profile. Add explicit Editorial Transparency disclosures and structured comparison data to minimize review friction.',
+        actionPlan: 'Publish an AI & Editorial Standards statement and include author credentials.',
       },
     },
     scoreBreakdown: {
