@@ -45,7 +45,7 @@ interface SiteAuditorProps {
 }
 
 export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
-  const [mode, setMode] = useState<SiteAuditMode>('pre-approval');
+  const [mode, setMode] = useState<SiteAuditMode>('rejection-doctor');
   const [showKidExplainer, setShowKidExplainer] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
   const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
@@ -223,168 +223,285 @@ Verified by GladSense AI Auditor`;
 
   return (
     <div className="w-full bg-white">
-      {/* BRIGHT PASTEL HERO CANVAS (MATCHING SEMRUSH FREE CHECKER VISUALS) */}
-      <section className="relative w-full pt-16 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 bg-gradient-to-b from-[#eaf4ff] via-[#edf2fc] to-[#f4eefc] overflow-hidden">
+      {/* HIGH-IMPACT CLINICAL HERO CANVAS (ADSENSE REJECTION DOCTOR & PRE-APPROVAL AUDITOR) */}
+      <section className="relative w-full pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 bg-gradient-to-b from-[#f3edfd] via-[#f0f4ff] to-[#f8fafd] overflow-hidden">
         {/* Subtle Ambient Glow Orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#d0e6ff]/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-[#ebd9ff]/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ebd9ff]/60 rounded-full blur-3xl pointer-events-none -translate-y-1/3"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#d0e6ff]/50 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="relative max-w-4xl mx-auto text-center space-y-6">
-          {/* Main Title Header */}
-          <div className="space-y-3">
+          {/* Clinical Diagnostic Clinic Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-purple-200/80 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 flex items-center gap-1.5">
+              <Stethoscope className="w-3.5 h-3.5 text-purple-600" />
+              <span>AdSense Diagnostic Clinic</span>
+            </span>
+            <span className="text-slate-300">•</span>
+            <span className="text-[11px] font-semibold text-slate-600">100-Point Human Quality Rater Rubric</span>
+          </div>
+
+          {/* Main Hero Headline */}
+          <div className="space-y-2.5">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
-              AdSense Site Checker
+              AdSense <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">Rejection Doctor</span>
             </h1>
-            <p className="text-xs sm:text-sm font-semibold text-[#1a73e8] uppercase tracking-wider">
-              Instant Pre-Approval Audit & Rejection Doctor for Google AdSense
+            <p className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+              {mode === 'rejection-doctor' ? (
+                <span>
+                  Emergency clinical triage for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, broken navigational flows, and crawler timeouts with an exact prescriptive fix plan.
+                </span>
+              ) : (
+                <span>
+                  Pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's 5 core operational gates</strong> before applying to guarantee first-time approval.
+                </span>
+              )}
             </p>
           </div>
 
-          <p className="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed font-normal">
-            Enter a domain or website and run an AdSense audit. Find <strong className="text-slate-950 font-bold">policy violations and low-value content issues</strong> across your site and get a clear report with what to fix first.
-          </p>
-
-          {/* Mode Switcher Pill */}
-          <div className="inline-flex items-center bg-white/80 backdrop-blur-xs p-1 rounded-full border border-slate-200 shadow-xs">
-            <button
-              type="button"
-              onClick={() => setMode('pre-approval')}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
-                mode === 'pre-approval'
-                  ? 'bg-[#1a73e8] text-white shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Pre-Approval Audit</span>
-            </button>
+          {/* Clinical Mode Switcher (2 Distinct Operating Modes) */}
+          <div className="inline-flex p-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200 shadow-md gap-1">
             <button
               type="button"
               onClick={() => setMode('rejection-doctor')}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
                 mode === 'rejection-doctor'
-                  ? 'bg-[#9d62ec] text-white shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-[#9d62ec] to-[#7c3aed] text-white shadow-md shadow-purple-900/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Activity className="w-3.5 h-3.5" />
-              <span>Rejection Doctor</span>
+              <Stethoscope className="w-4 h-4" />
+              <span>🩺 Rejection Doctor (Fix Rejected Site)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('pre-approval')}
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                mode === 'pre-approval'
+                  ? 'bg-gradient-to-r from-[#1a73e8] to-[#1557b0] text-white shadow-md shadow-blue-900/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>🛡️ Pre-Approval Audit (Check First)</span>
             </button>
           </div>
 
-          {/* Rejection Reason Dropdown (Rejection Doctor mode) */}
+          {/* Rejection Reason Triage Bar (In Rejection Doctor mode) */}
           {mode === 'rejection-doctor' && (
-            <div className="max-w-xl mx-auto p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-purple-200 shadow-md text-left transition-all">
-              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center justify-between">
-                <span>Specify Google AdSense Rejection Reason:</span>
-                <span className="text-[11px] font-normal text-purple-600 font-medium">Rejection Fix Mode Active</span>
-              </label>
-              <select
-                value={rejectionReason}
-                onChange={(e) => setRejectionReason(e.target.value as RejectionCategory)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-purple-500"
-              >
-                <option value="low-value-content">Low-value content / Thin content (Most Common)</option>
-                <option value="site-behavior-navigation">Site behavior: Navigation (Broken/dummy links)</option>
-                <option value="site-down-or-unavailable">Site down or unavailable (Bot timeout/WAF)</option>
-                <option value="scraped-unoriginal">Scraped or unoriginal content</option>
-                <option value="policy-violations">Policy violations / YMYL sensitive flags</option>
-                <option value="multiple-unspecified">Multiple violations / General rejection</option>
-              </select>
+            <div className="max-w-2xl mx-auto p-4 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-purple-200/90 shadow-md text-left transition-all space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <Activity className="w-4 h-4 text-purple-600" />
+                  <span>Select Google AdSense Rejection Reason:</span>
+                </span>
+                <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                  Doctor Triage Active
+                </span>
+              </div>
+
+              {/* Quick Preset Triage Chips */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {[
+                  { id: 'low-value-content', label: 'Low-Value / Thin Content', icon: '⚡' },
+                  { id: 'site-behavior-navigation', label: 'Navigation / Broken Links', icon: '🔗' },
+                  { id: 'scraped-unoriginal', label: 'Scraped / Unoriginal', icon: '⚠️' },
+                  { id: 'site-down-or-unavailable', label: 'Site Down / Bot Blocked', icon: '🛑' },
+                  { id: 'policy-violations', label: 'YMYL / Policy Flags', icon: '📋' },
+                ].map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => setRejectionReason(preset.id as RejectionCategory)}
+                    className={`text-xs px-3 py-1.5 rounded-xl font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                      rejectionReason === preset.id
+                        ? 'bg-purple-600 text-white font-bold shadow-xs'
+                        : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200'
+                    }`}
+                  >
+                    <span>{preset.icon}</span>
+                    <span>{preset.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Extended Dropdown Selector */}
+              <div className="pt-1">
+                <select
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value as RejectionCategory)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-purple-500 font-medium"
+                >
+                  <option value="low-value-content">Low-value content / Thin content (Most Common Rejection)</option>
+                  <option value="site-behavior-navigation">Site behavior: Navigation (Broken links, dummy href="#", missing menu)</option>
+                  <option value="site-down-or-unavailable">Site down or unavailable (Bot timeout, DNS, Cloudflare Turnstile)</option>
+                  <option value="scraped-unoriginal">Scraped or unoriginal content (Duplicate text, missing value-add)</option>
+                  <option value="policy-violations">Policy violations / YMYL sensitive flags (Health, finance, adult, copyright)</option>
+                  <option value="multiple-unspecified">Multiple violations / General unspecified rejection</option>
+                </select>
+              </div>
             </div>
           )}
 
-          {/* BRIGHT PILL SEARCH BOX CANVAS (MATCHING SEMRUSH) */}
+          {/* CLINICAL COMMAND SEARCH BOX */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleRunAudit();
             }}
-            className="max-w-2xl mx-auto pt-2"
+            className="max-w-2xl mx-auto pt-1"
           >
-            <div className="bg-white rounded-full p-2 pl-6 shadow-xl hover:shadow-2xl border border-slate-200/90 flex items-center gap-3 transition-all focus-within:ring-4 focus-within:ring-purple-200 focus-within:border-[#9d62ec]">
-              <input
-                id="search-input-box"
-                type="text"
-                required
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="Enter a domain or website URL"
-                className="flex-1 bg-transparent py-2 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none font-normal"
-              />
+            <div className={`bg-white rounded-2xl p-2.5 sm:p-3 shadow-xl hover:shadow-2xl border-2 transition-all flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 ${
+              mode === 'rejection-doctor'
+                ? 'border-purple-300 focus-within:ring-4 focus-within:ring-purple-200 focus-within:border-purple-600'
+                : 'border-blue-300 focus-within:ring-4 focus-within:ring-blue-200 focus-within:border-[#1a73e8]'
+            }`}>
+              <div className="flex-1 flex items-center pl-3 gap-2.5">
+                {mode === 'rejection-doctor' ? (
+                  <Stethoscope className="w-5 h-5 text-purple-600 shrink-0" />
+                ) : (
+                  <Search className="w-5 h-5 text-[#1a73e8] shrink-0" />
+                )}
+                <input
+                  id="search-input-box"
+                  type="text"
+                  required
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="Enter website domain or URL (e.g. https://example.com)"
+                  className="w-full bg-transparent py-2 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
+                />
+              </div>
 
-              {/* SEMRUSH-STYLE BRIGHT VIBRANT BUTTON */}
+              {/* ACTION BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-[#9d62ec] hover:bg-[#8b4de3] text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3 rounded-full transition-all shadow-md hover:shadow-lg whitespace-nowrap flex items-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+                className={`text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-lg whitespace-nowrap flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0 active:scale-98 ${
+                  mode === 'rejection-doctor'
+                    ? 'bg-gradient-to-r from-[#9d62ec] to-[#7c3aed] hover:from-[#8b4de3] hover:to-[#6d28d9]'
+                    : 'bg-gradient-to-r from-[#1a73e8] to-[#1557b0] hover:from-[#1765cc] hover:to-[#124996]'
+                }`}
               >
                 {loading ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Analyzing...</span>
+                    <span>Diagnosing Site...</span>
                   </>
                 ) : (
-                  <span>Analyze Website</span>
+                  <>
+                    {mode === 'rejection-doctor' ? <Stethoscope className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
+                    <span>{mode === 'rejection-doctor' ? 'Diagnose Rejection Cause' : 'Run Pre-Approval Audit'}</span>
+                  </>
                 )}
               </button>
-
-              <span className="pr-3 text-xs text-slate-400 font-mono hidden sm:inline-flex items-center gap-1">
-                1/1
-                <span className="w-3.5 h-3.5 rounded-full border border-slate-300 text-[9px] flex items-center justify-center text-slate-400 font-bold">
-                  ?
-                </span>
-              </span>
             </div>
 
-            {/* Zero-Cost Option: Paste HTML Source Drawer */}
-            <div className="mt-2.5 flex flex-col items-center">
+            {/* Quick Demo Fill & Advanced Crawl Links */}
+            <div className="mt-3 flex items-center justify-center gap-3 flex-wrap text-xs text-slate-500">
+              <span className="text-[11px] font-semibold text-slate-400">Quick Test:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://gladsense1.pages.dev');
+                }}
+                className="text-[11px] text-purple-700 hover:text-purple-900 bg-purple-50/80 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-medium transition-colors cursor-pointer"
+              >
+                🧪 Try gladsense1.pages.dev (Compliant Demo)
+              </button>
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-800 transition-colors py-1 px-3 rounded-full hover:bg-white/60 cursor-pointer"
+                className="text-[11px] text-slate-600 hover:text-slate-900 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                <span>{showAdvanced ? 'Hide advanced crawl options' : 'Paste HTML source directly (for bot-shielded / Cloudflare sites)'}</span>
-                {showAdvanced ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                <Code2 className="w-3.5 h-3.5 text-slate-400" />
+                <span>{showAdvanced ? 'Hide HTML paste' : 'Paste HTML source directly'}</span>
+                {showAdvanced ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
-
-              {showAdvanced && (
-                <div className="w-full max-w-2xl mt-2 p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md text-left transition-all space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <Code2 className="w-3.5 h-3.5 text-[#1a73e8]" />
-                      <span>Direct HTML Source Inspection (100% Free & Zero-Cost):</span>
-                    </label>
-                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
-                      Bypasses Cloudflare Captchas & CORS
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500 leading-normal">
-                    If an external website blocks automated bot crawlers or challenges visitors with Cloudflare Turnstile, right-click on the webpage in your browser, select <strong>"View Page Source"</strong> (or press Ctrl+U / Cmd+U), and paste the full HTML here. GladSense will audit the exact live DOM with 100% precision.
-                  </p>
-                  <textarea
-                    value={sampleContent}
-                    onChange={(e) => setSampleContent(e.target.value)}
-                    rows={4}
-                    placeholder="Paste <!DOCTYPE html> ... </html> here"
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:border-[#1a73e8]"
-                  />
-                  {sampleContent && (
-                    <div className="flex items-center justify-between text-[11px] text-slate-500">
-                      <span>Loaded ~{sampleContent.trim().split(/\s+/).length} words of HTML markup</span>
-                      <button
-                        type="button"
-                        onClick={() => setSampleContent('')}
-                        className="text-rose-600 hover:underline font-medium cursor-pointer"
-                      >
-                        Clear
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
+
+            {/* HTML Source Drawer */}
+            {showAdvanced && (
+              <div className="w-full max-w-2xl mt-3 p-4 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md text-left transition-all space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-[#1a73e8]" />
+                    <span>Direct HTML Source Inspection (100% Free & Zero-Cost):</span>
+                  </label>
+                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
+                    Bypasses Cloudflare Captchas & CORS
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-normal">
+                  If an external website blocks automated bot crawlers or challenges visitors with Cloudflare Turnstile, right-click on the webpage in your browser, select <strong>"View Page Source"</strong> (or press Ctrl+U / Cmd+U), and paste the full HTML here. GladSense will audit the exact live DOM with 100% precision.
+                </p>
+                <textarea
+                  value={sampleContent}
+                  onChange={(e) => setSampleContent(e.target.value)}
+                  rows={4}
+                  placeholder="Paste <!DOCTYPE html> ... </html> here"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:border-[#1a73e8]"
+                />
+                {sampleContent && (
+                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Loaded ~{sampleContent.trim().split(/\s+/).length} words of HTML markup</span>
+                    <button
+                      type="button"
+                      onClick={() => setSampleContent('')}
+                      className="text-rose-600 hover:underline font-medium cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </form>
+
+          {/* 4-POINT CLINICAL TRUST & VERIFICATION RIBBON */}
+          <div className="pt-1 max-w-3xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-left">
+              <div className="p-2.5 rounded-xl bg-white/75 backdrop-blur-xs border border-purple-100 flex items-center gap-2.5 shadow-2xs">
+                <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
+                  <Stethoscope className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-900 block leading-tight">Human Quality Raters</span>
+                  <span className="text-[10px] text-slate-500 block">E-E-A-T & HCU checks</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-white/75 backdrop-blur-xs border border-blue-100 flex items-center gap-2.5 shadow-2xs">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1a73e8] flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-900 block leading-tight">Zero Policy Gates</span>
+                  <span className="text-[10px] text-slate-500 block">Mandatory pass filter</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-white/75 backdrop-blur-xs border border-amber-100 flex items-center gap-2.5 shadow-2xs">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                  <Zap className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-900 block leading-tight">Prescriptive Cure</span>
+                  <span className="text-[10px] text-slate-500 block">Exact fix blueprint</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-white/75 backdrop-blur-xs border border-emerald-100 flex items-center gap-2.5 shadow-2xs">
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-900 block leading-tight">100% Free & Safe</span>
+                  <span className="text-[10px] text-slate-500 block">Zero credentials needed</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* FEATURES TO TRY (ADDED DIRECTLY BELOW SEARCH BAR) */}
           <div className="pt-5 max-w-4xl mx-auto">

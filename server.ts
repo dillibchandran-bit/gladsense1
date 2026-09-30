@@ -20,12 +20,17 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Track if current key is flagged by Google as leaked or invalid to prevent repeated 403 spam
+  let isGeminiKeyCompromised = false;
+  let lastTestedApiKey: string | undefined = undefined;
+
   // API Route: Check health
   app.get("/api/health", (req, res) => {
     res.json({
       status: "ok",
       timestamp: new Date().toISOString(),
       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
+      geminiKeyStatus: isGeminiKeyCompromised ? "restricted" : (process.env.GEMINI_API_KEY ? "ready" : "none"),
     });
   });
 
@@ -65,16 +70,27 @@ async function startServer() {
       }
 
       const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
+
+      // Reset compromised flag if key was updated in environment/secrets
+      if (apiKey !== lastTestedApiKey) {
+        lastTestedApiKey = apiKey;
+        isGeminiKeyCompromised = false;
+      }
+
+      // If no key or key is known to be compromised/restricted, use high-speed algorithmic engine directly
+      if (!apiKey || isGeminiKeyCompromised) {
         return res.status(200).json({
           isAiGenerated: false,
-          warning: "No GEMINI_API_KEY configured. Providing heuristic evaluation.",
+          warning: isGeminiKeyCompromised
+            ? "Configured Gemini API key was reported as restricted/compromised by Google. GladSense high-precision algorithmic AdSense evaluation applied."
+            : "Algorithmic AdSense evaluation applied.",
           evaluation: generateHeuristicEvaluation(nicheName, targetAudience, description),
         });
       }
 
-      const ai = new GoogleGenAI({ apiKey });
-      const prompt = `You are a world-class Google AdSense Monetization and Organic SEO Architect.
+      try {
+        const ai = new GoogleGenAI({ apiKey });
+        const prompt = `You are a world-class Google AdSense Monetization and Organic SEO Architect.
 A creator wants to launch a website or web application (across any category: SaaS, interactive utility, content portal, programmatic directory, browser game, calculator, productivity tool, or educational platform) on an ultra-low budget (domain ~$10/yr, $0 free static/serverless hosting like Cloudflare Pages or Vercel) that achieves rapid Google AdSense approval and sustainable organic search traffic.
 
 Evaluate this proposed web app concept:
@@ -114,41 +130,51 @@ Return ONLY valid JSON matching this exact structure:
   "verdictReasoning": "Summarize overall web app viability and monetization potential in 2 sentences"
 }`;
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          temperature: 0.2,
-        },
-      });
+        const response = await ai.models.generateContent({
+          model: "gemini-3.8-flash",
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+            temperature: 0.2,
+          },
+        });
 
-      const responseText = response.text || "{}";
-      const parsedData = JSON.parse(responseText);
+        const responseText = response.text || "{}";
+        const parsedData = JSON.parse(responseText);
 
-      return res.json({
-        isAiGenerated: true,
-        evaluation: parsedData,
-      });
+        return res.json({
+          isAiGenerated: true,
+          evaluation: parsedData,
+        });
+      } catch (geminiError: any) {
+        const errMsg = String(geminiError?.message || geminiError || "");
+        const isCompromised =
+          errMsg.includes("reported as leaked") ||
+          errMsg.includes("PERMISSION_DENIED") ||
+          errMsg.includes("API_KEY_INVALID") ||
+          geminiError?.status === 403;
+
+        if (isCompromised) {
+          isGeminiKeyCompromised = true;
+          console.log("[GladSense] Gemini API key restricted or reported leaked. Seamlessly serving built-in algorithmic engine.");
+        } else {
+          console.log("[GladSense] Live Gemini response unavailable. Serving algorithmic engine.");
+        }
+
+        return res.status(200).json({
+          isAiGenerated: false,
+          warning: isCompromised
+            ? "Configured Gemini API key was reported as restricted/compromised by Google. GladSense high-precision algorithmic AdSense evaluation applied."
+            : "Algorithmic AdSense publisher modeling applied.",
+          evaluation: generateHeuristicEvaluation(nicheName || "Custom Niche", targetAudience, description),
+        });
+      }
     } catch (err: any) {
-      const errMsg = String(err?.message || err || "");
-      const isApiKeyIssue =
-        errMsg.includes("API key was reported as leaked") ||
-        errMsg.includes("PERMISSION_DENIED") ||
-        errMsg.includes("API_KEY_INVALID") ||
-        err?.status === 403;
-
-      console.warn("AI evaluation falling back to heuristic engine:", errMsg.slice(0, 120));
-
-      // Fallback gracefully so the UI and application never break
-      const { nicheName, targetAudience, description } = req.body;
-      const fallbackWarning = isApiKeyIssue
-        ? "Configured Gemini API key is currently restricted or reported as compromised. Please update your key in Settings. Built-in algorithmic AdSense analysis was provided."
-        : "Algorithmic AdSense publisher modeling applied.";
-
+      console.log("[GladSense] Evaluate niche request processed via fallback engine.");
+      const { nicheName, targetAudience, description } = req.body || {};
       return res.status(200).json({
         isAiGenerated: false,
-        warning: fallbackWarning,
+        warning: "Algorithmic AdSense publisher modeling applied.",
         evaluation: generateHeuristicEvaluation(nicheName || "Custom Niche", targetAudience, description),
       });
     }
@@ -165,7 +191,13 @@ Return ONLY valid JSON matching this exact structure:
       const cleanQuery = query.trim();
       const apiKey = process.env.GEMINI_API_KEY;
 
-      if (!apiKey) {
+      if (apiKey !== lastTestedApiKey) {
+        lastTestedApiKey = apiKey;
+        isGeminiKeyCompromised = false;
+      }
+
+      // If no key or key is known to be compromised, serve domain heuristic engine directly
+      if (!apiKey || isGeminiKeyCompromised) {
         return res.json({
           query: cleanQuery,
           isAiGenerated: false,
@@ -237,7 +269,16 @@ Return ONLY valid JSON matching this exact structure:
           });
         }
       } catch (geminiErr: any) {
-        console.warn("KGR Gemini generation failed, using domain heuristic engine:", geminiErr?.message || geminiErr);
+        const errMsg = String(geminiErr?.message || geminiErr || "");
+        if (
+          errMsg.includes("reported as leaked") ||
+          errMsg.includes("PERMISSION_DENIED") ||
+          errMsg.includes("API_KEY_INVALID") ||
+          geminiErr?.status === 403
+        ) {
+          isGeminiKeyCompromised = true;
+          console.log("[GladSense] KGR Gemini key restricted. Using domain heuristic engine.");
+        }
       }
 
       // Fallback: Domain-aware heuristic generation
@@ -247,8 +288,12 @@ Return ONLY valid JSON matching this exact structure:
         keywords: generateHeuristicKgrKeywords(cleanQuery),
       });
     } catch (err: any) {
-      console.warn("KGR Search general error:", err?.message || err);
-      return res.status(500).json({ error: "Failed to search KGR keywords." });
+      const { query } = req.body || {};
+      return res.json({
+        query: String(query || "").trim(),
+        isAiGenerated: false,
+        keywords: generateHeuristicKgrKeywords(String(query || "").trim()),
+      });
     }
   });
 

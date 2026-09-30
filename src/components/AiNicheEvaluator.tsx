@@ -67,8 +67,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
           setWarningMsg(data.warning);
         }
       } catch (backendErr) {
-        // Fallback to client-side engine for Cloudflare Pages static hosting
-        console.warn('Backend unavailable, running GladSense client evaluator engine:', backendErr);
+        // Fallback to client-side engine for Cloudflare Pages static hosting or backend offline
         evaluationData = evaluateNicheClientSide(nicheName, targetAudience, description);
         generatedByAi = false;
       }
@@ -82,7 +81,6 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         }
       }, 80);
     } catch (err: any) {
-      console.error(err);
       setError('Evaluation service was temporarily unable to respond. Please try again.');
     } finally {
       setLoading(false);
