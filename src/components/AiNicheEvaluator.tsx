@@ -75,6 +75,12 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
 
       setResult(evaluationData);
       setIsAiGenerated(generatedByAi);
+      setTimeout(() => {
+        const el = document.getElementById('evaluation-results-anchor');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 80);
     } catch (err: any) {
       console.error(err);
       setError('Evaluation service was temporarily unable to respond. Please try again.');
@@ -199,15 +205,6 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         </div>
       </form>
 
-      {/* 4-Card How-To Guide (3rd Block) */}
-      <KidExplainer
-        title="Web App Idea Feasibility & Policy Check"
-        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
-        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
-        how="Enter your web app idea in the search box above, describe the user base and core functionality, then click 'Evaluate Feasibility'."
-        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
-      />
-
       {error && (
         <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
@@ -215,9 +212,9 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         </div>
       )}
 
-      {/* Evaluation Results Display */}
+      {/* Evaluation Results Display (Just Below the Search & Evaluation Box) */}
       {result && (
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-6">
+        <div id="evaluation-results-anchor" className="scroll-mt-6 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-6">
           {/* Header & Overall Score */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
             <div>
@@ -575,6 +572,15 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
           )}
         </div>
       )}
+
+      {/* 4-Card How-To Guide */}
+      <KidExplainer
+        title="Web App Idea Feasibility & Policy Check"
+        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
+        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
+        how="Enter your web app idea in the search box above, describe the user base and core functionality, then click 'Evaluate Feasibility'."
+        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
+      />
     </div>
   );
 };
