@@ -8,12 +8,38 @@ import { Niche, AuditItem } from './types';
 import { ADSENSE_READINESS_CHECKLIST } from './data/nichesData';
 import { Navbar, NavTabType } from './components/Navbar';
 import { SiteAuditor } from './components/SiteAuditor';
-import { NicheKeywordLab } from './components/NicheKeywordLab';
-import { RevenueProfitPlanner } from './components/RevenueProfitPlanner';
-import { PolicyToolkit } from './components/PolicyToolkit';
-import { BlogHub } from './components/BlogHub';
-import { NicheDetailModal } from './components/NicheDetailModal';
-import { LegalModal } from './components/LegalModal';
+
+// Code-split and lazy-load secondary calculation engines, generator suites, and legal modals
+const NicheKeywordLab = React.lazy(() =>
+  import('./components/NicheKeywordLab').then((m) => ({ default: m.NicheKeywordLab }))
+);
+const RevenueProfitPlanner = React.lazy(() =>
+  import('./components/RevenueProfitPlanner').then((m) => ({ default: m.RevenueProfitPlanner }))
+);
+const PolicyToolkit = React.lazy(() =>
+  import('./components/PolicyToolkit').then((m) => ({ default: m.PolicyToolkit }))
+);
+const BlogHub = React.lazy(() =>
+  import('./components/BlogHub').then((m) => ({ default: m.BlogHub }))
+);
+const NicheDetailModal = React.lazy(() =>
+  import('./components/NicheDetailModal').then((m) => ({ default: m.NicheDetailModal }))
+);
+const LegalModal = React.lazy(() =>
+  import('./components/LegalModal').then((m) => ({ default: m.LegalModal }))
+);
+
+const SuiteSuspenseFallback: React.FC = () => (
+  <div className="max-w-7xl mx-auto px-4 py-24 flex flex-col items-center justify-center text-center space-y-4">
+    <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200/60 flex items-center justify-center text-[#1a73e8] shadow-xs">
+      <div className="w-6 h-6 border-2 border-[#1a73e8] border-t-transparent rounded-full animate-spin" />
+    </div>
+    <div className="space-y-1">
+      <h3 className="text-sm font-bold text-slate-800 font-['Google_Sans',sans-serif]">Loading Isolated Suite...</h3>
+      <p className="text-xs text-slate-500">Fetching protected analytical assets and algorithms</p>
+    </div>
+  </div>
+);
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTabType>('site-doctor');
@@ -73,62 +99,76 @@ export default function App() {
         {/* Pillar 2: Niche & Keyword Lab */}
         {(activeTab === 'niche-lab' || activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <NicheKeywordLab
-              initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
-              onSelectNiche={(niche) => setSelectedNiche(niche)}
-              onSimulateInCalculator={handleSimulateInCalculator}
-            />
+            <React.Suspense fallback={<SuiteSuspenseFallback />}>
+              <NicheKeywordLab
+                initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
+                onSelectNiche={(niche) => setSelectedNiche(niche)}
+                onSimulateInCalculator={handleSimulateInCalculator}
+              />
+            </React.Suspense>
           </div>
         )}
 
         {/* Pillar 3: Revenue & Profit Planner */}
         {(activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <RevenueProfitPlanner
-              initialRpm={calculatorRpm}
-              initialSubTab={activeTab === 'budget' ? 'zero-cost-pnl' : 'revenue-sim'}
-            />
+            <React.Suspense fallback={<SuiteSuspenseFallback />}>
+              <RevenueProfitPlanner
+                initialRpm={calculatorRpm}
+                initialSubTab={activeTab === 'budget' ? 'zero-cost-pnl' : 'revenue-sim'}
+              />
+            </React.Suspense>
           </div>
         )}
 
         {/* Pillar 4: Compliance & SOP Suite */}
         {(activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click') && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <PolicyToolkit
-              checklist={checklist}
-              onToggleItem={handleToggleAuditItem}
-              initialSubTab={activeTab === 'single-click' ? 'generators' : 'audit-sop'}
-            />
+            <React.Suspense fallback={<SuiteSuspenseFallback />}>
+              <PolicyToolkit
+                checklist={checklist}
+                onToggleItem={handleToggleAuditItem}
+                initialSubTab={activeTab === 'single-click' ? 'generators' : 'audit-sop'}
+              />
+            </React.Suspense>
           </div>
         )}
 
         {/* Pillar 5: Knowledge Base & Compliance Guides (27 Blog Posts) */}
         {activeTab === 'blog' && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <BlogHub
-              onNavigateToTab={(tab) => {
-                setActiveTab(tab);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            />
+            <React.Suspense fallback={<SuiteSuspenseFallback />}>
+              <BlogHub
+                onNavigateToTab={(tab) => {
+                  setActiveTab(tab);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
+            </React.Suspense>
           </div>
         )}
       </main>
 
       {/* Blueprint Detail Modal */}
       {selectedNiche && (
-        <NicheDetailModal
-          niche={selectedNiche}
-          onClose={() => setSelectedNiche(null)}
-          onSimulateInCalculator={handleSimulateInCalculator}
-        />
+        <React.Suspense fallback={null}>
+          <NicheDetailModal
+            niche={selectedNiche}
+            onClose={() => setSelectedNiche(null)}
+            onSimulateInCalculator={handleSimulateInCalculator}
+          />
+        </React.Suspense>
       )}
 
       {/* Interactive Compliance Documents Modal */}
-      <LegalModal
-        type={legalModalType}
-        onClose={() => setLegalModalType(null)}
-      />
+      {legalModalType && (
+        <React.Suspense fallback={null}>
+          <LegalModal
+            type={legalModalType}
+            onClose={() => setLegalModalType(null)}
+          />
+        </React.Suspense>
+      )}
 
       {/* GladSense Official Footer with Statutory Trademark Disclaimer & Verified Policy Links */}
       <footer className="mt-auto py-8 text-xs border-t border-[#dadce0] bg-[#f8f9fa] text-[#5f6368]">

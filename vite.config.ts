@@ -17,10 +17,25 @@ export default defineConfig(() => {
         output: {
           manualChunks(id: string) {
             if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-              return 'vendor';
+              return 'vendor-core';
             }
             if (id.includes('node_modules/lucide-react')) {
-              return 'icons';
+              return 'vendor-icons';
+            }
+            if (id.includes('src/components/NicheKeywordLab') || id.includes('src/components/NicheExplorer') || id.includes('src/components/KgrCalculator') || id.includes('src/components/AiNicheEvaluator') || id.includes('src/data/nichesData')) {
+              return 'suite-niche-lab';
+            }
+            if (id.includes('src/components/RevenueProfitPlanner') || id.includes('src/components/RevenueCalculator') || id.includes('src/components/BudgetBlueprint')) {
+              return 'suite-revenue-planner';
+            }
+            if (id.includes('src/components/PolicyToolkit') || id.includes('src/components/SingleClickSolutions') || id.includes('src/components/AdSenseAudit') || id.includes('src/components/ContentDevelopmentSop')) {
+              return 'suite-policy-toolkit';
+            }
+            if (id.includes('src/components/BlogHub') || id.includes('src/data/blogPosts')) {
+              return 'suite-knowledge-base';
+            }
+            if (id.includes('src/components/LegalModal') || id.includes('src/components/NicheDetailModal')) {
+              return 'suite-modals';
             }
           },
         },

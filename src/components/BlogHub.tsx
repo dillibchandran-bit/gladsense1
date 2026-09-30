@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   FileText,
   Share2,
   Copy,
@@ -41,6 +43,10 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
   const [copiedLink, setCopiedLink] = useState(false);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [postsPerPage, setPostsPerPage] = useState<number>(6);
+
   const categories: Array<'All' | BlogCategory> = [
     'All',
     'AdSense Approval & Rejection Doctor',
@@ -66,6 +72,43 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
       post.author.team.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesTeam && matchesSearch;
   });
+
+  // Calculate pagination boundaries
+  const totalPosts = filteredPosts.length;
+  const totalPages = Math.max(1, Math.ceil(totalPosts / postsPerPage));
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (safeCurrentPage - 1) * postsPerPage;
+  const endIndex = Math.min(startIndex + postsPerPage, totalPosts);
+  const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    const anchor = document.getElementById('blog-posts-grid-anchor');
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleCategorySelect = (cat: string) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handleTeamSelect = (team: string) => {
+    setSelectedTeam(team);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handlePostsPerPageChange = (size: number) => {
+    setPostsPerPage(size);
+    setCurrentPage(1);
+  };
 
   const handleCopySlug = (slug: string) => {
     navigator.clipboard.writeText(`${window.location.origin}/#blog-${slug}`);
@@ -394,10 +437,86 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                 </div>
               </div>
             )}
+
+            {/* Sequential Guide Navigation / Previous & Next Guide Links */}
+            {(() => {
+              const currentArticleIndex = BLOG_POSTS.findIndex((p) => p.id === activeArticle.id);
+              const prevArticle = currentArticleIndex > 0 ? BLOG_POSTS[currentArticleIndex - 1] : null;
+              const nextArticle = currentArticleIndex < BLOG_POSTS.length - 1 ? BLOG_POSTS[currentArticleIndex + 1] : null;
+
+              return (
+                <div className="pt-8 mt-8 border-t border-slate-200 space-y-4">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                      Sequential Guide Reading ({currentArticleIndex + 1} of {BLOG_POSTS.length})
+                    </span>
+                    <button
+                      onClick={() => {
+                        setActiveArticle(null);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="text-xs font-bold text-[#1a73e8] hover:underline cursor-pointer"
+                    >
+                      ← Back to All Guides (Page {safeCurrentPage})
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {prevArticle ? (
+                      <button
+                        onClick={() => handleOpenArticle(prevArticle)}
+                        className="p-4 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-[#1a73e8] hover:shadow-xs transition-all text-left flex items-start gap-3 group cursor-pointer"
+                      >
+                        <ChevronLeft className="w-5 h-5 text-slate-400 group-hover:text-[#1a73e8] shrink-0 mt-0.5" />
+                        <div className="overflow-hidden">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                            Previous Guide
+                          </span>
+                          <span className="text-xs font-bold text-slate-800 group-hover:text-[#1a73e8] line-clamp-1">
+                            {prevArticle.title}
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-mono mt-0.5 block">
+                            {prevArticle.category}
+                          </span>
+                        </div>
+                      </button>
+                    ) : (
+                      <div className="p-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex items-center justify-center text-xs text-slate-400">
+                        First Guide in Knowledge Base
+                      </div>
+                    )}
+
+                    {nextArticle ? (
+                      <button
+                        onClick={() => handleOpenArticle(nextArticle)}
+                        className="p-4 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-[#1a73e8] hover:shadow-xs transition-all text-right flex items-start justify-end gap-3 group cursor-pointer"
+                      >
+                        <div className="overflow-hidden text-right">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                            Next Guide
+                          </span>
+                          <span className="text-xs font-bold text-slate-800 group-hover:text-[#1a73e8] line-clamp-1">
+                            {nextArticle.title}
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-mono mt-0.5 block">
+                            {nextArticle.category}
+                          </span>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-[#1a73e8] shrink-0 mt-0.5" />
+                      </button>
+                    ) : (
+                      <div className="p-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex items-center justify-center text-xs text-slate-400">
+                        End of Knowledge Base
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </article>
       ) : (
-        /* Blog Directory List View */
+        /* Blog Directory List View with Pagination */
         <div className="space-y-6">
           {/* Controls: Search and Department Filters */}
           <div className="space-y-3">
@@ -408,21 +527,23 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                   type="text"
                   placeholder="Search by topic, keyword, author, or research division..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#1a73e8]"
                 />
               </div>
 
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-500 font-medium">
-                  Showing {filteredPosts.length} of {BLOG_POSTS.length} articles
+                  {totalPosts > 0
+                    ? `Showing ${startIndex + 1}–${endIndex} of ${totalPosts} articles`
+                    : '0 articles found'}
                 </span>
                 {(selectedCategory !== 'All' || selectedTeam !== 'All' || searchQuery) && (
                   <button
                     onClick={() => {
-                      setSelectedCategory('All');
-                      setSelectedTeam('All');
-                      setSearchQuery('');
+                      handleCategorySelect('All');
+                      handleTeamSelect('All');
+                      handleSearchChange('');
                     }}
                     className="text-xs font-bold text-[#1a73e8] hover:underline cursor-pointer"
                   >
@@ -441,7 +562,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                 {categories.map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => handleCategorySelect(cat)}
                     className={`text-xs px-3.5 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
                       selectedCategory === cat
                         ? 'bg-slate-900 text-white font-bold shadow-xs'
@@ -461,7 +582,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                 {teamsList.map((team) => (
                   <button
                     key={team}
-                    onClick={() => setSelectedTeam(team)}
+                    onClick={() => handleTeamSelect(team)}
                     className={`text-[11px] px-3 py-1 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
                       selectedTeam === team
                         ? 'bg-blue-600 text-white font-bold shadow-xs'
@@ -475,64 +596,235 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </div>
           </div>
 
-          {/* 27 Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredPosts.map((post) => {
-              const authorData = getAuthorDetails(post.author.name);
-              const avatarBg = authorData ? authorData.avatarBg : 'bg-blue-600';
+          {/* Anchor for smooth page scroll */}
+          <div id="blog-posts-grid-anchor" className="scroll-mt-8" />
 
-              return (
-                <div
-                  key={post.id}
-                  onClick={() => handleOpenArticle(post)}
-                  className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md hover:border-slate-300 transition-all cursor-pointer flex flex-col justify-between group"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-bold text-[#1a73e8] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 line-clamp-1">
-                        {post.category}
-                      </span>
-                      <span className="text-[11px] text-slate-500 font-mono shrink-0">
-                        {post.readTime}
-                      </span>
-                    </div>
+          {/* Top Pagination Bar: Page indicator & Page Size Selector */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 pb-1 border-b border-slate-100">
+            <div className="flex items-center gap-2 text-xs text-slate-600">
+              <span className="font-semibold text-slate-900">
+                Page {safeCurrentPage} of {totalPages}
+              </span>
+              <span className="text-slate-300">•</span>
+              <span>
+                Displaying {paginatedPosts.length} of {totalPosts} posts
+              </span>
+            </div>
 
-                    <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#1a73e8] transition-colors line-clamp-2 leading-snug">
-                      {post.title}
-                    </h3>
+            <div className="flex items-center gap-4 flex-wrap">
+              {/* Posts per page buttons */}
+              <div className="flex items-center gap-1 text-xs">
+                <span className="text-slate-400 text-[11px] mr-1">Per page:</span>
+                {[6, 9, 12, 27].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => handlePostsPerPageChange(size)}
+                    className={`px-2 py-0.5 text-xs rounded-md font-medium transition-colors cursor-pointer ${
+                      postsPerPage === size
+                        ? 'bg-blue-100 text-[#1a73e8] font-bold'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {size === 27 ? 'All' : size}
+                  </button>
+                ))}
+              </div>
 
-                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                      {post.subtitle}
-                    </p>
-
-                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-[11px] text-slate-700 line-clamp-2 leading-relaxed">
-                      <strong className="text-slate-900">Direct Answer:</strong> {post.directAnswerSummary}
-                    </div>
-                  </div>
-
-                  <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                    {/* Author & Organization Attribution */}
-                    <div className="flex items-center gap-2 overflow-hidden pr-2">
-                      <div
-                        className={`w-6 h-6 rounded-full ${avatarBg} text-white font-bold text-[10px] flex items-center justify-center shrink-0`}
-                      >
-                        {post.author.name.charAt(0)}
-                      </div>
-                      <div className="truncate">
-                        <span className="text-slate-800 font-bold block truncate">{post.author.name}</span>
-                        <span className="text-[10px] text-slate-400 block truncate">{post.author.team}</span>
-                      </div>
-                    </div>
-
-                    <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">
-                      <span>Read</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
+              {/* Quick prev/next chevron buttons */}
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => handlePageChange(safeCurrentPage - 1)}
+                    disabled={safeCurrentPage <= 1}
+                    className="p-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                    title="Previous page"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handlePageChange(safeCurrentPage + 1)}
+                    disabled={safeCurrentPage >= totalPages}
+                    className="p-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                    title="Next page"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
-              );
-            })}
+              )}
+            </div>
           </div>
+
+          {/* Articles Grid / Empty State */}
+          {paginatedPosts.length === 0 ? (
+            <div className="p-12 text-center rounded-3xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-slate-200 text-slate-500 mx-auto flex items-center justify-center">
+                <Search className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-slate-800">No articles found</h3>
+              <p className="text-xs text-slate-500 max-w-md mx-auto">
+                No articles matched your active filters or keyword search. Try clearing your search or switching categories.
+              </p>
+              <button
+                onClick={() => {
+                  handleCategorySelect('All');
+                  handleTeamSelect('All');
+                  handleSearchChange('');
+                }}
+                className="px-4 py-2 bg-[#1a73e8] hover:bg-[#1557b0] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer inline-block"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {paginatedPosts.map((post) => {
+                const authorData = getAuthorDetails(post.author.name);
+                const avatarBg = authorData ? authorData.avatarBg : 'bg-blue-600';
+
+                return (
+                  <div
+                    key={post.id}
+                    onClick={() => handleOpenArticle(post)}
+                    className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md hover:border-slate-300 transition-all cursor-pointer flex flex-col justify-between group"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-bold text-[#1a73e8] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 line-clamp-1">
+                          {post.category}
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-mono shrink-0">
+                          {post.readTime}
+                        </span>
+                      </div>
+
+                      <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-[#1a73e8] transition-colors line-clamp-2 leading-snug">
+                        {post.title}
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        {post.subtitle}
+                      </p>
+
+                      <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-[11px] text-slate-700 line-clamp-2 leading-relaxed">
+                        <strong className="text-slate-900">Direct Answer:</strong> {post.directAnswerSummary}
+                      </div>
+                    </div>
+
+                    <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                      {/* Author & Organization Attribution */}
+                      <div className="flex items-center gap-2 overflow-hidden pr-2">
+                        <div
+                          className={`w-6 h-6 rounded-full ${avatarBg} text-white font-bold text-[10px] flex items-center justify-center shrink-0`}
+                        >
+                          {post.author.name.charAt(0)}
+                        </div>
+                        <div className="truncate">
+                          <span className="text-slate-800 font-bold block truncate">{post.author.name}</span>
+                          <span className="text-[10px] text-slate-400 block truncate">{post.author.team}</span>
+                        </div>
+                      </div>
+
+                      <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">
+                        <span>Read</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Bottom Pagination Controls Bar */}
+          {totalPages > 1 && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#f8f9fa] border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+              <div className="text-xs text-slate-600">
+                Showing <strong className="text-slate-900">{startIndex + 1}</strong> to{' '}
+                <strong className="text-slate-900">{endIndex}</strong> of{' '}
+                <strong className="text-slate-900">{totalPosts}</strong> articles
+              </div>
+
+              {/* Numbered Pagination Buttons */}
+              <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                {/* Previous Button */}
+                <button
+                  onClick={() => handlePageChange(safeCurrentPage - 1)}
+                  disabled={safeCurrentPage <= 1}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span className="hidden sm:inline">Previous</span>
+                </button>
+
+                {/* Page Number Buttons */}
+                {(() => {
+                  const pages: (number | string)[] = [];
+                  if (totalPages <= 6) {
+                    for (let i = 1; i <= totalPages; i++) pages.push(i);
+                  } else {
+                    if (safeCurrentPage <= 3) {
+                      pages.push(1, 2, 3, 4, '...', totalPages);
+                    } else if (safeCurrentPage >= totalPages - 2) {
+                      pages.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+                    } else {
+                      pages.push(1, '...', safeCurrentPage - 1, safeCurrentPage, safeCurrentPage + 1, '...', totalPages);
+                    }
+                  }
+
+                  return pages.map((page, idx) => {
+                    if (page === '...') {
+                      return (
+                        <span key={`dots-${idx}`} className="px-2 text-slate-400 text-xs font-bold">
+                          ...
+                        </span>
+                      );
+                    }
+                    const pageNum = page as number;
+                    const isActive = pageNum === safeCurrentPage;
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`w-8 h-8 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center ${
+                          isActive
+                            ? 'bg-[#1a73e8] text-white shadow-xs'
+                            : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  });
+                })()}
+
+                {/* Next Button */}
+                <button
+                  onClick={() => handlePageChange(safeCurrentPage + 1)}
+                  disabled={safeCurrentPage >= totalPages}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Quick Jump Selector */}
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span>Jump:</span>
+                <select
+                  value={safeCurrentPage}
+                  onChange={(e) => handlePageChange(Number(e.target.value))}
+                  className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-slate-800 font-semibold focus:outline-none focus:border-[#1a73e8] cursor-pointer"
+                >
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                    <option key={num} value={num}>
+                      Page {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
