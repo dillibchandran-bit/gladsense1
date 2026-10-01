@@ -8,6 +8,7 @@ import { Niche, AuditItem } from './types';
 import { ADSENSE_READINESS_CHECKLIST } from './data/nichesData';
 import { Navbar, NavTabType } from './components/Navbar';
 import { SiteAuditor } from './components/SiteAuditor';
+import { CookieConsent } from './components/CookieConsent';
 
 // Code-split and lazy-load secondary calculation engines, generator suites, and legal modals
 const NicheKeywordLab = React.lazy(() =>
@@ -44,6 +45,7 @@ const SuiteSuspenseFallback: React.FC = () => (
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTabType>('site-doctor');
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | 'about' | 'contact' | null>(null);
+  const [showCookiePreferences, setShowCookiePreferences] = useState<boolean>(false);
 
   const [selectedNiche, setSelectedNiche] = useState<Niche | null>(null);
   const [calculatorRpm, setCalculatorRpm] = useState<number>(22);
@@ -203,6 +205,13 @@ export default function App() {
               >
                 Privacy Policy
               </a>
+              <button
+                type="button"
+                onClick={() => setShowCookiePreferences(true)}
+                className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium text-inherit"
+              >
+                Cookie Preferences
+              </button>
               <a
                 href="#terms-of-service"
                 onClick={(e) => {
@@ -261,6 +270,13 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* GDPR, CCPA & Google Consent Mode v2 Cookie Banner */}
+      <CookieConsent
+        onOpenPrivacyPolicy={() => setLegalModalType('privacy')}
+        forceOpen={showCookiePreferences}
+        onCloseForce={() => setShowCookiePreferences(false)}
+      />
     </div>
   );
 }
