@@ -39,6 +39,7 @@ import { NavTabType } from './Navbar';
 import { KidExplainer } from './KidExplainer';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
 import { HomeExplainerSuite } from './HomeExplainerSuite';
+import { RejectionRemedyModal, RemedyType } from './RejectionRemedyModal';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -53,6 +54,8 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const [sampleContent, setSampleContent] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [activeResultTab, setActiveResultTab] = useState<'overview' | 'evaluator-roles' | 'plan' | 'checklist' | 'revenue' | 'metrics' | 'ai-content'>('overview');
+  const [remedyModalOpen, setRemedyModalOpen] = useState<boolean>(false);
+  const [activeRemedyType, setActiveRemedyType] = useState<RemedyType>('privacy-policy');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -955,45 +958,100 @@ Verified by GladSense AI Auditor`;
             <div className="p-6 sm:p-8 bg-slate-50 border-b border-slate-200">
               {result.criticalBlockers.length > 0 ? (
                 <div className="p-5 rounded-2xl bg-rose-50 border border-rose-200">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold">
-                      !
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold shrink-0">
+                        !
+                      </div>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                          {result.criticalBlockers.length} Critical Policy Blocker{result.criticalBlockers.length > 1 ? 's' : ''} Detected
+                        </h3>
+                        <p className="text-xs text-rose-700">
+                          Google automated review bots will reject the site unless these items are resolved first.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                        {result.criticalBlockers.length} Critical Policy Blocker{result.criticalBlockers.length > 1 ? 's' : ''} Detected
-                      </h3>
-                      <p className="text-xs text-rose-700">
-                        Google automated review bots will reject the site unless these items are resolved first.
-                      </p>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveRemedyType('full-bundle');
+                        setRemedyModalOpen(true);
+                      }}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-purple-700 bg-white border border-purple-300 hover:bg-purple-50 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs shrink-0"
+                    >
+                      <Layers className="w-4 h-4 text-purple-600" />
+                      <span>📦 1-Click Overturn Bundle</span>
+                    </button>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mt-4">
-                    {result.criticalBlockers.map((blocker, idx) => (
-                      <div
-                        key={idx}
-                        className="p-4 rounded-xl bg-white border border-rose-200 shadow-sm space-y-2 text-xs"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900 text-sm">{blocker.title}</span>
-                          <span
-                            className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
-                              blocker.severity === 'critical'
-                                ? 'bg-rose-100 text-rose-700 border border-rose-200'
-                                : 'bg-amber-100 text-amber-700 border border-amber-200'
-                            }`}
-                          >
-                            {blocker.severity}
-                          </span>
+                    {result.criticalBlockers.map((blocker, idx) => {
+                      const combined = (blocker.title + ' ' + blocker.description).toLowerCase();
+                      let remedy: RemedyType = 'full-bundle';
+                      let remedyLabel = 'Apply Remedy';
+                      if (combined.includes('privacy') || combined.includes('dart') || combined.includes('cookie')) {
+                        remedy = 'privacy-policy';
+                        remedyLabel = 'Generate Privacy Policy';
+                      } else if (combined.includes('about') || combined.includes('e-e-a-t') || combined.includes('editorial')) {
+                        remedy = 'about-us';
+                        remedyLabel = 'Generate About & E-E-A-T';
+                      } else if (combined.includes('contact') || combined.includes('reach') || combined.includes('email')) {
+                        remedy = 'contact-us';
+                        remedyLabel = 'Generate Contact Page';
+                      } else if (combined.includes('thin') || combined.includes('low-value') || combined.includes('word count') || combined.includes('originality') || combined.includes('ai')) {
+                        remedy = 'thin-content';
+                        remedyLabel = 'Cure Low-Value Content';
+                      } else if (combined.includes('ads.txt') || combined.includes('robots.txt') || combined.includes('crawler')) {
+                        remedy = 'ads-txt';
+                        remedyLabel = 'Generate ads.txt';
+                      }
+
+                      return (
+                        <div
+                          key={idx}
+                          className="p-4 rounded-xl bg-white border border-rose-200 shadow-sm space-y-2.5 text-xs flex flex-col justify-between"
+                        >
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-bold text-slate-900 text-sm leading-snug">{blocker.title}</span>
+                              <span
+                                className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                                  blocker.severity === 'critical'
+                                    ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                                    : 'bg-amber-100 text-amber-700 border border-amber-200'
+                                }`}
+                              >
+                                {blocker.severity}
+                              </span>
+                            </div>
+                            <p className="text-slate-600 text-xs leading-relaxed">{blocker.description}</p>
+                            <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2">
+                              <span className="font-bold shrink-0 text-emerald-700">Diagnosis:</span>
+                              <span>{blocker.fixAdvice}</span>
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <span className="text-[11px] text-purple-700 font-semibold flex items-center gap-1">
+                              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                              <span>Prescription Ready</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActiveRemedyType(remedy);
+                                setRemedyModalOpen(true);
+                              }}
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-98 shrink-0"
+                            >
+                              <Stethoscope className="w-3.5 h-3.5" />
+                              <span>🩺 {remedyLabel}</span>
+                            </button>
+                          </div>
                         </div>
-                        <p className="text-slate-600 text-xs leading-relaxed">{blocker.description}</p>
-                        <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2">
-                          <span className="font-bold shrink-0 text-emerald-700">Fix Action:</span>
-                          <span>{blocker.fixAdvice}</span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {onSwitchTab && (
@@ -2083,6 +2141,14 @@ Verified by GladSense AI Auditor`;
       <HomeExplainerSuite
         onSwitchTab={onSwitchTab}
         onAuditDemo={(demoUrl) => handleRunAudit(demoUrl, 'pre-approval')}
+      />
+
+      {/* 1-Click Rejection Prescription & Remediation Modal */}
+      <RejectionRemedyModal
+        isOpen={remedyModalOpen}
+        onClose={() => setRemedyModalOpen(false)}
+        remedyType={activeRemedyType}
+        targetDomain={result?.url || url || 'yourdomain.com'}
       />
     </div>
   );
