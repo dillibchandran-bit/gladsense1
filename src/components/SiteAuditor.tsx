@@ -40,6 +40,7 @@ import { KidExplainer } from './KidExplainer';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
 import { HomeExplainerSuite } from './HomeExplainerSuite';
 import { RejectionRemedyModal, RemedyType } from './RejectionRemedyModal';
+import { GeoQuickGuide } from './GeoQuickGuide';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -503,6 +504,26 @@ Verified by GladSense AI Auditor`;
                   <span className="text-[10px] text-slate-500 block">Zero credentials needed</span>
                 </div>
               </div>
+            </div>
+
+            {/* Standardized Princeton Generative Engine Optimization (GEO) 3-Pill Guide */}
+            <div className="pt-2 text-left">
+              <GeoQuickGuide
+                toolName="AdSense Rejection Doctor & Pre-Approval Auditor"
+                whatItIs="An automated 100-point diagnostic engine evaluating web applications against Google Publisher Policies, Human Search Quality Rater E-E-A-T criteria, and DoubleClick DART cookie mandates."
+                howToUse={[
+                  "Enter your live domain or paste raw HTML markup for offline instant parsing",
+                  "Inspect critical policy blockers (thin content, missing legal disclosures, broken menus)",
+                  "Click 'Apply 1-Click Cure' to generate compliant privacy policies, ads.txt, and utility widgets",
+                ]}
+                whatYouGet="A certified AdSense readiness rating (0–100) and downloadable compliance files that resolve automated crawler rejection flags."
+                metrics={["100-Point Audit Rubric", "85/100 Passing Gate", "0 Server Cost", "Sub-100ms Crawl"]}
+                authoritativeSource={{
+                  label: "Google Publisher Policies 2026",
+                  url: "https://support.google.com/adsense/answer/48182",
+                  standard: "Google Search Central Quality Evaluator Rubric",
+                }}
+              />
             </div>
           </div>
 

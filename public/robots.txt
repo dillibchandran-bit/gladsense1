@@ -1,9 +1,10 @@
-# Google AdSense & Search Engine Robots Configuration
-# Master SOP v4.1 Compliance - Domain I: Technical Infrastructure
+# Google AdSense, Search Central & Generative Engine Optimization (GEO) Robots Directives
+# Master Technical Architecture v5.0 - Strict Zero-Crawl Barrier Policy
 
 User-agent: *
 Allow: /
 
+# Google Search Central & AdSense Media Review Crawlers
 User-agent: Googlebot
 Allow: /
 
@@ -19,5 +20,22 @@ Allow: /
 User-agent: AdsBot-Google-Mobile
 Allow: /
 
+# Modern Generative Search Engine Crawlers (GEO & AI Citation Indexing)
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 # Canonical XML Sitemap
 Sitemap: https://gladsenseedu.com/sitemap.xml
+

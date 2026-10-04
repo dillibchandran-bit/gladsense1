@@ -14,17 +14,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Schema.org JSON-LD Structured Data for Googlebot & Rich Results -->
-    <script type="application/ld+json">
+    <!-- Schema.org JSON-LD Structured Data for Googlebot, Modern AI Crawlers & Rich Results -->
+    <script id="gladsense-schema-graph" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://gladsenseedu.com/#website",
+          "url": "https://gladsenseedu.com/",
+          "name": "GladSense Compliance & Monetization Labs",
+          "description": "Pre-approval site auditor, 100-point AdSense compliance SOP, KGR keyword research lab, and revenue modeling for Google publishers.",
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://gladsenseedu.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
         {
           "@type": "Organization",
           "@id": "https://gladsenseedu.com/#organization",
           "name": "GladSense Compliance & Monetization Labs",
           "url": "https://gladsenseedu.com/",
           "logo": "https://gladsenseedu.com/favicon.ico",
+          "sameAs": [
+            "https://twitter.com/GladSenseLabs",
+            "https://github.com/gladsense",
+            "https://linkedin.com/company/gladsense"
+          ],
           "founder": {
             "@type": "Person",
             "name": "Dillib Chandran",
@@ -33,23 +51,147 @@
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "Customer Support & Compliance",
-            "email": "compliance@gladsenseedu.com"
+            "email": "compliance@gladsenseedu.com",
+            "areaServed": "US",
+            "availableLanguage": ["en"]
           }
         },
         {
           "@type": "WebApplication",
-          "@id": "https://gladsenseedu.com/#webapp",
+          "@id": "https://gladsenseedu.com/#site-doctor",
           "name": "GladSense Site Auditor & Policy Doctor",
-          "url": "https://gladsenseedu.com/",
+          "url": "https://gladsenseedu.com/#site-doctor",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://gladsenseedu.com/#niche-lab",
+          "name": "GladSense KGR Keyword & Niche Lab",
+          "url": "https://gladsenseedu.com/#niche-lab",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
           "offers": {
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD"
           }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://gladsenseedu.com/#revenue-planner",
+          "name": "GladSense AdSense RPM & Profit Planner",
+          "url": "https://gladsenseedu.com/#revenue-planner",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://gladsenseedu.com/#policy-toolkit",
+          "name": "GladSense 1-Click Policy & ads.txt Generator",
+          "url": "https://gladsenseedu.com/#policy-toolkit",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://gladsenseedu.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How many published pages are needed before applying for Google AdSense?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Informational content blogs require 15 to 20 comprehensive, indexable articles averaging 1,000+ words. Interactive utility web apps require at least 5 to 8 distinct tool views supported by 800+ words of scientific documentation and worked case studies."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What causes the 'Low Value Content' AdSense rejection in 2026?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Low Value Content flags occur when pages have low Information Gain (fewer than 400 words, generic AI phrasing, or zero unique data tables/calculators). Incorporating interactive micro-tools or verified empirical case studies cures this rejection mode."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I resolve the 'Earnings at risk: ads.txt missing' error?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Deploy an ads.txt file at your domain root (https://yourdomain.com/ads.txt) containing the line: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0. Ensure HTTP 200 without redirects and allow 48 hours for Googlebot crawler validation."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is Generative Engine Optimization (GEO)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "GEO is the process of structuring website data and text using the Princeton 3-Pill framework (What It Is, How To Use It, What You Get) so that modern AI search engines (Google AI Overviews, Perplexity, ChatGPT Search) select and cite the site as their primary verified source."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "HowTo",
+          "@id": "https://gladsenseedu.com/#howto-audit",
+          "name": "How to Audit and Overturn a Google AdSense Rejection",
+          "description": "A 5-step operational protocol to diagnose policy blockers, generate legal compliance pages, and pass Google AdSense inspection.",
+          "totalTime": "PT30M",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Run Rejection Doctor Audit",
+              "text": "Enter your domain in the GladSense Rejection Doctor scanner to evaluate your site against 100 policy and E-E-A-T criteria."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Identify Critical Blockers",
+              "text": "Inspect identified flags such as missing DoubleClick DART cookies, thin word count (<500 words), or broken navigation anchors."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Apply 1-Click Code Remedies",
+              "text": "Generate custom privacy-policy.html, about-us.html, ads.txt, and embeddable utility calculators customized for your domain."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Verify Indexation in Google Search Console",
+              "text": "Submit updated URLs in Google Search Console and allow 48 to 72 hours for Googlebot to re-index all legal disclosures."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 5,
+              "name": "Request AdSense Re-Review",
+              "text": "Submit your site for review inside the Google AdSense dashboard with full compliance verified."
+            }
+          ]
         }
       ]
+    }
     </script>
   </head>
   <body>
