@@ -36,7 +36,6 @@ import {
   Share2,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
-import { KidExplainer } from './KidExplainer';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
 import { HomeExplainerSuite } from './HomeExplainerSuite';
 import { RejectionRemedyModal, RemedyType } from './RejectionRemedyModal';
@@ -48,7 +47,6 @@ interface SiteAuditorProps {
 
 export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const [mode, setMode] = useState<SiteAuditMode>('rejection-doctor');
-  const [showKidExplainer, setShowKidExplainer] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
   const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
   const [customNotes, setCustomNotes] = useState<string>('');

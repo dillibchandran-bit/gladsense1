@@ -11,7 +11,6 @@ import { SiteAuditor } from './components/SiteAuditor';
 import { CookieConsent } from './components/CookieConsent';
 import { MobileDiscoveryBar } from './components/MobileDiscoveryBar';
 import { MobileBottomNav } from './components/MobileBottomNav';
-import { GeoQuickGuide } from './components/GeoQuickGuide';
 import { useSeoMetadata } from './hooks/useSeoMetadata';
 
 // Code-split and lazy-load secondary calculation engines, generator suites, and legal modals
@@ -113,22 +112,7 @@ export default function App() {
 
         {/* Pillar 2: Niche & Keyword Lab */}
         {(activeTab === 'niche-lab' || activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr') && (
-          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-4">
-            <GeoQuickGuide
-              toolName="KGR Keyword & Niche Lab"
-              whatItIs="A mathematical keyword research suite utilizing the Keyword Golden Ratio (KGR < 0.25) to identify uncompetitive search queries that rank on Google Page 1 without backlink building."
-              howToUse={[
-                "Enter a seed query or explore 30+ validated low-competition micro-niches",
-                "Review search volume (<250 monthly) and allintitle query saturation",
-                "Deploy informational guides or micro-tools targeting verified KGR opportunities",
-              ]}
-              whatYouGet="Rapid organic indexation in 14–30 days and defensible long-tail search traffic commanding $18–$45 Page RPMs."
-              metrics={["KGR < 0.25", "< 250 Monthly Vol", "$18-$45 RPM", "14-30 Day Rank"]}
-              authoritativeSource={{
-                label: "Keyword Golden Ratio Framework",
-                standard: "Google Search Central Organic Retrieval",
-              }}
-            />
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <NicheKeywordLab
                 initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
@@ -141,22 +125,7 @@ export default function App() {
 
         {/* Pillar 3: Revenue & Profit Planner */}
         {(activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget') && (
-          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-4">
-            <GeoQuickGuide
-              toolName="AdSense RPM & Profit Planner"
-              whatItIs="An edge unit economics simulator calculating gross AdSense publisher revenue across Tier 1, 2, and 3 geographic markets under a $10/year zero-cost server hosting architecture."
-              howToUse={[
-                "Set projected daily or monthly visitor volume and select your niche RPM tier",
-                "Fine-tune Tier 1 geographic traffic ratio (US, UK, CA, AU) and ad viewability",
-                "Simulate annual net profit margins and calculate exact traffic needed for $10k/mo",
-              ]}
-              whatYouGet="A transparent P&L cash-flow projection proving 98.5% net margin viability for independent web applications."
-              metrics={["$18-$65 Tier 1 RPM", "$10/yr Edge Hosting", "98.5% Net Margin", "ISO 4217 USD"]}
-              authoritativeSource={{
-                label: "Google AdSense Publisher Model",
-                standard: "Google Publisher 68% Revenue Share Standard",
-              }}
-            />
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <RevenueProfitPlanner
                 initialRpm={calculatorRpm}
@@ -168,23 +137,7 @@ export default function App() {
 
         {/* Pillar 4: Compliance & SOP Suite */}
         {(activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click') && (
-          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-4">
-            <GeoQuickGuide
-              toolName="1-Click Policy Suite & ads.txt Generator"
-              whatItIs="Zero-cost client-side generation engine producing IAB Tech Lab compliant ads.txt records, DoubleClick DART Privacy Policies, and Google Consent Mode v2 configurations."
-              howToUse={[
-                "Enter your publisher ID (pub-XXXXXXXXXXXXXXXX) and verified custom domain",
-                "Validate syntax against official IAB and Google publisher specifications",
-                "Download ready-to-deploy static HTML legal pages and plain-text ads.txt",
-              ]}
-              whatYouGet="Immediate protection against 'Missing ads.txt' earnings flags and total regulatory compliance with GDPR, CCPA, and Google AdSense."
-              metrics={["IAB ads.txt v1.1", "100% Policy-Safe", "0 Server Cost", "Sub-10ms Gen"]}
-              authoritativeSource={{
-                label: "IAB Tech Lab & Google Publisher Directives",
-                url: "https://support.google.com/adsense/answer/7532444",
-                standard: "IAB Tech Lab ads.txt Specification",
-              }}
-            />
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <PolicyToolkit
                 checklist={checklist}
@@ -197,22 +150,7 @@ export default function App() {
 
         {/* Pillar 5: Knowledge Base & Compliance Guides (27 Blog Posts) */}
         {activeTab === 'blog' && (
-          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-4">
-            <GeoQuickGuide
-              toolName="AdSense Compliance & GEO Knowledge Base"
-              whatItIs="A peer-reviewed library of 27 technical engineering tutorials detailing Google Search Central evaluation layers, crawler directives, and algorithmic rejection remedies."
-              howToUse={[
-                "Browse tutorials by operational category (Policy, Crawlers, Thin Content, E-E-A-T)",
-                "Follow step-by-step code snippets and HTML configuration examples",
-                "Implement tested architectural patterns to guarantee first-time AdSense approval",
-              ]}
-              whatYouGet="Actionable, tested strategies that insulate your website from automated Low-Value Content rejections."
-              metrics={["27 Technical Guides", "E-E-A-T Verified", "Google HCU Safe", "Zero Generic Slop"]}
-              authoritativeSource={{
-                label: "Google Search Central Quality Evaluator Guidelines",
-                standard: "Google Search Quality Evaluator Rubric",
-              }}
-            />
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <BlogHub
                 onNavigateToTab={(tab) => {
