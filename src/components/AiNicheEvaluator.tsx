@@ -114,6 +114,15 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         </div>
       </div>
 
+      {/* Unified How-To Guide */}
+      <KidExplainer
+        title="Web App Idea Feasibility & Policy Check"
+        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
+        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
+        how="Enter your web app idea in the search box below, describe the user base and core functionality, then click 'Evaluate Feasibility'."
+        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
+      />
+
       {/* Prominent High-Visibility Search & Evaluation Box (2nd Block - Color #B4E1EB) */}
       <form
         onSubmit={handleEvaluate}
@@ -571,14 +580,6 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         </div>
       )}
 
-      {/* 4-Card How-To Guide */}
-      <KidExplainer
-        title="Web App Idea Feasibility & Policy Check"
-        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
-        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
-        how="Enter your web app idea in the search box above, describe the user base and core functionality, then click 'Evaluate Feasibility'."
-        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
-      />
-    </div>
+          </div>
   );
 };

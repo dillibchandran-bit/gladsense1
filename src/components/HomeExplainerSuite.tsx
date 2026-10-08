@@ -422,9 +422,9 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
       {/* 5. How GladSense Works: 4-Step Workflow */}
       <section className="p-8 sm:p-12 rounded-3xl bg-blue-50/50 border border-blue-200/80 space-y-8 text-center flex flex-col items-center">
         <div className="max-w-2xl mx-auto space-y-2 text-center">
-          <span className="text-xs font-bold text-[#1a73e8] uppercase tracking-wider">Fast-Track Verification</span>
+          <span className="text-xs font-bold text-[#1a73e8] uppercase tracking-wider">Fast-Track Verification Roadmap</span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Google_Sans',sans-serif]">
-            How to Reach 100% AdSense Readiness in 4 Steps
+            GladSense 4-Step Pre-Submission Approval Roadmap
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
             A standardized diagnostic workflow that turns immediate rejection risks into approved publishers.

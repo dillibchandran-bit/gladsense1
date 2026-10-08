@@ -166,24 +166,12 @@ export const BudgetBlueprint: React.FC = () => {
           </p>
         </div>
 
-        {/* View Switcher Tabs & Guide Toggle */}
+        {/* View Switcher Tabs */}
         <div className="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
-          <button
-            onClick={() => setBeginnerExplainer(!beginnerExplainer)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border flex items-center gap-1.5 ${
-              beginnerExplainer
-                ? 'bg-[#e8f0fe] text-[#1a73e8] border-[#d2e3fc]'
-                : 'bg-white text-[#5f6368] border-[#dadce0] hover:bg-[#f8f9fa]'
-            }`}
-          >
-            <HelpCircle className="w-3.5 h-3.5 text-[#1a73e8]" />
-            <span>{beginnerExplainer ? 'Quick Guide: ON' : 'Quick Guide: OFF'}</span>
-          </button>
-
           <div className="flex items-center bg-[#f1f3f4] p-1 rounded-full border border-[#dadce0] text-xs font-medium">
             <button
               onClick={() => setActiveView('budget-calculator')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'budget-calculator'
                   ? 'bg-white text-[#1a73e8] shadow-xs font-semibold'
                   : 'text-[#5f6368] hover:text-[#202124]'
@@ -194,27 +182,27 @@ export const BudgetBlueprint: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveView('stack-guide')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'stack-guide'
                   ? 'bg-white text-[#1a73e8] shadow-xs font-semibold'
                   : 'text-[#5f6368] hover:text-[#202124]'
               }`}
             >
               <Server className="w-3.5 h-3.5 text-[#188038]" />
-              <span>$12/Yr Stack Guide</span>
+              <span>$12/Yr Stack Blueprint</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Plain-English Beginner Summary (When Active) */}
-      {beginnerExplainer && (
+      {/* Single How-To Guide for Calculator View */}
+      {activeView === 'budget-calculator' && (
         <KidExplainer
           title="Website Operating Budget & Cash Calculator"
-          what="A money balance sheet that compares how tiny your expenses are ($0.85/month) compared to how much Google AdSense pays you ($500 - $3,000/month)."
-          why="Most beginners waste $35 to $200 every single month on expensive WordPress hosting, slow plugins, and agency tools before making their first dollar! That causes people to quit."
-          how="Click the green '⚡ Zero-Cost Modern Stack ($0.85/mo)' preset button below and move the visitor slider to your traffic goal."
-          result="You see your pure take-home net profit! You only need 3 visitors a day to break even, meaning 99% of Google's payments go directly into your bank account as pure profit."
+          what="A money balance sheet that compares your tiny domain & infrastructure expenses ($0.85/month) against monthly Google AdSense earnings ($500 - $3,000/month)."
+          why="Most beginners waste $35 to $200 every month on bloated WordPress hosting, premium plugins, and agency tools before making their first dollar."
+          how="Click the green '⚡ Zero-Cost Modern Stack ($0.85/mo)' preset button below and adjust the visitor slider to your monthly target."
+          result="Displays your pure take-home net profit! You only need 3 visitors a day to break even, delivering 98%+ net margins directly to your bank account."
         />
       )}
 

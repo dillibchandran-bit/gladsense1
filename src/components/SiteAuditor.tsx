@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SiteAuditMode,
   RejectionCategory,
@@ -34,18 +34,25 @@ import {
   Bot,
   Cpu,
   Share2,
+  Printer,
+  Link2,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
 import { HomeExplainerSuite } from './HomeExplainerSuite';
 import { RejectionRemedyModal, RemedyType } from './RejectionRemedyModal';
 import { GeoQuickGuide } from './GeoQuickGuide';
+import { useAppRouter } from '../context/RouterContext';
+import { TrademarkDisclaimer } from './TrademarkDisclaimer';
+import { SiteDoctorEducation } from './educational/SiteDoctorEducation';
+import { AdSlotPlaceholder, ContextualAffiliateCard } from './monetization/AdPlaceholders';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
 }
 
 export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
+  const { state } = useAppRouter();
   const [mode, setMode] = useState<SiteAuditMode>('rejection-doctor');
   const [url, setUrl] = useState<string>('');
   const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
@@ -60,7 +67,19 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<SiteAuditResult | null>(null);
   const [copiedReport, setCopiedReport] = useState<boolean>(false);
+  const [copiedChecklist, setCopiedChecklist] = useState<boolean>(false);
+  const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
+  const [copiedAiScore, setCopiedAiScore] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<{ [index: number]: boolean }>({});
+
+  // Auto-run when URL param exists (e.g. /tools/site-doctor/?url=https://example.com)
+  useEffect(() => {
+    const queryUrl = state.params.url;
+    if (queryUrl && queryUrl !== url && !result) {
+      setUrl(queryUrl);
+      handleRunAudit(queryUrl, 'pre-approval');
+    }
+  }, [state.params.url]);
 
   const handleRunAudit = async (customUrl?: string, customMode?: SiteAuditMode, customReason?: RejectionCategory) => {
     const targetUrl = customUrl || url;
@@ -143,8 +162,6 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
     }
   };
 
-  const [copiedAiScore, setCopiedAiScore] = useState(false);
-
   const handleCopyReport = () => {
     if (!result) return;
     const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
@@ -214,6 +231,32 @@ Verified by GladSense AI Auditor`;
     navigator.clipboard.writeText(shareCard);
     setCopiedAiScore(true);
     setTimeout(() => setCopiedAiScore(false), 2500);
+  };
+
+  const handlePrintReport = () => {
+    window.print();
+  };
+
+  const handleCopyChecklist = () => {
+    if (!result) return;
+    const items = result.findings
+      .map(
+        (item) =>
+          `- [ ] [${item.category}] ${item.label}\n      Detail: ${item.detail}\n      Status: ${item.status.toUpperCase()}`
+      )
+      .join('\n\n');
+    const text = `# Google AdSense Developer Checklist: ${result.url}\nAudited by GladSense: https://gladsenseedu.com/tools/site-doctor/\nReadiness Score: ${result.approvalProbability}%\n\n${items}`;
+    navigator.clipboard.writeText(text);
+    setCopiedChecklist(true);
+    setTimeout(() => setCopiedChecklist(false), 2500);
+  };
+
+  const handleCopyShareLink = () => {
+    if (!result) return;
+    const shareUrl = `https://gladsenseedu.com/tools/site-doctor/?url=${encodeURIComponent(result.url)}`;
+    navigator.clipboard.writeText(shareUrl);
+    setCopiedShareLink(true);
+    setTimeout(() => setCopiedShareLink(false), 2500);
   };
 
   const toggleChecklist = (index: number) => {
@@ -400,16 +443,37 @@ Verified by GladSense AI Auditor`;
             </div>
 
             {/* Quick Demo Fill & Advanced Crawl Links */}
-            <div className="mt-3 flex items-center justify-center gap-3 flex-wrap text-xs text-slate-500">
-              <span className="text-[11px] font-semibold text-slate-400">Quick Test:</span>
+            <div className="mt-3 flex items-center justify-center gap-2 flex-wrap text-xs text-slate-500">
+              <span className="text-[11px] font-bold text-slate-400">1-Click Test Presets:</span>
               <button
                 type="button"
                 onClick={() => {
                   setUrl('https://gladsense1.pages.dev');
+                  handleRunAudit('https://gladsense1.pages.dev', 'pre-approval');
                 }}
-                className="text-[11px] text-purple-700 hover:text-purple-900 bg-purple-50/80 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-medium transition-colors cursor-pointer"
+                className="text-[11px] text-purple-700 hover:text-purple-900 bg-purple-50/90 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-semibold transition-colors cursor-pointer"
               >
-                🧪 Try gladsense1.pages.dev (Compliant Demo)
+                🧪 Analyze Sample Tech Blog
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://cfmsizingcalc.pages.dev');
+                  handleRunAudit('https://cfmsizingcalc.pages.dev', 'pre-approval');
+                }}
+                className="text-[11px] text-blue-700 hover:text-blue-900 bg-blue-50/90 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 font-semibold transition-colors cursor-pointer"
+              >
+                🧮 Analyze Sample Calculator Tool
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://artisanresinmolds.pages.dev');
+                  handleRunAudit('https://artisanresinmolds.pages.dev', 'rejection-doctor', 'low-value-content');
+                }}
+                className="text-[11px] text-amber-700 hover:text-amber-900 bg-amber-50/90 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition-colors cursor-pointer"
+              >
+                🛍️ Analyze Sample E-Commerce Site
               </button>
               <button
                 type="button"

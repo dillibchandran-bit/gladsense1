@@ -121,11 +121,11 @@ export const NicheExplorer: React.FC<NicheExplorerProps> = ({
       </div>
 
       <KidExplainer
-        title="Website Topic Ideas"
-        what="A menu of proven website ideas (like a menu at an ice cream shop). Each one is a real utility website people use every day."
-        why="Most beginners start travel or movie review blogs where competition is impossible and Google rejects 95% of them. These topics have near-zero competition!"
-        how="Click on any topic card below (like 'Epoxy Resin Tables' or 'Sourdough Bread Calculator') to see the complete blueprint."
-        result="You see the exact pages to build, easy Google keywords to rank for, and how much money it will make you every month!"
+        title="30+ Curated Web Utility Niches & Architecture Blueprints"
+        what="A verified directory of low-competition, high-RPM utility web app niches ($18–$65 Page RPM) designed to pass Google AdSense approval on first submission."
+        why="Most publishers build generic blogs facing fierce competition and thin-content rejections. Interactive utilities provide genuine information gain with near-zero competing domains."
+        how="Click any niche blueprint card below (e.g. 'Epoxy Resin Calculator', 'Macro Tracker') to inspect full hosting architecture, target keywords, and revenue forecasts."
+        result="Direct access to verified KGR keywords, client-side code structures, and a 1-click simulator to model traffic earnings."
       />
 
       {/* Filter & Search Bar */}

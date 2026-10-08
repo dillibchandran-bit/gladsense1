@@ -26,7 +26,7 @@ export const KidExplainer: React.FC<KidExplainerProps> = ({
   result,
   toolNumber,
   title,
-  badge = 'GEO QUICK GUIDE',
+  badge = 'HOW-TO GUIDE',
   className = '',
 }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);

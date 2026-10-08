@@ -61,25 +61,15 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm
             Move the visitor slider to see how many dollars Google puts in your bank account every single month based on real advertiser rates.
           </p>
         </div>
-
-        <button
-          onClick={() => setShowKidExplainer(!showKidExplainer)}
-          className="self-start md:self-auto px-4 py-1.5 rounded-full border border-[#dadce0] bg-white text-[#5f6368] hover:bg-[#f8f9fa] text-xs font-medium flex items-center gap-1.5 transition-all shadow-xs shrink-0"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-[#1a73e8]" />
-          <span>{showKidExplainer ? 'Hide Quick Guide' : 'Show Quick Guide'}</span>
-        </button>
       </div>
 
-      {showKidExplainer && (
-        <KidExplainer
-          title="Google AdSense Revenue Simulator"
-          what="A simulator that predicts how much real cash you earn when people visit your website and look at ads."
-          why="Most people guess random numbers or believe crazy online myths. This tool calculates real dollars using official Google advertiser RPM rates."
-          how="Drag the 'Monthly Visitors' slider to how many people visit your website each month (for example: 35,000 visitors)."
-          result="Look at the big green number on the right! That is your true take-home pay after paying $0.85/month for your website."
-        />
-      )}
+      <KidExplainer
+        title="Google AdSense Revenue Simulator"
+        what="An empirical revenue calculator that models publisher earnings from visitor traffic, ad impressions, and advertiser demand rates."
+        why="Avoids unrealistic projections by calculating true bank payouts using official Google advertiser RPM benchmarks and 98%+ margin static hosting."
+        how="1. Adjust the 'Monthly Visitors' slider to match your traffic expectations. 2. Fine-tune your niche's expected RPM ($15–$65). 3. Compare gross ad revenue against $0.85/month static hosting overhead."
+        result="Displays your net annual take-home profit, daily break-even velocity, and Google-compliant ad layout placement blueprints."
+      />
 
       {/* Main Grid: Inputs (Left) and Financial Dashboard (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

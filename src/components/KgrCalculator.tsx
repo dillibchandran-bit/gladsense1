@@ -190,11 +190,11 @@ export const KgrCalculator: React.FC = () => {
       </div>
 
       <KidExplainer
-        title="Keyword Golden Ratio (KGR)"
-        what="A formula (AllInTitle results divided by monthly search volume) that uncovers search questions where minimal competition exists."
-        why="High-competition keywords take months or years to rank for. KGR keywords allow new websites to rank on Google in days."
-        how="Type any topic in the search box below or pick from our pre-vetted list. If KGR is under 0.25 (Green), it's a candidate."
-        result="Fast indexing and first-page organic traffic from Google without external backlink campaigns."
+        title="Keyword Golden Ratio (KGR) Formula & Workflow"
+        what="A mathematical formula (AllInTitle results divided by monthly search volume < 250) that uncovers hyper-specific search queries where minimal competing indexed pages exist."
+        why="High-competition keywords take months or years and require expensive backlinks. KGR queries allow new websites to rank on Google Page 1 within 14–30 days."
+        how="1. Use Google Autocomplete for long-tail completions. 2. Verify monthly volume is under 250 in Keyword Planner. 3. Query allintitle:'exact phrase' on Google. If ratio is under 0.25 (Green), write a 1,000-word utility page targeting that title!"
+        result="Fast indexing and first-page organic traffic from Google without external backlink campaigns or high domain authority."
       />
 
       {/* GOOGLE-STYLE KEYWORD DISCOVERY SEARCH BAR */}
@@ -473,19 +473,6 @@ export const KgrCalculator: React.FC = () => {
             <p className="text-xs text-slate-700 leading-relaxed">
               {verdict.description}
             </p>
-          </div>
-
-          {/* Free 100% No-Cost Workflow Guide */}
-          <div className="pt-3 border-t border-slate-100 text-xs space-y-2">
-            <h4 className="font-bold text-slate-900 uppercase text-[11px] tracking-wider">
-              How to find these for $0 (No Ahrefs / Semrush needed)
-            </h4>
-            <ol className="list-decimal list-inside space-y-1 text-slate-600 text-[11px] leading-relaxed">
-              <li>Use <strong>Google Autocomplete</strong>: Type your root term (e.g., "epoxy resin calculator...") and observe suggested long-tail completions.</li>
-              <li>Use free <strong>Google Keyword Planner</strong> to verify volume is ~100-300.</li>
-              <li>Go to Google and search <code className="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">allintitle:"exact phrase"</code> to count exact competing pages.</li>
-              <li>If the result count is under 30-40, write a 1,000-word tool page targeting that exact title!</li>
-            </ol>
           </div>
         </div>
 

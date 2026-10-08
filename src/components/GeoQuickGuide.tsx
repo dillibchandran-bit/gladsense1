@@ -38,10 +38,10 @@ export const GeoQuickGuide: React.FC<GeoQuickGuideProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-800 text-xs">
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-extrabold uppercase tracking-wider">
-            GEO Architecture (Princeton RAG Standard)
+            HOW-TO GUIDE
           </span>
           <span className="text-slate-400 font-medium hidden sm:inline">•</span>
-          <span className="text-slate-300 font-semibold">{toolName} Quick Reference</span>
+          <span className="text-slate-300 font-semibold">{toolName}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
