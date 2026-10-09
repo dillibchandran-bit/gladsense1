@@ -25,7 +25,7 @@ export const EditorialPolicyPage: React.FC = () => {
           Editorial Policy &amp; Verification Standards
         </h1>
         <p className="text-sm text-slate-500">
-          Last Updated: October 2026 • Canonical URL: https://gladsenseedu.com/editorial-policy/
+          Last Updated: October 2026 • Canonical URL: https://gladsenseedu.app/editorial-policy/
         </p>
       </header>
 
@@ -83,7 +83,7 @@ export const EditorialPolicyPage: React.FC = () => {
         <section className="space-y-3 border-t border-slate-200 pt-4">
           <h2 className="text-lg font-bold text-slate-900">4. Editorial Corrections &amp; Feedback</h2>
           <p>
-            If you identify a technical discrepancy or an outdated policy link, submit a correction to our editorial board at <a href="mailto:compliance@gladsenseedu.com" className="text-[#1a73e8] underline">compliance@gladsenseedu.com</a>.
+            If you identify a technical discrepancy or an outdated policy link, submit a correction to our editorial board at <a href="mailto:contact@gladsenseedu.app" className="text-[#1a73e8] underline">contact@gladsenseedu.app</a>.
           </p>
         </section>
       </main>

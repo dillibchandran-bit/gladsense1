@@ -58,10 +58,10 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <span className="font-bold text-slate-800 block">Direct Compliance Email:</span>
                   <a
-                    href="mailto:compliance@gladsenseedu.com"
+                    href="mailto:contact@gladsenseedu.app"
                     className="text-[#1a73e8] hover:underline font-mono text-xs font-semibold"
                   >
-                    compliance@gladsenseedu.com
+                    contact@gladsenseedu.app
                   </a>
                 </div>
               </div>

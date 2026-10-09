@@ -80,7 +80,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
               <h3 className="text-base font-bold text-[#202124]">4. Direct Inquiries</h3>
               <p>
-                If you have questions regarding our privacy practices or data handling, please contact our privacy compliance desk at <code className="px-2 py-0.5 bg-slate-100 rounded text-slate-800">compliance@gladsenseedu.com</code>.
+                If you have questions regarding our privacy practices or data handling, please contact our privacy compliance desk at <code className="px-2 py-0.5 bg-slate-100 rounded text-slate-800">contact@gladsenseedu.app</code>.
               </p>
             </div>
           )}
@@ -190,8 +190,8 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                   <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">GladSense Enterprise Desk</span>
-                  <a href="mailto:compliance@gladsenseedu.com" className="font-bold text-sm text-[#1a73e8] hover:underline block">
-                    compliance@gladsenseedu.com
+                  <a href="mailto:contact@gladsenseedu.app" className="font-bold text-sm text-[#1a73e8] hover:underline block">
+                    contact@gladsenseedu.app
                   </a>
                   <span className="text-[11px] text-slate-500">Executive & Publisher Policy Desk (Attn: Dillib Chandran)</span>
                 </div>

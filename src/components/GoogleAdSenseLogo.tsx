@@ -23,17 +23,17 @@ export const GoogleAdSenseLogo: React.FC<LogoProps> = ({
 
       {/* Brand Text: GladSense (Glad in Bold Dark, Sense in Brand Blue) */}
       <div className="flex flex-col leading-tight">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <span className="font-['Google_Sans_Display','Google_Sans',sans-serif] text-[21px] font-bold text-[#202124] tracking-tight">
             Glad<span className="text-[#1a73e8]">Sense</span>
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#e8f0fe] text-[#1a73e8] ml-1">
-            Auditor
+          <span className="text-[10px] font-mono font-medium tracking-tight px-1.5 py-0.5 rounded-md bg-[#e8f0fe] text-[#1a73e8] border border-blue-100 hidden sm:inline-block">
+            gladsenseedu.app
           </span>
         </div>
         {showSubtitle && (
           <span className="text-[10px] text-[#5f6368] font-medium tracking-normal -mt-0.5">
-            Website Auditor for Google AdSense
+            gladsenseedu.app • Website Auditor for Google AdSense
           </span>
         )}
       </div>

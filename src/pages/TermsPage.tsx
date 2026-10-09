@@ -25,7 +25,7 @@ export const TermsPage: React.FC = () => {
           Terms of Service & Usage Agreement
         </h1>
         <p className="text-sm text-slate-500">
-          Last Updated: October 2026 • Canonical URL: https://gladsenseedu.com/terms/
+          Last Updated: October 2026 • Canonical URL: https://gladsenseedu.app/terms/
         </p>
       </header>
 
@@ -35,7 +35,7 @@ export const TermsPage: React.FC = () => {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900">1. Acceptance of Terms</h2>
           <p>
-            By accessing or using GladSense (accessible via https://gladsenseedu.com and affiliated subdomains), you agree to be bound by these Terms of Service. If you do not agree to all terms and conditions, you must discontinue use of the tools and services immediately.
+            By accessing or using GladSense (accessible via https://gladsenseedu.app and affiliated subdomains), you agree to be bound by these Terms of Service. If you do not agree to all terms and conditions, you must discontinue use of the tools and services immediately.
           </p>
         </section>
 
@@ -74,7 +74,7 @@ export const TermsPage: React.FC = () => {
         <section className="space-y-3 border-t border-slate-200 pt-4">
           <h2 className="text-lg font-bold text-slate-900">5. Governing Law & Contact</h2>
           <p>
-            These Terms are governed by applicable legal codes. Inquiries regarding this agreement may be submitted to <a href="mailto:compliance@gladsenseedu.com" className="text-[#1a73e8] underline">compliance@gladsenseedu.com</a>.
+            These Terms are governed by applicable legal codes. Inquiries regarding this agreement may be submitted to <a href="mailto:contact@gladsenseedu.app" className="text-[#1a73e8] underline">contact@gladsenseedu.app</a>.
           </p>
         </section>
       </main>

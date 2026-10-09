@@ -48,7 +48,7 @@ export const GuideDetailPage: React.FC = () => {
   }
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://gladsenseedu.com/guides/${post.slug}/`);
+    navigator.clipboard.writeText(`https://gladsenseedu.app/guides/${post.slug}/`);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };

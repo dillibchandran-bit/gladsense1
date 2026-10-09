@@ -25,7 +25,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           Privacy Policy & Cookie Disclosures
         </h1>
         <p className="text-sm text-slate-500">
-          Last Updated: October 2026 • Effective Date: January 1, 2026 • Canonical URL: https://gladsenseedu.com/privacy-policy/
+          Last Updated: October 2026 • Effective Date: January 1, 2026 • Canonical URL: https://gladsenseedu.app/privacy-policy/
         </p>
       </header>
 
@@ -89,7 +89,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <div className="p-4 rounded-xl bg-slate-100 text-xs font-mono space-y-1">
             <div>GladSense Compliance &amp; Monetization Labs</div>
             <div>Attn: Data Protection Desk</div>
-            <div>Email: <a href="mailto:compliance@gladsenseedu.com" className="text-[#1a73e8] underline">compliance@gladsenseedu.com</a></div>
+            <div>Email: <a href="mailto:contact@gladsenseedu.app" className="text-[#1a73e8] underline">contact@gladsenseedu.app</a></div>
             <div>Response SLA: 24–48 Business Hours</div>
           </div>
         </section>

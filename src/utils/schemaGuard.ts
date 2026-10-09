@@ -13,7 +13,7 @@ export interface SeoMetadataOptions {
   noindex?: boolean;
 }
 
-const BASE_URL = 'https://gladsenseedu.com';
+const BASE_URL = 'https://gladsenseedu.app';
 
 export const MASTER_SCHEMA_GRAPH = {
   '@context': 'https://schema.org',
@@ -53,7 +53,7 @@ export const MASTER_SCHEMA_GRAPH = {
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'Customer Support & Policy Compliance',
-        email: 'compliance@gladsenseedu.com',
+        email: 'contact@gladsenseedu.app',
         areaServed: 'US',
         availableLanguage: ['en'],
       },

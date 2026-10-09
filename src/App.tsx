@@ -190,10 +190,10 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="font-['Google_Sans_Display','Google_Sans',sans-serif] font-bold text-sm text-[#202124]">
-                Glad<span className="text-[#1a73e8]">Sense</span>
+                Glad<span className="text-[#1a73e8]">Sense</span> <span className="text-slate-400 font-mono text-xs font-normal">gladsenseedu.app</span>
               </span>
               <span className="text-[#dadce0]">|</span>
-              <span className="text-[#5f6368] text-xs">The Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
+              <span className="text-[#5f6368] text-xs">Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
             </div>
             <div className="flex flex-wrap items-center gap-5 text-[12px] text-[#5f6368]">
               <a
@@ -255,10 +255,10 @@ export default function App() {
                 Contact Us
               </a>
               <a
-                href="mailto:compliance@gladsenseedu.com"
+                href="mailto:contact@gladsenseedu.app"
                 className="hover:text-[#1a73e8] transition-colors font-medium text-slate-700"
               >
-                compliance@gladsenseedu.com
+                contact@gladsenseedu.app
               </a>
               <span className="text-slate-300">|</span>
               <a href="https://support.google.com/adsense/answer/48182" target="_blank" rel="noreferrer" className="hover:text-[#1a73e8] transition-colors">

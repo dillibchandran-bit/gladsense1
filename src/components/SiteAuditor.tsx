@@ -245,7 +245,7 @@ Verified by GladSense AI Auditor`;
           `- [ ] [${item.category}] ${item.label}\n      Detail: ${item.detail}\n      Status: ${item.status.toUpperCase()}`
       )
       .join('\n\n');
-    const text = `# Google AdSense Developer Checklist: ${result.url}\nAudited by GladSense: https://gladsenseedu.com/tools/site-doctor/\nReadiness Score: ${result.approvalProbability}%\n\n${items}`;
+    const text = `# Google AdSense Developer Checklist: ${result.url}\nAudited by GladSense: https://gladsenseedu.app/tools/site-doctor/\nReadiness Score: ${result.approvalProbability}%\n\n${items}`;
     navigator.clipboard.writeText(text);
     setCopiedChecklist(true);
     setTimeout(() => setCopiedChecklist(false), 2500);
@@ -253,7 +253,7 @@ Verified by GladSense AI Auditor`;
 
   const handleCopyShareLink = () => {
     if (!result) return;
-    const shareUrl = `https://gladsenseedu.com/tools/site-doctor/?url=${encodeURIComponent(result.url)}`;
+    const shareUrl = `https://gladsenseedu.app/tools/site-doctor/?url=${encodeURIComponent(result.url)}`;
     navigator.clipboard.writeText(shareUrl);
     setCopiedShareLink(true);
     setTimeout(() => setCopiedShareLink(false), 2500);

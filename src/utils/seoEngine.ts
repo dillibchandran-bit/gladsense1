@@ -2,7 +2,7 @@ import { RouteState } from '../context/RouterContext';
 import { BLOG_POSTS } from '../data/blogPostsData';
 import { BlogPost } from '../types';
 
-const CANONICAL_BASE = 'https://gladsenseedu.com';
+const CANONICAL_BASE = 'https://gladsenseedu.app';
 
 interface RouteMeta {
   title: string;
@@ -38,7 +38,7 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Support & Policy Compliance',
-      email: 'compliance@gladsenseedu.com',
+      email: 'contact@gladsenseedu.app',
       areaServed: 'US',
       availableLanguage: ['en'],
     },
@@ -404,7 +404,7 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
       const canonical = `${CANONICAL_BASE}/contact/`;
       return {
         title: 'Contact GladSense Compliance Desk — Support & Inquiries',
-        description: 'Get in touch with the GladSense technical audit desk at compliance@gladsenseedu.com. 24–48 hour response SLA for publisher queries.',
+        description: 'Get in touch with the GladSense technical audit desk at contact@gladsenseedu.app. 24–48 hour response SLA for publisher queries.',
         canonical,
         ogType: 'website',
         schemaGraph: [
