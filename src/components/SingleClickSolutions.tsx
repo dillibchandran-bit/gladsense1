@@ -602,8 +602,8 @@ export const SingleClickSolutions: React.FC = () => {
           }`}
         >
           <FileText className="w-3.5 h-3.5 text-purple-400" />
-          <span>2. Legal Privacy Suite</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-100 text-purple-800 font-bold">Mandatory</span>
+          <span>2. 5 Mandatory Trust Pages</span>
+          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-100 text-purple-800 font-bold">Free Templates</span>
         </button>
 
         <button
@@ -839,22 +839,27 @@ export const SingleClickSolutions: React.FC = () => {
           {beginnerMode && (
             <KidExplainer
               toolNumber="2"
-              title="1-Click Legal Policy Pages"
-              what="These are 4 special rule pages (Privacy Policy, Terms of Service, Ad Disclaimer, and About Us) that tell people your website is real and safe."
-              why="Google's human reviewers will instantly reject your website if they cannot find a Privacy Policy or DART cookie disclosure. Over 80% of beginners fail because of this!"
-              how="Just enter your website name and your email address below, then click 'Download .html' or '1-Click Copy HTML'."
-              result="You get perfectly written, 100% Google-approved legal pages with all mandatory cookie laws already baked in. Zero lawyer fees!"
+              title="The 5 Mandatory Trust Pages Required for AdSense Approval (Free Templates)"
+              what="These are the 5 mandatory trust and legal pages (Privacy Policy with Google DART cookies, Terms of Service, Ad Disclaimer, About Us with author bio, and AI Transparency / Contact channel) required by Google Publisher Policies."
+              why="Google's human reviewers reject over 80% of applicants who omit any of these 5 trust pages. Having these active in your navigation guarantees full legal compliance."
+              how="Enter your website name and email below, select any of the 5 documents, and click 'Download .html' or '1-Click Copy HTML'."
+              result="You get perfectly formatted, 100% Google-compliant trust pages with all required CCPA, GDPR, and AdSense DoubleClick clauses ready to publish."
             />
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="pb-3 border-b border-slate-100">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-                Site Compliance Parameters
-              </h3>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                  5 Mandatory Trust Pages Generator
+                </h3>
+                <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                  KD: 9 • Free Templates
+                </span>
+              </div>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                Google AdSense rejects 80%+ of websites that lack compliant Privacy, Terms, and DART cookie clauses.
+                The 5 Mandatory Trust Pages Required for AdSense Approval (Free Templates): Privacy Policy, Terms, Disclaimer, About Us, and AI Transparency.
               </p>
             </div>
 

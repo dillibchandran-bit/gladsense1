@@ -542,6 +542,33 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
       : 'Missing viewport meta tag. Google uses Mobile-First indexing.',
   });
 
+  // Valuable Inventory: Under Construction Detection
+  const hasUnderConstructionStrings = /under\s*construction|coming\s*soon|work\s*in\s*progress|page\s*under\s*development|maintenance\s*mode/i.test(html);
+  const isUnderConstructionRisk = rejectionReason === 'valuable-inventory-under-construction' || emptyHashLinks > 1 || hasUnderConstructionStrings;
+
+  if (isUnderConstructionRisk) {
+    criticalBlockers.push({
+      title: 'Valuable Inventory: Under Construction Policy Violation',
+      description: hasUnderConstructionStrings
+        ? 'Explicit "Under Construction" or "Coming Soon" terminology detected in page content. Google AdSense strictly prohibits monetizing unlaunched domains.'
+        : emptyHashLinks > 1
+        ? `Found ${emptyHashLinks} placeholder anchor links (href="#") in the navigation. Reviewers consider dummy links a sign of an incomplete, under-construction site.`
+        : 'Domain flagged for incomplete taxonomy routes, placeholder category archives with 0 posts, or non-functional tools.',
+      severity: 'critical',
+      fixAdvice:
+        'Resolve "Valuable Inventory: Under Construction" by removing all dummy href="#" links, deleting empty tags or categories with 0 posts, stripping "Coming Soon" phrasing, and verifying 100% link integrity before requesting review.',
+    });
+  }
+
+  findings.push({
+    category: 'Navigation & UX',
+    label: 'Valuable Inventory: Under Construction Integrity',
+    status: isUnderConstructionRisk ? 'fail' : 'pass',
+    detail: isUnderConstructionRisk
+      ? `Detected ${emptyHashLinks} dummy link(s) or placeholder text. AdSense requires 100% active functional routes.`
+      : 'Zero placeholder links or under-construction banners detected. All navigation routes lead to finished editorial content.',
+  });
+
   findings.push({
     category: 'Navigation & UX',
     label: 'Zero 404 Links in Menu',

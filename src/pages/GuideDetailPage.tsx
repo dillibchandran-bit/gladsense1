@@ -41,7 +41,7 @@ export const GuideDetailPage: React.FC = () => {
           onClick={() => navigate('/guides/')}
           className="px-4 py-2 bg-[#1a73e8] text-white text-xs font-bold rounded-xl"
         >
-          View All 27 Guides
+          View All Guides
         </button>
       </div>
     );

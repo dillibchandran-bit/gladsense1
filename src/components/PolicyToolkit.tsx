@@ -26,10 +26,10 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
           </div>
           <div>
             <h2 className="text-sm font-bold text-slate-900 leading-tight">
-              AdSense Compliance & Editorial SOP Suite
+              AdSense Compliance &amp; Editorial SOP Suite
             </h2>
             <p className="text-[11px] text-slate-500">
-              Audit domains against the 100-Point AdSense Pre-Submission SOP, verify Content Development & E-E-A-T standards, and deploy 1-click code fixes.
+              Audit domains against the 100-Point AdSense Pre-Submission SOP, verify E-E-A-T standards, and generate the 5 mandatory trust pages with free legal templates.
             </p>
           </div>
         </div>
@@ -69,7 +69,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
             }`}
           >
             <Zap className="w-3.5 h-3.5 text-amber-300" />
-            <span>1-Click Code & Legal Generators</span>
+            <span>5 Mandatory Trust Pages (Free Templates)</span>
           </button>
         </div>
       </div>

@@ -139,6 +139,7 @@ export type SiteAuditMode = 'pre-approval' | 'rejection-doctor';
 
 export type RejectionCategory =
   | 'low-value-content'
+  | 'valuable-inventory-under-construction'
   | 'site-behavior-navigation'
   | 'site-down-or-unavailable'
   | 'scraped-unoriginal'

@@ -201,6 +201,74 @@ export const SiteDoctorEducation: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Chapter 5: How to Resolve "Valuable Inventory: Under Construction" in Google AdSense */}
+      <section className="space-y-4 border-t border-slate-100 pt-6">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-amber-600" />
+            <span>5. How to Resolve "Valuable Inventory: Under Construction" in Google AdSense</span>
+          </h3>
+          <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+            KD: 14 • Policy Compliance Checklist
+          </span>
+        </div>
+        <p className="text-sm">
+          The <em>&quot;Valuable Inventory: Under Construction&quot;</em> policy rejection occurs when Google’s automated review crawlers or human quality raters discover incomplete infrastructure, unpopulated taxonomy archives, or placeholder navigational elements. To resolve this error permanently, complete every step in this operational checklist:
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-amber-600" />
+              1. Eliminate Placeholder Anchor Links (href=&quot;#&quot;)
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Theme templates frequently include dummy social icons or menu items linked to <code>#</code> or <code>javascript:void(0)</code>. Replace every dummy anchor with a real destination URL or remove the element completely.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-amber-600" />
+              2. Purge Zero-Post Categories &amp; Tags
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              If a category archive or tag page lists &quot;No posts found&quot; or contains fewer than 3 published articles, Google classifies it as an unfinished, under-construction silo. Delete empty taxonomies before requesting review.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-amber-600" />
+              3. Strip All &quot;Coming Soon&quot; &amp; &quot;WIP&quot; Text Tokens
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Automated scanners search for strings like &quot;Under Construction&quot;, &quot;Coming Soon&quot;, &quot;Work in Progress&quot;, or &quot;Features Launching Soon&quot;. Eradicate all such teaser banners; only publish completed tools and guides.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-amber-600" />
+              4. Complete Interactive Tool Mathematical Utility
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              If your site features web calculators or converters, ensure all input fields calculate results client-side with zero console errors. Provide at least 800 words of formula documentation per tool.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-1 md:col-span-2">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-amber-600" />
+              5. Verify 100% Navigation Crawl Integrity in Search Console
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Run your XML sitemap through Google Search Console. Ensure 100% of submitted URLs return HTTP 200 OK with zero 404 Not Found or 301 redirect chains. Re-submit only after Search Console verifies indexation.
+            </p>
+          </div>
+        </div>
+      </section>
     </article>
   );
 };

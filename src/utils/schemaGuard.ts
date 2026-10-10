@@ -61,12 +61,12 @@ export const MASTER_SCHEMA_GRAPH = {
     {
       '@type': 'WebApplication',
       '@id': `${BASE_URL}/#site-doctor`,
-      name: 'GladSense Site Auditor & Policy Doctor',
+      name: 'Free Google AdSense Eligibility & Policy Readiness Checker Tool',
       url: `${BASE_URL}/#site-doctor`,
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'All',
       browserRequirements: 'Requires JavaScript. Requires HTML5.',
-      description: 'Automated 100-point diagnostic scanner evaluating web applications against Google Publisher Policies and Human Search Quality Rater E-E-A-T guidelines.',
+      description: 'Free online Google AdSense eligibility and policy readiness checker tool. Evaluates 100 criteria including Low Value Content risk, Valuable Inventory Under Construction flags, and E-E-A-T depth.',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -74,6 +74,8 @@ export const MASTER_SCHEMA_GRAPH = {
         availability: 'https://schema.org/InStock',
       },
       featureList: [
+        'Free Google AdSense Eligibility Checker Tool',
+        'Valuable Inventory: Under Construction Remediation Protocol',
         '100-Point AdSense Readiness Checklist',
         'Rejection Doctor Diagnostic Scan',
         'AI Footprint & Cliché Density Analysis',
@@ -114,12 +116,12 @@ export const MASTER_SCHEMA_GRAPH = {
     {
       '@type': 'WebApplication',
       '@id': `${BASE_URL}/#policy-toolkit`,
-      name: 'GladSense 1-Click Policy & ads.txt Generator',
+      name: 'The 5 Mandatory Trust Pages & Legal Suite Generator',
       url: `${BASE_URL}/#policy-toolkit`,
       applicationCategory: 'UtilitiesApplication',
       operatingSystem: 'All',
       browserRequirements: 'Requires JavaScript. Requires HTML5.',
-      description: 'Zero-cost client-side generators for IAB Tech Lab ads.txt, GDPR Consent Mode v2, and DoubleClick DART Privacy Policies.',
+      description: 'Free copy-paste generators for the 5 mandatory trust pages required for Google AdSense approval: Privacy Policy, Terms, Disclaimer, About Us, and AI Transparency.',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -136,6 +138,38 @@ export const MASTER_SCHEMA_GRAPH = {
           acceptedAnswer: {
             '@type': 'Answer',
             text: 'To fix low value content in Google AdSense for 2026: 1) Expand page inventory to at least 15–20 distinct indexed articles or tools with 800+ words of explanatory documentation; 2) Eliminate duplicate boilerplate so text similarity across the domain is under 15%; 3) Add first-party Information Gain (original datasets, comparison tables, or first-hand testing); 4) Run our live Site Doctor auditor to identify thin pages and robotic AI cliché patterns; 5) Add verifiable author credentials with Schema.org Person microdata.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How to resolve "Valuable Inventory: Under Construction" in Google AdSense?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'To resolve "Valuable Inventory: Under Construction": 1) Remove all dummy anchor links (href="#") from header, footer, and social menus; 2) Delete empty categories and tags that contain zero or fewer than 3 posts; 3) Purge all "Under Construction", "Coming Soon", and "Work in Progress" text strings; 4) Ensure all interactive web calculators calculate valid numerical results client-side; 5) Confirm 100% crawl integrity with HTTP 200 responses in Google Search Console.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is there a free Google AdSense eligibility checker online?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. GladSense provides a 100% free online Google AdSense Eligibility & Policy Readiness Checker Tool. It performs an instant 100-point audit checking content depth, duplicate text similarity, E-E-A-T trust signals, mobile responsiveness, SSL security, and crawler availability with zero registration required.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What are the 5 mandatory pages required for adsense approval?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'The 5 mandatory trust pages required for Google AdSense approval are: 1) Privacy Policy (with Google AdSense DoubleClick DART cookie and GDPR/CCPA clauses); 2) About Us (with publisher mission and verifiable author credentials); 3) Contact Us (with functional form and active email); 4) Terms of Service; 5) Editorial Standards & AI Transparency Policy.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How to pass adsense site review first attempt?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'To pass Google AdSense site review on your first attempt: 1) Publish 15–20 original articles (1,000+ words) or interactive tools with documentation; 2) Deploy all 5 mandatory trust pages; 3) Eliminate all broken links and empty taxonomy categories; 4) Verify your site is indexed in Google Search Console with sub-2.5s LCP; 5) Achieve a 90%+ readiness score in the GladSense Site Doctor before submitting.',
           },
         },
         {

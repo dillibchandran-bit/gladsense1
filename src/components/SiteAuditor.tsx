@@ -276,29 +276,31 @@ Verified by GladSense AI Auditor`;
 
         <div className="relative max-w-4xl mx-auto text-center space-y-6">
           {/* Clinical Diagnostic Clinic Eyebrow Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-purple-200/80 shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-purple-200/80 shadow-xs flex-wrap justify-center">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 flex items-center gap-1.5">
               <Stethoscope className="w-3.5 h-3.5 text-purple-600" />
-              <span>AdSense Diagnostic Clinic</span>
+              <span>Free Online Auditor • 100-Point Rubric</span>
             </span>
             <span className="text-slate-300">•</span>
-            <span className="text-[11px] font-semibold text-slate-600">100-Point Human Quality Rater Rubric</span>
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              Free Google AdSense Eligibility & Policy Readiness Checker Tool
+            </span>
           </div>
 
           {/* Main Hero Headline */}
           <div className="space-y-2.5">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
-              AdSense <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">Rejection Doctor</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
+              Free Google AdSense Eligibility & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">Policy Readiness Checker</span>
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
               {mode === 'rejection-doctor' ? (
                 <span>
-                  Emergency clinical triage for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, broken navigational flows, and crawler timeouts with an exact prescriptive fix plan.
+                  Emergency clinical triage for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, <strong className="text-slate-900 font-bold">Valuable Inventory: Under Construction</strong> flags, broken navigational flows, and crawler timeouts with an exact prescriptive fix plan.
                 </span>
               ) : (
                 <span>
-                  Pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's 5 core operational gates</strong> before applying to guarantee first-time approval.
+                  Free online pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's 5 core operational gates</strong> (E-E-A-T depth, legal trust pages, mobile performance, clean navigation) before applying to guarantee first-time approval.
                 </span>
               )}
             </p>
@@ -328,7 +330,7 @@ Verified by GladSense AI Auditor`;
               }`}
             >
               <ShieldCheck className="w-4 h-4" />
-              <span>🛡️ Pre-Approval Audit (Check First)</span>
+              <span>🛡️ Pre-Approval Audit (Check Eligibility)</span>
             </button>
           </div>
 
@@ -348,7 +350,8 @@ Verified by GladSense AI Auditor`;
               {/* Quick Preset Triage Chips */}
               <div className="flex items-center gap-1.5 flex-wrap">
                 {[
-                  { id: 'low-value-content', label: 'Low-Value / Thin Content', icon: '⚡' },
+                  { id: 'low-value-content', label: 'Low-Value Content', icon: '⚡' },
+                  { id: 'valuable-inventory-under-construction', label: 'Under Construction', icon: '🚧' },
                   { id: 'site-behavior-navigation', label: 'Navigation / Broken Links', icon: '🔗' },
                   { id: 'scraped-unoriginal', label: 'Scraped / Unoriginal', icon: '⚠️' },
                   { id: 'site-down-or-unavailable', label: 'Site Down / Bot Blocked', icon: '🛑' },
@@ -378,6 +381,7 @@ Verified by GladSense AI Auditor`;
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-purple-500 font-medium"
                 >
                   <option value="low-value-content">Low-value content / Thin content (Most Common Rejection)</option>
+                  <option value="valuable-inventory-under-construction">Valuable inventory: Under construction (Empty categories, dummy links, unfinished tools)</option>
                   <option value="site-behavior-navigation">Site behavior: Navigation (Broken links, dummy href="#", missing menu)</option>
                   <option value="site-down-or-unavailable">Site down or unavailable (Bot timeout, DNS, Cloudflare Turnstile)</option>
                   <option value="scraped-unoriginal">Scraped or unoriginal content (Duplicate text, missing value-add)</option>

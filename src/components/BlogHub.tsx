@@ -139,7 +139,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               </span>
               <span className="text-xs text-slate-400">• Institutional E-E-A-T Standard</span>
               <span className="text-xs text-emerald-400 font-mono font-bold">• 7 Research Divisions</span>
-              <span className="text-xs text-purple-300 font-mono font-bold">• 27 Peer-Reviewed Manuals</span>
+              <span className="text-xs text-purple-300 font-mono font-bold">• {BLOG_POSTS.length} Peer-Reviewed Manuals</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-['Google_Sans',sans-serif]">
               Google AdSense Compliance & Search Monetization Institute
@@ -151,7 +151,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
 
           <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 shrink-0 text-center md:text-right space-y-1">
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Institutional Corpus</div>
-            <div className="text-2xl font-black font-mono text-emerald-400">27 / 27</div>
+            <div className="text-2xl font-black font-mono text-emerald-400">{BLOG_POSTS.length} / {BLOG_POSTS.length}</div>
             <div className="text-[11px] text-slate-400">100% Peer-Reviewed • Zero Fluff</div>
           </div>
         </div>

@@ -12,8 +12,8 @@ interface TabMetadataMap {
 
 const TAB_METADATA: TabMetadataMap = {
   'site-doctor': {
-    title: 'How to Fix Low Value Content in AdSense (2026 Checklist & Live Auditor) — GladSense',
-    description: 'Diagnose and fix Google AdSense Low Value Content rejections in 2026. Run our live site auditor, check 100 E-E-A-T policy criteria, and get instant fixes.',
+    title: 'Free Google AdSense Eligibility & Policy Readiness Checker Tool — GladSense',
+    description: 'Free online Google AdSense eligibility and policy readiness checker tool. Fix Low Value Content in 2026, resolve Valuable Inventory: Under Construction flags, and verify first-attempt approval.',
     canonicalPath: '/#site-doctor',
   },
   'niche-lab': {
@@ -27,13 +27,13 @@ const TAB_METADATA: TabMetadataMap = {
     canonicalPath: '/#revenue-planner',
   },
   'policy-toolkit': {
-    title: '1-Click AdSense Policy & ads.txt Generator — Compliance SOP 2.0',
-    description: 'Generate certified IAB Tech Lab ads.txt files, GDPR Consent Mode v2 policies, and DoubleClick DART legal disclosures in 1 click.',
+    title: 'The 5 Mandatory Trust Pages Required for AdSense Approval (Free Templates) — GladSense',
+    description: 'Generate the 5 mandatory trust pages required for Google AdSense approval: Privacy Policy with DoubleClick DART cookies, Terms, About Us, Contact, and Editorial Standards.',
     canonicalPath: '/#policy-toolkit',
   },
   'blog': {
-    title: 'Knowledge Base: 27 Guides to AdSense Approval & GEO — GladSense',
-    description: 'Comprehensive technical tutorials covering crawler directives, thin content remedies, E-E-A-T author schema, and Core Web Vitals.',
+    title: 'Step-by-Step Guide: Passing Google AdSense Review on Your First Attempt & Knowledge Hub',
+    description: 'Passing Google AdSense review on your first attempt, resolving low value content in 2026, fixing valuable inventory under construction, and E-E-A-T guides.',
     canonicalPath: '/#blog',
   },
 };
