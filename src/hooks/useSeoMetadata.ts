@@ -17,13 +17,13 @@ const TAB_METADATA: TabMetadataMap = {
     canonicalPath: '/#site-doctor',
   },
   'niche-lab': {
-    title: 'KGR Keyword & High-RPM Niche Discovery Lab — GladSense',
-    description: 'Discover low-competition utility niches with Keyword Golden Ratio (KGR < 0.25) formulas and 30+ validated high-yield publisher blueprints.',
+    title: 'Top 50 Highest Paying AdSense Niches: 2026 CPC & Profitability Table — GladSense',
+    description: 'Top 50 highest paying AdSense niches (2026 CPC & profitability table) and Education Niche AdSense RPM Benchmarks (CPC, Page RPM & Earning Potential for gladsenseedu.app).',
     canonicalPath: '/#niche-lab',
   },
   'revenue-planner': {
-    title: 'AdSense RPM & Profit Planner — Edge P&L Yield Modeling',
-    description: 'Calculate traffic yields, geo-tier RPM benchmarks ($18–$65), and $10/year zero-cost server hosting unit economics.',
+    title: 'Google AdSense Revenue Calculator by Niche (2026 Traffic & RPM Estimator) — GladSense',
+    description: 'Google AdSense Revenue Calculator by Niche (2026 Traffic & RPM Estimator). Calculate how much AdSense pays for 1,000 visitors in education and use our RPM vs CPM vs CPC calculator.',
     canonicalPath: '/#revenue-planner',
   },
   'policy-toolkit': {

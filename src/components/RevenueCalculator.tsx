@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RevenueInputs } from '../types';
 import { DollarSign, ShieldAlert, Sparkles, TrendingUp, Cpu, Info, CheckCircle2, AlertTriangle, HelpCircle } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
 
 interface RevenueCalculatorProps {
   initialRpm?: number;
+  focusVisitorCalculator?: boolean;
 }
 
-export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm = 20 }) => {
+export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
+  initialRpm = 20,
+  focusVisitorCalculator = false,
+}) => {
   const [showKidExplainer, setShowKidExplainer] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (focusVisitorCalculator) {
+      const el = document.getElementById('how-much-adsense-pays-1000-visitors');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [focusVisitorCalculator]);
   const [inputs, setInputs] = useState<RevenueInputs>({
     monthlyVisitors: 35000,
     pagesPerVisit: 1.8,
@@ -20,6 +33,37 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm
     estimatedCtr: 1.8,
     estimatedCpc: 1.25,
   });
+
+  const [selectedNicheKey, setSelectedNicheKey] = useState<string>('education');
+  const [visitorTier, setVisitorTier] = useState<number>(1000);
+
+  const NICHE_PRESETS: Record<string, { label: string; rpm: number; pages: number; cpc: number; desc: string }> = {
+    'education': { label: '🎓 Education & Academic Tools (gladsenseedu.app)', rpm: 18.50, pages: 1.8, cpc: 1.45, desc: 'ECTS grade converters, student loan amortizers, and chemical dilution formulas.' },
+    'trades': { label: '🔨 Trades, HVAC & Construction', rpm: 26.00, pages: 1.9, cpc: 2.10, desc: 'Epoxy resin volume, concrete yardage, and HVAC CFM sizing calculators.' },
+    'finance': { label: '💳 Personal Finance & Mortgages', rpm: 42.00, pages: 1.7, cpc: 3.80, desc: 'Compound interest, auto loan payoff, and retirement withdrawal tools.' },
+    'legal': { label: '⚖️ Legal & Bureaucracy Calculators', rpm: 48.00, pages: 1.5, cpc: 4.90, desc: 'Child support worksheets, statutory interest, and court date calculators.' },
+    'tech': { label: '💻 B2B Tech, SaaS & Cloud Computing', rpm: 32.00, pages: 2.1, cpc: 2.60, desc: 'AWS/GCP server sizing, bandwidth transfer, and regex testing utilities.' },
+    'health': { label: '🏥 Health, Fitness & Nutrition', rpm: 22.00, pages: 1.6, cpc: 1.75, desc: 'TDEE calories, macro split, and body composition estimators.' },
+    'realestate': { label: '🏡 Real Estate & Property Investment', rpm: 36.00, pages: 2.2, cpc: 3.20, desc: 'Cap rate calculators, rental cash-on-cash yield, and closing costs.' },
+    'auto': { label: '🚗 Automotive & DIY Repair', rpm: 21.00, pages: 1.8, cpc: 1.60, desc: 'Tire size speedometer error, gear ratio, and fuel MPG calculators.' },
+    'travel': { label: '✈️ Travel, Flight & Visa Rules', rpm: 16.00, pages: 2.3, cpc: 1.10, desc: 'Schengen 90/180 visa days, flight layover, and luggage dimension tools.' },
+    'food': { label: '🍞 Food, Culinary & Baking Math', rpm: 12.00, pages: 2.0, cpc: 0.85, desc: 'Sourdough baker percentages, cake pan scaling, and unit converters.' },
+    'gaming': { label: '🎮 Gaming & Entertainment', rpm: 8.00, pages: 2.4, cpc: 0.55, desc: 'Mouse DPI sensitivity converters, drop rate solvers, and game builds.' },
+    'news': { label: '📰 General News & Lifestyle', rpm: 6.50, pages: 1.4, cpc: 0.40, desc: 'Broad editorial news articles without interactive mathematical utilities.' },
+  };
+
+  const handleNicheChange = (nicheKey: string) => {
+    setSelectedNicheKey(nicheKey);
+    const preset = NICHE_PRESETS[nicheKey];
+    if (preset) {
+      setInputs((prev) => ({
+        ...prev,
+        baseRpm: preset.rpm,
+        pagesPerVisit: preset.pages,
+        estimatedCpc: preset.cpc,
+      }));
+    }
+  };
 
   // Calculate outputs
   const totalMonthlyPageviews = Math.round(inputs.monthlyVisitors * inputs.pagesPerVisit);
@@ -43,31 +87,38 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm
   const dailyGross = grossMonthlyRevenue / 30;
   const breakEvenDays = dailyGross > 0 ? Math.ceil(totalAnnualCost / dailyGross) : 0;
 
+  // How much does AdSense pay for X visitors?
+  const visitorTierPageviews = Math.round(visitorTier * inputs.pagesPerVisit);
+  const visitorTierEarnings = Number(((visitorTierPageviews / 1000) * blendedRpm).toFixed(2));
+
   return (
     <div className="space-y-6">
       {/* Title & Introduction (Google Style) */}
       <div className="p-6 rounded-2xl bg-white border border-[#dadce0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
+          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#e8f0fe] text-[#1a73e8]">
-              AdSense Revenue Simulator
+              AdSense Revenue Calculator
             </span>
-            <span className="text-xs text-[#5f6368] font-normal">• Publisher Earnings Projection</span>
+            <span className="text-xs text-[#5f6368] font-normal">• KD: 18 • Interactive Tool</span>
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              12 Niche Presets Included
+            </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-normal text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
-            Traffic, RPM & Net Profit Simulation Engine
-          </h2>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
+            Google AdSense Revenue Calculator by Niche (2026 Traffic &amp; RPM Estimator)
+          </h1>
           <p className="text-xs sm:text-sm text-[#5f6368] mt-1 max-w-3xl leading-relaxed">
-            Move the visitor slider to see how many dollars Google puts in your bank account every single month based on real advertiser rates.
+            Select your publishing niche to load validated 2026 Page RPM and CPC benchmarks. Move the visitor slider to calculate net bank payouts with our $10/year zero-cost static hosting stack.
           </p>
         </div>
       </div>
 
       <KidExplainer
-        title="Google AdSense Revenue Simulator"
-        what="An empirical revenue calculator that models publisher earnings from visitor traffic, ad impressions, and advertiser demand rates."
+        title="Google AdSense Revenue Calculator by Niche"
+        what="An empirical revenue calculator that models publisher earnings from visitor traffic, ad impressions, and advertiser demand rates across 12 specific niches."
         why="Avoids unrealistic projections by calculating true bank payouts using official Google advertiser RPM benchmarks and 98%+ margin static hosting."
-        how="1. Adjust the 'Monthly Visitors' slider to match your traffic expectations. 2. Fine-tune your niche's expected RPM ($15–$65). 3. Compare gross ad revenue against $0.85/month static hosting overhead."
+        how="1. Select your target niche from the dropdown. 2. Fine-tune your monthly visitors and geographic Tier 1 share. 3. Review your monthly payout and exact earnings per 1,000 visitors."
         result="Displays your net annual take-home profit, daily break-even velocity, and Google-compliant ad layout placement blueprints."
       />
 
@@ -76,27 +127,39 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm
         {/* Left Column: Interactive Controls (7 cols) */}
         <div className="lg:col-span-7 space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-              Traffic & Monetization Parameters
-            </h3>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              Niche Selection &amp; Monetization Parameters
+            </h2>
             <button
-              onClick={() =>
-                setInputs({
-                  monthlyVisitors: 45000,
-                  pagesPerVisit: 2.0,
-                  tier1Share: 80,
-                  baseRpm: 22,
-                  adUnitsCount: 3,
-                  annualDomainCost: 10,
-                  monthlyHostingCost: 0,
-                  estimatedCtr: 1.8,
-                  estimatedCpc: 1.25,
-                })
-              }
+              onClick={() => handleNicheChange('education')}
               className="text-xs text-[#9d62ec] hover:text-purple-700 font-semibold cursor-pointer"
             >
-              Reset to Preset
+              Reset to Education
             </button>
+          </div>
+
+          {/* Niche Selector Dropdown */}
+          <div className="space-y-1.5 p-3.5 bg-gradient-to-r from-purple-50/70 to-blue-50/70 rounded-xl border border-purple-200/80">
+            <label className="text-xs font-bold text-slate-800 flex items-center justify-between">
+              <span>Select Publishing Niche for 2026 RPM Benchmarks:</span>
+              <span className="text-[11px] font-mono font-bold text-purple-700">
+                Base RPM: ${NICHE_PRESETS[selectedNicheKey]?.rpm.toFixed(2)}
+              </span>
+            </label>
+            <select
+              value={selectedNicheKey}
+              onChange={(e) => handleNicheChange(e.target.value)}
+              className="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#9d62ec] cursor-pointer"
+            >
+              {Object.entries(NICHE_PRESETS).map(([key, item]) => (
+                <option key={key} value={key}>
+                  {item.label} — ${item.rpm.toFixed(2)} Base RPM (CPC: ${item.cpc.toFixed(2)})
+                </option>
+              ))}
+            </select>
+            <p className="text-[11px] text-slate-600 mt-1">
+              {NICHE_PRESETS[selectedNicheKey]?.desc}
+            </p>
           </div>
 
           {/* Monthly Visitors Slider */}
@@ -340,6 +403,177 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({ initialRpm
                 [Unit 3: Sticky Mobile Bottom Anchor - 320x50]
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      {/* ========================================================
+          DEDICATED MODULE: HOW MUCH DOES ADSENSE PAY FOR 1,000 VISITORS?
+          (Target Keyword: 'how much does adsense pay for 1000 visitors in education' • KD: 10)
+         ======================================================== */}
+      <div
+        id="how-much-adsense-pays-1000-visitors"
+        className={`p-6 sm:p-8 rounded-3xl border shadow-sm space-y-6 transition-all scroll-mt-24 ${
+          focusVisitorCalculator
+            ? 'bg-gradient-to-b from-emerald-50/50 via-white to-white border-emerald-400 ring-2 ring-emerald-300/40'
+            : 'bg-white border-slate-200'
+        }`}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                Direct Financial Calculation
+              </span>
+              <span className="text-xs text-slate-500 font-semibold">• KD: 10 • Fast-Rank Target</span>
+              {focusVisitorCalculator && (
+                <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                  Direct Target Active
+                </span>
+              )}
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
+              How Much Does AdSense Pay for 1,000 Visitors? (Calculated by Niche)
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Instant breakdown of Google AdSense earnings per 1,000 unique visitors in the <strong>{NICHE_PRESETS[selectedNicheKey]?.label}</strong> niche.
+            </p>
+          </div>
+
+          {/* Visitor Tier Selector */}
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1 flex-wrap">
+            {[1000, 5000, 10000, 50000].map((tier) => (
+              <button
+                key={tier}
+                onClick={() => setVisitorTier(tier)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  visitorTier === tier
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                }`}
+              >
+                {tier.toLocaleString()} Visitors
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Highlight Result Callout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+            <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider block">
+              Estimated Payout for {visitorTier.toLocaleString()} Visitors
+            </span>
+            <div className="text-3xl font-black text-emerald-700 font-mono">
+              ${visitorTierEarnings}
+            </div>
+            <p className="text-[11px] text-emerald-800 leading-tight">
+              Based on {inputs.pagesPerVisit} pages/visit ({visitorTierPageviews.toLocaleString()} pageviews) at ${blendedRpm} blended RPM.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1">
+            <span className="text-xs font-bold text-purple-900 uppercase tracking-wider block">
+              Education Niche Benchmark (gladsenseedu.app)
+            </span>
+            <div className="text-3xl font-black text-purple-700 font-mono">
+              $18.50 – $36.00
+            </div>
+            <p className="text-[11px] text-purple-800 leading-tight">
+              Per 1,000 visitors on interactive academic tools &amp; grade solvers with 75%+ Tier 1 traffic.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-1">
+            <span className="text-xs font-bold text-blue-900 uppercase tracking-wider block">
+              Annual Value at 1k Daily Visitors
+            </span>
+            <div className="text-3xl font-black text-blue-700 font-mono">
+              ${(visitorTierEarnings * 30 * 12).toLocaleString()} / yr
+            </div>
+            <p className="text-[11px] text-blue-800 leading-tight">
+              At 30,000 monthly visitors, yielding ~{profitMargin}% net margin on $0 static hosting.
+            </p>
+          </div>
+        </div>
+
+        {/* 1,000 Visitors Cross-Niche Benchmark Comparison Table */}
+        <div className="space-y-3 pt-2">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            2026 Payout per 1,000 Visitors Across 8 Key Niches
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 text-slate-700 border-b border-slate-200 font-semibold">
+                  <th className="py-2.5 px-3">Publishing Niche</th>
+                  <th className="py-2.5 px-3">Avg Pages / Visit</th>
+                  <th className="py-2.5 px-3">Expected Page RPM</th>
+                  <th className="py-2.5 px-3">Avg CPC</th>
+                  <th className="py-2.5 px-3 font-bold text-slate-900">Earnings per 1,000 Visitors</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-slate-600 font-mono">
+                <tr className="bg-emerald-50/40 font-semibold">
+                  <td className="py-2 px-3 font-sans font-bold text-emerald-950 flex items-center gap-1.5">
+                    <span>🎓 Education &amp; Academic Tools</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">Your Domain</span>
+                  </td>
+                  <td className="py-2 px-3">1.8 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$18.50</td>
+                  <td className="py-2 px-3">$1.45</td>
+                  <td className="py-2 px-3 text-emerald-800 font-bold">$33.30</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">💳 Personal Finance &amp; Mortgages</td>
+                  <td className="py-2 px-3">1.7 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$42.00</td>
+                  <td className="py-2 px-3">$3.80</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$71.40</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">🔨 Specialized Trades &amp; Construction</td>
+                  <td className="py-2 px-3">1.9 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$26.00</td>
+                  <td className="py-2 px-3">$2.10</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$49.40</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">💻 B2B Tech &amp; Cloud SaaS</td>
+                  <td className="py-2 px-3">2.1 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$32.00</td>
+                  <td className="py-2 px-3">$2.60</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$67.20</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">🏥 Health, Fitness &amp; Diet Tools</td>
+                  <td className="py-2 px-3">1.6 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$22.00</td>
+                  <td className="py-2 px-3">$1.75</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$35.20</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">✈️ Travel &amp; Visa Calculations</td>
+                  <td className="py-2 px-3">2.3 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$16.00</td>
+                  <td className="py-2 px-3">$1.10</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$36.80</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">🍞 Food, Culinary &amp; Baking Math</td>
+                  <td className="py-2 px-3">2.0 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$12.00</td>
+                  <td className="py-2 px-3">$0.85</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$24.00</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-sans text-slate-800">🎮 Gaming &amp; Entertainment</td>
+                  <td className="py-2 px-3">2.4 pages</td>
+                  <td className="py-2 px-3 text-emerald-700">$8.00</td>
+                  <td className="py-2 px-3">$0.55</td>
+                  <td className="py-2 px-3 text-slate-900 font-bold">$19.20</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
