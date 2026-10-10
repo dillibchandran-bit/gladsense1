@@ -66,21 +66,54 @@ export const SiteDoctorEducation: React.FC = () => {
 
       {/* Chapter 2: Crawl Budget & Automated AdSense Bots */}
       <section className="space-y-4 border-t border-slate-100 pt-6">
-        <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
-          <Cpu className="w-5 h-5 text-purple-600" />
-          <span>2. Crawl Budget Allocation & The 2-Stage Bot Evaluation Architecture</span>
-        </h3>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Cpu className="w-5 h-5 text-purple-600" />
+            <span>2. Fixing "Site Down or Programmatically Unavailable" for AdSense Crawlers</span>
+          </h3>
+          <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200">
+            KD: 12 • Fast-Rank Target
+          </span>
+        </div>
         <p className="text-sm">
-          AdSense approval does not rely on a single manual review; it executes a strict two-stage pipeline:
+          AdSense approval does not rely solely on manual reviews; it executes an automated two-stage crawler pipeline. Over 30% of technical rejections trigger the error <strong>&quot;Site down or unavailable&quot;</strong>, even when the site renders perfectly in a standard web browser:
         </p>
         <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700 pl-2">
           <li>
-            <strong>Stage 1: Mediapartners-Google Crawler (Structural Validation):</strong> Scans the DOM tree for valid SSL certificates, functional navigation menus, absence of broken 404 links, and compliance with the <code>ads.txt</code> standard. It verifies that interactive tools have corresponding static indexable text documentation.
+            <strong>Stage 1: Mediapartners-Google Crawler (Structural Validation):</strong> Connects from automated datacenter IP blocks. If Cloudflare Bot Fight Mode, Turnstile JS challenges, or Wordfence firewall blocks this user-agent, Google immediately flags the site as unreachable.
           </li>
           <li>
-            <strong>Stage 2: AdSense Content Classifier & Human Quality Inspectors:</strong> Evaluates information depth, textual originality, and primary utility. If over 15% of the text matches published index records, the classifier automatically issues the notorious &quot;Low Value Content&quot; rejection before any human inspector ever sees the domain.
+            <strong>Stage 2: AdSense Content Classifier & Human Quality Inspectors:</strong> Requires a sub-800ms TTFB. Slow shared hosts that take over 1,200ms to return the initial HTML byte cause crawler timeouts, falsely reporting &quot;Site Down&quot;.
           </li>
         </ol>
+
+        {/* 4-Point Technical Troubleshooting Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block">1. Cloudflare WAF Bypass</span>
+            <p className="text-slate-600 text-[11px] leading-relaxed">
+              Add a WAF custom rule to skip Managed Challenges and Bot Fight Mode when <code>http.user_agent contains &quot;Mediapartners-Google&quot;</code>.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block">2. Crawler-Safe robots.txt</span>
+            <p className="text-slate-600 text-[11px] leading-relaxed">
+              Ensure <code>/robots.txt</code> explicitly specifies <code>User-agent: Mediapartners-Google</code> with <code>Allow: /</code>.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block">3. Eliminate Redirect Loops</span>
+            <p className="text-slate-600 text-[11px] leading-relaxed">
+              Verify non-www to www (or vice versa) resolves in a single 301 redirect without infinite canonical loops.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block">4. GSC Live URL Inspection</span>
+            <p className="text-slate-600 text-[11px] leading-relaxed">
+              Test your root URL in Google Search Console URL Inspection to confirm &quot;Page is fetchable&quot; with HTTP 200 OK.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Chapter 3: Original Journalism vs Syndicated & AI Content */}

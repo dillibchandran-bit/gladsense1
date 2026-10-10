@@ -140,6 +140,14 @@ export const MASTER_SCHEMA_GRAPH = {
         },
         {
           '@type': 'Question',
+          name: 'How to fix adsense site down or unavailable error?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'To fix the AdSense "Site down or unavailable" error: 1) Configure your Cloudflare or CDN WAF to bypass Bot Fight Mode and Managed Challenges for user-agent "Mediapartners-Google"; 2) Deploy a crawler-safe /robots.txt granting User-agent: Mediapartners-Google Allow: /; 3) Verify server Time-to-First-Byte (TTFB) is below 800ms; 4) Check for redirect loops (ensure non-www to www redirects cleanly with HTTP 301); 5) Test live fetchability in Google Search Console URL Inspection.',
+          },
+        },
+        {
+          '@type': 'Question',
           name: 'How many published pages are needed before applying for Google AdSense?',
           acceptedAnswer: {
             '@type': 'Answer',

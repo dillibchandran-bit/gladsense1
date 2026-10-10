@@ -143,6 +143,14 @@
             },
             {
               "@type": "Question",
+              "name": "How to fix adsense site down or unavailable error?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "To fix the AdSense 'Site down or unavailable' error: 1) Configure your Cloudflare or CDN WAF to bypass Bot Fight Mode and Managed Challenges for user-agent 'Mediapartners-Google'; 2) Deploy a crawler-safe /robots.txt granting User-agent: Mediapartners-Google Allow: /; 3) Verify server Time-to-First-Byte (TTFB) is below 800ms; 4) Check for redirect loops (ensure non-www to www redirects cleanly with HTTP 301); 5) Test live fetchability in Google Search Console URL Inspection."
+              }
+            },
+            {
+              "@type": "Question",
               "name": "How do I resolve the 'Earnings at risk: ads.txt missing' error?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -256,6 +264,18 @@
           </p>
           <p style="margin-top: 0.75rem;">
             Using the GladSense Live Auditor and 2026 Checklist, webmasters can diagnose their domain's approval probability in real time, identify robotically flagged phrasing, generate 1-click compliant privacy and editorial disclosures, and overturn AdSense rejections in 14 days.
+          </p>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">
+            Fixing "Site Down or Programmatically Unavailable" for AdSense Crawlers
+          </h2>
+          <p>
+            When Google AdSense review crawlers (Mediapartners-Google and Google-InspectionTool) fail to fetch an HTTP 200 OK response within 1,200ms, the review pipeline automatically issues a <strong>"Site down or unavailable"</strong> rejection error.
+          </p>
+          <p style="margin-top: 0.75rem;">
+            This technical blocker is frequently triggered by Cloudflare Managed Challenges or Turnstile CAPTCHAs blocking datacenter IPs, shared hosting Time-to-First-Byte (TTFB) timeouts, canonical www/non-www redirect loops, or restrictive <code>robots.txt</code> files that block commercial advertising bots. GladSense Site Doctor and Policy Toolkit provide tested 1-click crawler bypass WAF rules, edge hosting configurations, and verified robots.txt templates to resolve this error immediately.
           </p>
         </section>
 

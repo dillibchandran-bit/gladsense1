@@ -95,60 +95,104 @@ export const BLOG_POSTS: BlogPost[] = [
 
   {
     id: 'post-2',
-    slug: 'site-navigation-under-construction-fix',
-    title: 'Resolving "Site Behavior: Navigation" & "Under Construction" Rejections',
-    subtitle: 'How to audit and eliminate 404 routes, empty category archives, and dummy anchor links that trigger manual reviewer rejection.',
+    slug: 'fixing-site-down-or-programmatically-unavailable-adsense-crawlers',
+    title: 'Fixing "Site Down or Programmatically Unavailable" for AdSense Crawlers',
+    subtitle: 'The automated network timeouts, Cloudflare WAF bot challenges, DNS routing mismatches, and robots.txt barriers that block Mediapartners-Google.',
     category: 'AdSense Approval & Rejection Doctor',
     intent: 'Informational',
-    readTime: '7 min read',
-    publishDate: 'September 2026',
+    readTime: '8 min read',
+    publishDate: 'October 2026 (Updated for 2026 Policy Release)',
     author: GLADSENSE_AUTHORS.MARCUS,
-    metaTitle: 'Fix Site Behavior Navigation AdSense Rejection',
-    metaDescription: 'Eliminate broken links, dummy anchors, and empty categories to fix the Google AdSense Site Behavior: Navigation rejection.',
-    primaryKeyword: 'site behavior navigation adsense fix',
-    secondaryKeywords: ['adsense under construction error', 'broken links adsense rejection', 'dummy hash links googlebot'],
-    directAnswerSummary: 'The "Site Behavior: Navigation" rejection occurs when Google’s human reviewer or automated crawler encounters broken links (404 errors), dummy navigation anchors pointing to href="#", empty category archives with fewer than 2 published posts, or missing breadcrumbs. To resolve it: run a recursive link crawl across all header and footer links, remove any unlinked or draft pages, delete categories with fewer than 3 posts, and ensure every page on your site is reachable within 2 clicks from the homepage.',
+    metaTitle: 'Fixing "Site Down or Programmatically Unavailable" for AdSense Crawlers',
+    metaDescription: 'Complete step-by-step resolution for the AdSense "Site Down or Programmatically Unavailable" error. Fix Cloudflare Turnstile blocks, TTFB crawler timeouts, and robots.txt.',
+    primaryKeyword: 'adsense site down or unavailable error fix',
+    secondaryKeywords: ['site down or programmatically unavailable adsense', 'mediapartners google crawler blocked', 'cloudflare turnstile adsense rejection', 'googlebot timeout http 200', 'adsense site unreachable'],
+    directAnswerSummary: 'The Google AdSense "Site Down or Unavailable" rejection occurs when Google\'s automated verification bot (Mediapartners-Google or Google-InspectionTool) fails to receive an HTTP 200 OK within 1,200ms. The primary culprits in 2026 are: 1) Cloudflare "Under Attack" Mode or Turnstile JS challenges blocking Google IP ranges; 2) Slow Time-to-First-Byte (TTFB > 800ms) on shared web hosting; 3) A robots.txt directive accidentally disallowing Mediapartners-Google; 4) Missing root DNS apex records (non-www to www redirect loops); 5) SSL handshake TLS 1.3 protocol timeouts. To fix it: allow Mediapartners-Google in your WAF, deploy an unblocked robots.txt, ensure TTFB is sub-300ms, and verify your live domain with the GladSense Site Doctor.',
     sections: [
       {
-        heading: 'Why Human Reviewers Flag Navigation and Site Behavior',
-        content: 'Unlike automated algorithmic filters that evaluate keyword semantics, navigation reviews are conducted by human Quality Inspectors working from Google’s Publisher Review handbook. When an inspector lands on your site, they execute a rapid 3-point click test: 1) Click the primary logo to test root routing; 2) Click main header categories to inspect post count; 3) Click footer policy links. If any link returns a 404, redirects to an empty tag page, or remains an unlinked placeholder, the inspector immediately selects "Site Behavior: Navigation" and terminates the review.',
+        heading: 'Why AdSense Reviewers Report "Site Down" When Your Browser Loads It Fine',
+        content: 'One of the most frustrating publisher experiences is receiving a "Site down or unavailable" denial when you can visit your domain perfectly in your desktop browser. This discrepancy exists because human browser visits execute standard residential IP handshakes, whereas the AdSense Crawler (Mediapartners-Google) connects from headless datacenter IP blocks. If your CDN or firewall (Cloudflare, Wordfence, Sucuri, or AWS WAF) treats automated datacenter requests with a JavaScript CAPTCHA or 403 Forbidden challenge, the AdSense bot immediately marks the domain unreachable and issues an automated rejection notice.',
+        callout: {
+          type: 'warning',
+          text: 'Google AdSense verification bots DO NOT solve CAPTCHAs, Turnstile challenges, or 2-factor authentication gates. Any security challenge served to Mediapartners-Google results in an instant 100% rejection.',
+        },
       },
       {
-        heading: 'The 5 Critical Navigation Traps and How to Fix Them',
-        content: 'Review your site against these 5 common failure points before submitting your application:',
+        heading: 'The 5 Primary Root Causes of AdSense Bot Connection Failures',
+        content: 'Review the technical failure archetypes and their direct engineering remedies below:',
         tableData: {
-          headers: ['Navigation Defect', 'Example Issue', 'Correct Implementation'],
+          headers: ['Technical Failure Point', 'Crawler Symptom', 'Root Cause', 'Direct Engineering Fix'],
           rows: [
-            ['Dummy Anchor Links', '<a href="#">Learn More</a>', 'Replace with real internal URLs or convert to interactive buttons'],
-            ['Ghost Categories', 'Navbar lists "Category 1" or empty niche tags', 'Delete any category containing fewer than 3 published articles'],
-            ['Unlinked Footer Links', 'Footer shows Privacy Policy but link does not open', 'Ensure active, absolute HTTPS URLs on every footer item'],
-            ['Deep Click Depth', 'Pages require 4+ clicks to discover from home', 'Add category breadcrumbs and HTML sitemap links'],
-            ['Broken Social Icons', 'Template includes Twitter/Facebook links to #', 'Configure live social profiles or remove unused icons'],
+            ['Cloudflare WAF / Managed Challenge', 'HTTP 403 / 503 challenge screen', 'Bot Fight Mode or Super Bot Fight Mode active', 'Whitelist user-agent "Mediapartners-Google" in WAF Custom Rules with action "Skip"'],
+            ['Server TTFB Timeout (>1.2s)', 'Connection timed out', 'Sluggish shared hosting / unoptimized database', 'Deploy via Cloudflare Pages or Edge CDN with sub-100ms global TTFB'],
+            ['Robots.txt Accidental Block', 'HTTP 403 / Crawler Disallowed', 'Global "Disallow: /" or missing crawler directive', 'Add explicit "User-agent: Mediapartners-Google / Allow: /" in /robots.txt'],
+            ['DNS Canonical Redirect Loop', 'ERR_TOO_MANY_REDIRECTS', 'Mismatched www vs non-www SSL redirect loop', 'Enforce single 301 permanent redirect to primary apex canonical domain'],
+            ['Incomplete SSL Certificate Chain', 'SSL Handshake Failed', 'Missing intermediate CA bundle on custom host', 'Ensure full-chain TLS certificate with automated renew and TLS 1.2+ support'],
           ],
         },
       },
       {
-        heading: 'Step-by-Step Link Verification Protocol',
-        content: 'Execute this exact technical checklist across your production build:',
-        callout: {
-          type: 'checklist',
-          text: '1. Crawl all internal URLs with 0 HTTP 404 responses. 2. Verify all footer legal documents load valid content. 3. Check mobile hamburger menu on real touch devices (targets >= 48x48px).',
-        },
+        heading: 'Step-by-Step Resolution Blueprint: Ensuring Mediapartners-Google Passes 100%',
+        content: 'Execute this exact 4-step technical protocol to eliminate bot crawler connection errors before re-submitting to Google AdSense:',
+        subheadings: [
+          {
+            title: '1. Whitelist Googlebot in Cloudflare / CDN Security Rules',
+            content: 'Navigate to Security > WAF > Custom Rules in Cloudflare. Create a rule: (http.user_agent contains "Googlebot" or http.user_agent contains "Mediapartners-Google"). Action: Skip all Security Components (WAF, Bot Fight Mode, Rate Limiting).',
+          },
+          {
+            title: '2. Deploy an Unblocked, Authoritative robots.txt File',
+            content: 'Ensure your /robots.txt file at root explicitly grants universal access to Google\'s commercial crawler: User-agent: Mediapartners-Google \\n Allow: / \\n User-agent: * \\n Allow: /.',
+          },
+          {
+            title: '3. Verify Sub-300ms Time-to-First-Byte (TTFB)',
+            content: 'Test your homepage using curl -o /dev/null -s -w "TTFB: %{time_starttransfer}s\\n" https://yourdomain.com/. If TTFB exceeds 0.8s, enable static edge caching or migrate to static serverless hosting like Cloudflare Pages ($0/year).',
+          },
+          {
+            title: '4. Test Domain Reachability via Google Search Console Live URL Inspection',
+            content: 'Inside Google Search Console, input your root URL into the URL Inspection tool and click "Test Live URL". Ensure the screenshot renders your HTML cleanly with "Page is fetchable" and HTTP 200 status.',
+          },
+        ],
+      },
+      {
+        heading: 'Verified Crawler-Safe robots.txt Template',
+        content: 'Deploy this exact snippet to https://yourdomain.com/robots.txt to guarantee zero crawler blockage:',
+        codeSnippet: `# robots.txt - Certified Crawler Directives for Google AdSense
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://yourdomain.com/sitemap.xml`,
       },
     ],
     faqs: [
       {
-        question: 'Can I have empty categories on my site during the AdSense review?',
-        answer: 'No. Empty categories or archive pages containing only 1 article trigger an immediate "Under Construction" rejection. Either publish at least 3 articles per category or consolidate your categories into a single primary hub.',
+        question: 'Why did AdSense reject my site as down or unavailable when it is online?',
+        answer: 'The AdSense crawler (Mediapartners-Google) was blocked by your hosting firewall, Cloudflare Managed Challenge / Bot Fight Mode, an aggressive security plugin, an incomplete SSL certificate chain, or a server response time exceeding 1,200ms.',
       },
       {
-        question: 'Does Google penalize external links in the navigation?',
-        answer: 'External links are permissible if they point to reputable, relevant resources. However, main navigation menus should focus strictly on internal site navigation to prevent user drop-off during manual inspection.',
+        question: 'How do I fix adsense site down or unavailable error quickly?',
+        answer: 'To fix the site down error quickly: 1) Temporarily disable Cloudflare Bot Fight Mode or add a WAF rule skipping challenges for "Mediapartners-Google"; 2) Verify robots.txt allows Mediapartners-Google; 3) Ensure HTTPS resolves without redirect loops; 4) Run Google Search Console Live URL Test to verify HTTP 200 OK; 5) Re-submit your site in the AdSense dashboard.',
+      },
+      {
+        question: 'Does Cloudflare Turnstile or CAPTCHA block AdSense approval?',
+        answer: 'Yes. AdSense review crawlers cannot execute interactive JavaScript challenges or solve CAPTCHAs. Any security barrier shown on homepage visit results in an immediate "Site down or unavailable" rejection.',
+      },
+      {
+        question: 'What user-agent does Google use to review sites for AdSense?',
+        answer: 'Google uses Mediapartners-Google, Google-InspectionTool, and Googlebot. All three must have unrestricted HTTP 200 access to your entire DOM and static assets.',
       },
     ],
     relatedToolLinks: [
-      { label: 'Audit Link Health & 404s', tabId: 'site-doctor' },
-      { label: 'Check Navigation SOP Standards', tabId: 'policy-toolkit' },
+      { label: 'Diagnose Site Availability (Site Doctor)', tabId: 'site-doctor' },
+      { label: 'Download Crawler-Safe robots.txt & ads.txt', tabId: 'policy-toolkit' },
     ],
   },
 
