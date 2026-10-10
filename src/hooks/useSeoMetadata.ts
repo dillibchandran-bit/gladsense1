@@ -12,8 +12,8 @@ interface TabMetadataMap {
 
 const TAB_METADATA: TabMetadataMap = {
   'site-doctor': {
-    title: 'GladSense — Pre-Approval Site Auditor & Rejection Doctor',
-    description: 'Diagnose Google AdSense rejection flags, audit 100 E-E-A-T policy items, detect AI clichés, and generate 1-click compliant overturn bundles.',
+    title: 'How to Fix Low Value Content in AdSense (2026 Checklist & Live Auditor) — GladSense',
+    description: 'Diagnose and fix Google AdSense Low Value Content rejections in 2026. Run our live site auditor, check 100 E-E-A-T policy criteria, and get instant fixes.',
     canonicalPath: '/#site-doctor',
   },
   'niche-lab': {

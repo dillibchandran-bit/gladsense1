@@ -132,6 +132,14 @@ export const MASTER_SCHEMA_GRAPH = {
       mainEntity: [
         {
           '@type': 'Question',
+          name: 'How to fix low value content adsense 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'To fix low value content in Google AdSense for 2026: 1) Expand page inventory to at least 15–20 distinct indexed articles or tools with 800+ words of explanatory documentation; 2) Eliminate duplicate boilerplate so text similarity across the domain is under 15%; 3) Add first-party Information Gain (original datasets, comparison tables, or first-hand testing); 4) Run our live Site Doctor auditor to identify thin pages and robotic AI cliché patterns; 5) Add verifiable author credentials with Schema.org Person microdata.',
+          },
+        },
+        {
+          '@type': 'Question',
           name: 'How many published pages are needed before applying for Google AdSense?',
           acceptedAnswer: {
             '@type': 'Answer',

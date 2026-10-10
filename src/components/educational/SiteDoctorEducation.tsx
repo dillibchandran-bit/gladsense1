@@ -11,13 +11,13 @@ export const SiteDoctorEducation: React.FC = () => {
       <div className="border-b border-slate-100 pb-5 space-y-2">
         <div className="flex items-center gap-2 text-indigo-700 text-xs font-bold uppercase tracking-wider">
           <ShieldCheck className="w-4 h-4 text-indigo-600" />
-          <span>Engineering Reference Manual • Google Publisher Policies 2026</span>
+          <span>Priority 1 Diagnostic Manual • Google Publisher Policies 2026</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
-          How Google Evaluates Websites for AdSense: Technical Architecture, Core Web Vitals & E-E-A-T
+          How to Fix Low Value Content in AdSense (2026 Checklist & Live Auditor)
         </h2>
         <p className="text-sm text-slate-500 max-w-3xl">
-          An authoritative, peer-reviewed engineering breakdown of automated crawler classifiers, Largest Contentful Paint (LCP) ad viewability physics, and how human search quality inspectors grade site utility.
+          An authoritative, peer-reviewed engineering breakdown of automated crawler classifiers, Largest Contentful Paint (LCP) ad viewability physics, and how human search quality inspectors grade site utility to overturn low value content rejections.
         </p>
       </div>
 
@@ -113,6 +113,60 @@ export const SiteDoctorEducation: React.FC = () => {
             <span><strong>Structured FAQ Accordions:</strong> Answer long-tail questions with Schema.org FAQPage JSON-LD microdata for rich search expansion.</span>
           </li>
         </ul>
+      </section>
+
+      {/* Chapter 4: 2026 Low Value Content Checklist & Live Auditor Protocol */}
+      <section className="space-y-4 border-t border-slate-100 pt-6">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-purple-600" />
+            <span>4. 2026 AdSense "Low Value Content" Checklist & Live Auditor Protocol</span>
+          </h3>
+          <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200">
+            KD: 8 • Fast-Rank Target
+          </span>
+        </div>
+        <p className="text-sm">
+          Before requesting review in your Google AdSense console, verify your website against every item in this 2026 pre-flight checklist:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              1. Minimum 15–20 Published Pages
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Every page must offer 1,000+ words of standalone educational content, or 800+ words of scientific documentation per interactive tool view.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              2. Duplicate Text Similarity &lt; 15%
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Prune repetitive headers, boilerplates, and automated archive pages that inflate thin crawl surface area.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              3. Information Gain Over AI Regurgitation
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Replace generic AI phrases with custom empirical benchmarks, comparison tables, original calculations, and practical case studies.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="font-bold text-slate-900 block flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              4. Complete Trust & Policy Disclosure Suite
+            </span>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Mandatory active pages: Privacy Policy (with DoubleClick DART clause), Terms of Service, About Us with author bio, Contact, and Editorial Transparency.
+            </p>
+          </div>
+        </div>
       </section>
     </article>
   );

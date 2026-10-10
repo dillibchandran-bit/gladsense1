@@ -2220,6 +2220,11 @@ Verified by GladSense AI Auditor`;
         </section>
       )}
 
+      {/* Embedded 2026 Checklist & Live Auditor Technical Manual (Rank Target: 'how to fix low value content adsense 2026') */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SiteDoctorEducation />
+      </div>
+
       {/* Persistent Comprehensive Enterprise Explainer Suite */}
       <HomeExplainerSuite
         onSwitchTab={onSwitchTab}
