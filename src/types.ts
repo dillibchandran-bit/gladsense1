@@ -370,3 +370,15 @@ export interface BlogPost {
   relatedToolLinks: { label: string; tabId: string }[];
 }
 
+export interface SocialSharePayload {
+  title: string;
+  url?: string;
+  text?: string;
+  summary?: string;
+  hashtags?: string[];
+  category?: string;
+  score?: number;
+  domain?: string;
+  badgeLabel?: string;
+}
+

@@ -29,12 +29,16 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
+import { useSocialShare } from '../context/SocialShareContext';
+import { createGuideSharePayload } from '../utils/socialShare';
+import { SocialShareBar } from './SocialShareBar';
 
 interface BlogHubProps {
   onNavigateToTab?: (tab: NavTabType) => void;
 }
 
 export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
+  const { openShare } = useSocialShare();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTeam, setSelectedTeam] = useState<string>('All');
@@ -213,13 +217,34 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               <span>← Back to All 27 Guides</span>
             </button>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <SocialShareBar
+                payload={createGuideSharePayload({
+                  title: activeArticle.title,
+                  slug: activeArticle.slug,
+                  category: activeArticle.category,
+                  subtitle: activeArticle.subtitle,
+                })}
+                onOpenFullModal={(p) => openShare(p)}
+                size="sm"
+                showLabel={false}
+              />
+
               <button
-                onClick={() => handleCopySlug(activeArticle.slug)}
-                className="text-xs text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 flex items-center gap-1.5 transition-colors cursor-pointer"
+                onClick={() =>
+                  openShare(
+                    createGuideSharePayload({
+                      title: activeArticle.title,
+                      slug: activeArticle.slug,
+                      category: activeArticle.category,
+                      subtitle: activeArticle.subtitle,
+                    })
+                  )
+                }
+                className="text-xs text-white bg-[#1a73e8] hover:bg-[#1557b0] px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
               >
-                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedLink ? 'Link Copied!' : 'Share Guide'}</span>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Share Guide</span>
               </button>
             </div>
           </div>
@@ -415,6 +440,33 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                 </div>
               </div>
             )}
+
+            {/* Social Share & Citation Box */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50/50 to-slate-50 border border-blue-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-blue-900 block flex items-center gap-1.5">
+                  <Share2 className="w-4 h-4 text-blue-600" />
+                  <span>Found this Google AdSense Guide Helpful?</span>
+                </span>
+                <p className="text-xs text-slate-600 leading-relaxed max-w-md">
+                  Broadcast to your publishing peers on Twitter/X, LinkedIn, Reddit, or WhatsApp. Fast, zero-cookie sharing compliant with Google privacy guidelines.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <SocialShareBar
+                  payload={createGuideSharePayload({
+                    title: activeArticle.title,
+                    slug: activeArticle.slug,
+                    category: activeArticle.category,
+                    subtitle: activeArticle.subtitle,
+                  })}
+                  onOpenFullModal={(p) => openShare(p)}
+                  size="md"
+                  showLabel={true}
+                />
+              </div>
+            </div>
 
             {/* Related Tools Callout */}
             {activeArticle.relatedToolLinks.length > 0 && onNavigateToTab && (
@@ -724,10 +776,31 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                         </div>
                       </div>
 
-                      <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">
-                        <span>Read</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openShare(
+                              createGuideSharePayload({
+                                title: post.title,
+                                slug: post.slug,
+                                category: post.category,
+                                subtitle: post.subtitle,
+                              })
+                            );
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                          title="Share this guide"
+                        >
+                          <Share2 className="w-3.5 h-3.5" />
+                        </button>
+
+                        <span className="font-bold text-[#1a73e8] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                          <span>Read</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );

@@ -10,7 +10,10 @@ import {
   BookOpen,
   ChevronRight,
   Sparkles,
+  Share2,
 } from 'lucide-react';
+import { useSocialShare } from '../context/SocialShareContext';
+import { GladSenseSocialLinks } from './GladSenseSocialLinks';
 
 export type NavTabType =
   | 'site-doctor'
@@ -40,6 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   totalAuditCount,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { openShare } = useSocialShare();
   const readinessPercent = Math.round((auditPassedCount / totalAuditCount) * 100);
 
   const navItems: { id: NavTabType; label: string; icon: React.ElementType; badge?: string }[] = [
@@ -77,14 +81,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Center: Desktop Navigation Tabs (Visible on lg+ screens) */}
-          <nav className="hidden lg:flex items-center space-x-1 sm:space-x-2 h-14 py-0 flex-1 justify-center max-w-3xl">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 h-14 py-0 flex-1 justify-center max-w-3xl">
             {navItems.map((item) => {
               const isActive = isTabActive(item.id);
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative h-14 px-3 xl:px-4 text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  className={`relative h-14 px-2 xl:px-3.5 text-xs xl:text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     isActive
                       ? 'text-[#1a73e8] font-semibold'
                       : 'text-[#4b5563] hover:text-[#111827] hover:bg-slate-50'
@@ -107,10 +111,25 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Suite: Corporate Buttons & Mobile Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Official GladSense Social Channels (LinkedIn, X, YouTube) */}
+            <div className="hidden xl:flex items-center pl-1 pr-2.5 border-r border-slate-200 h-5">
+              <GladSenseSocialLinks variant="minimal" size="sm" />
+            </div>
+
+            {/* Share Platform Button */}
+            <button
+              onClick={() => openShare()}
+              className="px-2.5 sm:px-3 h-8 text-xs font-semibold text-slate-700 hover:text-[#1a73e8] hover:bg-blue-50/80 rounded-lg border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap"
+              title="Share GladSense Suite"
+            >
+              <Share2 className="w-3.5 h-3.5 text-[#1a73e8]" />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+
             {/* Corporate Outline Sign In */}
             <button
               onClick={() => handleNavClick('site-doctor')}
-              className="px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-300 transition-colors cursor-pointer whitespace-nowrap"
+              className="px-2.5 sm:px-3.5 h-8 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-300 transition-colors cursor-pointer whitespace-nowrap flex items-center"
             >
               Sign in
             </button>
@@ -118,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Corporate Solid Brand Button */}
             <button
               onClick={() => handleNavClick('policy-toolkit')}
-              className="px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap"
+              className="px-2.5 sm:px-3.5 h-8 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap flex items-center"
             >
               Sign up
             </button>
@@ -195,19 +214,39 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          <div className="pt-2 border-t border-slate-100 grid grid-cols-2 gap-2">
+          <div className="pt-2 border-t border-slate-100 space-y-2">
             <button
-              onClick={() => handleNavClick('site-doctor')}
-              className="w-full py-2.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center cursor-pointer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openShare();
+              }}
+              className="w-full py-2.5 text-xs font-semibold text-[#1a73e8] bg-blue-50/80 hover:bg-blue-100 rounded-xl border border-blue-200 text-center flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
             >
-              Sign in
+              <Share2 className="w-4 h-4 text-[#1a73e8]" />
+              <span>Share GladSense Suite &amp; Tools</span>
             </button>
-            <button
-              onClick={() => handleNavClick('policy-toolkit')}
-              className="w-full py-2.5 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-xl shadow-xs text-center cursor-pointer"
-            >
-              Sign up Free
-            </button>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => handleNavClick('site-doctor')}
+                className="w-full py-2.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center cursor-pointer"
+              >
+                Sign in
+              </button>
+              <button
+                onClick={() => handleNavClick('policy-toolkit')}
+                className="w-full py-2.5 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-xl shadow-xs text-center cursor-pointer"
+              >
+                Sign up Free
+              </button>
+            </div>
+
+            <div className="pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                Follow Official Channels:
+              </span>
+              <GladSenseSocialLinks variant="pill" size="sm" showLabels={true} />
+            </div>
           </div>
         </div>
       )}

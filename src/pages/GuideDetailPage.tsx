@@ -19,9 +19,13 @@ import {
 } from 'lucide-react';
 import { TrademarkDisclaimer } from '../components/TrademarkDisclaimer';
 import { AdSlotPlaceholder } from '../components/monetization/AdPlaceholders';
+import { SocialShareBar } from '../components/SocialShareBar';
+import { useSocialShare } from '../context/SocialShareContext';
+import { createGuideSharePayload } from '../utils/socialShare';
 
 export const GuideDetailPage: React.FC = () => {
   const { state, navigate } = useAppRouter();
+  const { openShare } = useSocialShare();
   const [copiedLink, setCopiedLink] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
@@ -110,13 +114,10 @@ export const GuideDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={handleCopyLink}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700 shadow-2xs cursor-pointer transition-all"
-          >
-            {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copiedLink ? 'Canonical Link Copied!' : 'Share Guide'}</span>
-          </button>
+          <SocialShareBar
+            payload={createGuideSharePayload(post)}
+            onOpenFullModal={openShare}
+          />
         </div>
       </header>
 

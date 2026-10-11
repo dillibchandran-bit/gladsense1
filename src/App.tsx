@@ -11,6 +11,7 @@ import { SiteAuditor } from './components/SiteAuditor';
 import { CookieConsent } from './components/CookieConsent';
 import { MobileDiscoveryBar } from './components/MobileDiscoveryBar';
 import { MobileBottomNav } from './components/MobileBottomNav';
+import { GladSenseSocialLinks } from './components/GladSenseSocialLinks';
 import { useSeoMetadata } from './hooks/useSeoMetadata';
 
 // Code-split and lazy-load secondary calculation engines, generator suites, and legal modals
@@ -185,9 +186,9 @@ export default function App() {
       )}
 
       {/* GladSense Official Footer with Statutory Trademark Disclaimer & Verified Policy Links */}
-      <footer className="mt-auto py-8 text-xs border-t border-[#dadce0] bg-[#f8f9fa] text-[#5f6368]">
+      <footer className="mt-auto pt-8 pb-24 lg:pb-8 text-xs border-t border-[#dadce0] bg-[#f8f9fa] text-[#5f6368]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div className="flex items-center gap-3">
               <span className="font-['Google_Sans_Display','Google_Sans',sans-serif] font-bold text-sm text-[#202124]">
                 Glad<span className="text-[#1a73e8]">Sense</span> <span className="text-slate-400 font-mono text-xs font-normal">gladsenseedu.app</span>
@@ -195,7 +196,7 @@ export default function App() {
               <span className="text-[#dadce0]">|</span>
               <span className="text-[#5f6368] text-xs">Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
             </div>
-            <div className="flex flex-wrap items-center gap-5 text-[12px] text-[#5f6368]">
+            <div className="flex flex-wrap items-center justify-center sm:justify-end gap-5 text-[12px] text-[#5f6368]">
               <a
                 href="#blog"
                 onClick={(e) => {
@@ -269,6 +270,20 @@ export default function App() {
               </a>
             </div>
           </div>
+
+          {/* Official GladSense Community Channels */}
+          <div className="pt-3 pb-2 border-t border-[#f1f3f4] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-800">
+                Official GladSense Communities:
+              </span>
+              <span className="text-[11px] text-slate-500 hidden md:inline">
+                Follow policy research, live algorithm audits, and video SOP tutorials.
+              </span>
+            </div>
+            <GladSenseSocialLinks variant="pill" size="sm" showLabels={true} className="justify-center sm:justify-end" />
+          </div>
+
           <div className="pt-3 border-t border-[#f1f3f4] text-[11px] text-[#80868b] text-center sm:text-left space-y-1">
             <p className="text-[11px] text-[#5f6368] italic border-b border-[#f1f3f4] pb-2">
               <strong>Editorial Disclosure:</strong> We utilize automated research and linguistic tools to assist our editorial workflow. Every piece of content is fact-checked, structured, and reviewed by human domain specialists prior to publication.

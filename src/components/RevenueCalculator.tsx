@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { RevenueInputs } from '../types';
-import { DollarSign, ShieldAlert, Sparkles, TrendingUp, Cpu, Info, CheckCircle2, AlertTriangle, HelpCircle } from 'lucide-react';
+import { DollarSign, ShieldAlert, Sparkles, TrendingUp, Cpu, Info, CheckCircle2, AlertTriangle, HelpCircle, Share2 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { useSocialShare } from '../context/SocialShareContext';
+import { createRevenueSharePayload } from '../utils/socialShare';
 
 interface RevenueCalculatorProps {
   initialRpm?: number;
@@ -12,6 +14,7 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
   initialRpm = 20,
   focusVisitorCalculator = false,
 }) => {
+  const { openShare } = useSocialShare();
   const [showKidExplainer, setShowKidExplainer] = useState<boolean>(true);
 
   useEffect(() => {
@@ -111,6 +114,27 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
           <p className="text-xs sm:text-sm text-[#5f6368] mt-1 max-w-3xl leading-relaxed">
             Select your publishing niche to load validated 2026 Page RPM and CPC benchmarks. Move the visitor slider to calculate net bank payouts with our $10/year zero-cost static hosting stack.
           </p>
+        </div>
+
+        {/* Share Calculation Trigger */}
+        <div className="shrink-0 flex items-center gap-2">
+          <button
+            onClick={() =>
+              openShare(
+                createRevenueSharePayload({
+                  nicheLabel: NICHE_PRESETS[selectedNicheKey]?.label || 'General Publisher Niche',
+                  rpm: blendedRpm,
+                  monthlyRevenue: grossMonthlyRevenue,
+                  monthlyVisitors: inputs.monthlyVisitors,
+                })
+              )
+            }
+            className="px-4 py-2.5 bg-[#1a73e8] hover:bg-[#1557b0] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+            title="Share this calculation via Twitter/X, LinkedIn, Reddit, WhatsApp, or QR"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            <span>Share Calculation</span>
+          </button>
         </div>
       </div>
 

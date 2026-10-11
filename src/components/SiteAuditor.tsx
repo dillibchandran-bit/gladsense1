@@ -43,6 +43,8 @@ import { HomeExplainerSuite } from './HomeExplainerSuite';
 import { RejectionRemedyModal, RemedyType } from './RejectionRemedyModal';
 import { GeoQuickGuide } from './GeoQuickGuide';
 import { useAppRouter } from '../context/RouterContext';
+import { useSocialShare } from '../context/SocialShareContext';
+import { createAuditSharePayload } from '../utils/socialShare';
 import { TrademarkDisclaimer } from './TrademarkDisclaimer';
 import { SiteDoctorEducation } from './educational/SiteDoctorEducation';
 import { AdSlotPlaceholder, ContextualAffiliateCard } from './monetization/AdPlaceholders';
@@ -53,6 +55,7 @@ interface SiteAuditorProps {
 
 export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const { state } = useAppRouter();
+  const { openShare } = useSocialShare();
   const [mode, setMode] = useState<SiteAuditMode>('rejection-doctor');
   const [url, setUrl] = useState<string>('');
   const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
@@ -844,33 +847,54 @@ Verified by GladSense AI Auditor`;
                   </p>
                 </div>
 
-                {/* Big Semrush-style Circular/Score Badge */}
-                <div className="flex items-center gap-4 bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800 shrink-0">
-                  <div className="text-right">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                      AdSense Approval Probability
-                    </span>
-                    <span className="text-xs text-slate-400">
-                      {result.approvalProbability >= 85
-                        ? 'High Confidence Pass'
-                        : result.approvalProbability >= 60
-                        ? 'Moderate Risk'
-                        : 'Immediate Rejection Risk'}
-                    </span>
-                  </div>
-                  <div className="flex items-baseline">
-                    <span
-                      className={`text-4xl sm:text-5xl font-black font-mono tracking-tight ${
-                        result.approvalProbability >= 85
-                          ? 'text-emerald-400'
+                {/* Big Semrush-style Circular/Score Badge & Share Trigger */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                  <div className="flex items-center justify-between sm:justify-start gap-4 bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                    <div className="text-right">
+                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                        AdSense Approval Probability
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        {result.approvalProbability >= 85
+                          ? 'High Confidence Pass'
                           : result.approvalProbability >= 60
-                          ? 'text-amber-400'
-                          : 'text-rose-400'
-                      }`}
-                    >
-                      {result.approvalProbability}%
-                    </span>
+                          ? 'Moderate Risk'
+                          : 'Immediate Rejection Risk'}
+                      </span>
+                    </div>
+                    <div className="flex items-baseline">
+                      <span
+                        className={`text-4xl sm:text-5xl font-black font-mono tracking-tight ${
+                          result.approvalProbability >= 85
+                            ? 'text-emerald-400'
+                            : result.approvalProbability >= 60
+                            ? 'text-amber-400'
+                            : 'text-rose-400'
+                        }`}
+                      >
+                        {result.approvalProbability}%
+                      </span>
+                    </div>
                   </div>
+
+                  {/* Share Report Trigger Button */}
+                  <button
+                    onClick={() =>
+                      openShare(
+                        createAuditSharePayload({
+                          url: result.url,
+                          score: result.approvalProbability,
+                          status: result.overallStatus,
+                          blockersCount: result.criticalBlockers.length,
+                        })
+                      )
+                    }
+                    className="w-full sm:w-auto px-4 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-blue-400/30 hover:scale-[1.02]"
+                    title="Share this audit report via Twitter/X, LinkedIn, Reddit, WhatsApp, QR or Embed"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    <span>Share Audit Score</span>
+                  </button>
                 </div>
               </div>
 
