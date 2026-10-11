@@ -111,7 +111,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
             }`}
           >
             <Terminal className="w-3.5 h-3.5" />
-            <span>Technical Webmaster (Priority 3)</span>
+            <span>Technical Webmaster</span>
           </button>
 
           <button
@@ -134,24 +134,24 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
       {/* Sub-Tool 2: Content Development SOP & Interactive Pre-Publishing Checklist (SOP v2.0) */}
       {subTab === 'content-sop' && <ContentDevelopmentSop />}
 
-      {/* Sub-Tool 3: Priority 3 Technical Webmaster & Crawl Diagnostics Suite */}
+      {/* Sub-Tool 3: Technical Webmaster & Crawl Diagnostics Suite */}
       {subTab === 'technical-webmaster' && (
         <div className="space-y-6">
-          {/* Priority 3 Technical Navigation Matrix */}
+          {/* Technical Navigation Matrix */}
           <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-md border border-indigo-900/50 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-800/40 pb-3">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-wider text-indigo-300">
-                  Priority 3 Suite • Technical Webmaster &amp; Crawl Diagnostics
+                  Technical Webmaster &amp; Crawl Diagnostics Suite
                 </span>
               </div>
               <span className="text-[11px] text-slate-300">
-                Official Google Search &amp; AdSense Compliance Evaluation Standards
+                Official Google Search &amp; AdSense Compliance Standards
               </span>
             </div>
 
-            {/* 5 Priority Technical Target Tools Grid */}
+            {/* Technical Target Tools Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 pt-1">
               {/* Tool 1 */}
               <button
@@ -170,15 +170,15 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <FileCode className="w-4 h-4 text-indigo-300" />
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      KD: 14
+                      IAB v1.1
                     </span>
                   </div>
                   <div className="font-bold text-xs leading-snug">
-                    1. ads.txt Validator
+                    ads.txt Validator
                   </div>
                 </div>
                 <div className="text-[10px] text-slate-300 mt-2 line-clamp-1">
-                  Free Online Syntax Checker
+                  Online Syntax Checker
                 </div>
               </button>
 
@@ -199,15 +199,15 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <FileText className="w-4 h-4 text-emerald-300" />
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      KD: 8
+                      Googlebot
                     </span>
                   </div>
                   <div className="font-bold text-xs leading-snug">
-                    2. robots.txt AdSense
+                    robots.txt Generator
                   </div>
                 </div>
                 <div className="text-[10px] text-slate-300 mt-2 line-clamp-1">
-                  Mediapartners-Google Directives
+                  Mediapartners Directives
                 </div>
               </button>
 
@@ -228,15 +228,15 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <Lock className="w-4 h-4 text-blue-300" />
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      KD: 17
+                      DART &amp; GDPR
                     </span>
                   </div>
                   <div className="font-bold text-xs leading-snug">
-                    3. Privacy Policy
+                    Privacy Policy
                   </div>
                 </div>
                 <div className="text-[10px] text-slate-300 mt-2 line-clamp-1">
-                  DART Cookie Disclosure Template
+                  Cookie Disclosure Template
                 </div>
               </button>
 
@@ -250,16 +250,16 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <Code2 className="w-4 h-4 text-amber-300" />
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      KD: 6
+                      SPA Guide
                     </span>
                   </div>
                   <div className="font-bold text-xs leading-snug flex items-center justify-between">
-                    <span>4. SPA AdSense Guide</span>
+                    <span>SPA Approval Guide</span>
                     <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-amber-300" />
                   </div>
                 </div>
                 <div className="text-[10px] text-slate-300 mt-2 line-clamp-1">
-                  React / Next.js / Vite Requirements
+                  React / Next.js / Vite Rules
                 </div>
               </button>
 
@@ -273,16 +273,16 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <Server className="w-4 h-4 text-rose-300" />
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                      KD: 11
+                      WAF Bypass
                     </span>
                   </div>
                   <div className="font-bold text-xs leading-snug flex items-center justify-between">
-                    <span>5. Crawler &amp; Firewall</span>
+                    <span>Crawler Firewall Lab</span>
                     <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-rose-300" />
                   </div>
                 </div>
                 <div className="text-[10px] text-slate-300 mt-2 line-clamp-1">
-                  Cloudflare &amp; 403 Forbidden Fix
+                  Cloudflare &amp; 403 Diagnostics
                 </div>
               </button>
             </div>

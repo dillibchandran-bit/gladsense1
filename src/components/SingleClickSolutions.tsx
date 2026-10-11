@@ -855,7 +855,7 @@ export const SingleClickSolutions: React.FC = () => {
                   5 Mandatory Trust Pages Generator
                 </h3>
                 <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
-                  KD: 9 • Free Templates
+                  Free Legal Templates
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 mt-0.5">

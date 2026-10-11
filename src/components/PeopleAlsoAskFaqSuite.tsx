@@ -43,7 +43,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-1',
     exactKeyword: 'how many articles needed for google adsense approval in 2026',
     category: 'Inventory & Content',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'For standard informational blogs, Google AdSense requires between 15 and 20 original, indexed articles averaging 1,000 to 1,500 words each before application submission. Interactive web applications or calculator suites require 5 to 8 distinct tool views, each accompanied by at least 800 words of formula derivations, practical user guides, and structured FAQs.',
     policyHeadEvaluation: {
@@ -69,7 +69,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-2',
     exactKeyword: 'can a 1 month old domain get approved for adsense',
     category: 'Domain & Hosting',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, a 1-month-old domain can get approved for Google AdSense in 2026. Google does not enforce a statutory domain age minimum in most countries (excluding specific territories like China and India, where a 6-month guideline historically applied), provided the site fulfills all content depth, navigation integrity, and legal disclosure policies.',
     policyHeadEvaluation: {
@@ -95,7 +95,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-3',
     exactKeyword: 'does subfolder or subdomain affect adsense approval',
     category: 'Domain & Hosting',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, subdomains and subfolders are evaluated very differently by Google AdSense. In Google AdSense, you must first apply with and gain approval for the root apex domain (e.g., yourdomain.com). Individual subdomains (e.g., tools.yourdomain.com) cannot be submitted for primary site review on standard accounts, whereas subfolders (e.g., yourdomain.com/tools/) inherit root domain approval automatically.',
     policyHeadEvaluation: {
@@ -121,7 +121,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-4',
     exactKeyword: 'what is a good rpm for education blog on adsense',
     category: 'Monetization & RPM',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'A good Page RPM for an education blog or academic tool site on Google AdSense ranges between $18.50 and $36.00 for Tier 1 traffic (US, UK, Canada, Australia). High-intent academic sub-niches—such as professional licensure exam prep (CPA, NCLEX) and higher education grade calculators—reach $28.00 to $34.00 RPM, while general K-12 informational articles average $12.00 to $18.00 RPM.',
     policyHeadEvaluation: {
@@ -147,7 +147,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-5',
     exactKeyword: 'why is my site showing adsense valuable inventory scraped content',
     category: 'Policy & Review',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Google AdSense triggers the "Valuable Inventory: Scraped Content" violation when automated classifiers or human Search Quality Evaluators determine that your pages lack Information Gain. This occurs if your content paraphrases top search results without original data, aggregates automated RSS/news feeds, copies product specifications verbatim, or relies on generic AI summaries without first-party testing.',
     policyHeadEvaluation: {
@@ -173,7 +173,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-6',
     exactKeyword: 'can i apply for adsense without organic search traffic',
     category: 'Inventory & Content',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, you can apply for Google AdSense without organic search traffic, as Google does not publish a statutory minimum traffic number for application eligibility. However, sites with zero organic search impressions face a 70%+ higher rejection risk because review crawlers require verified Google Search Console query logs to validate site legitimacy.',
     policyHeadEvaluation: {
@@ -199,7 +199,7 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
     id: 'paa-7',
     exactKeyword: 'how long does google take to review an adsense site in 2026',
     category: 'Policy & Review',
-    difficulty: 'High Search Volume (PAA Position 0)',
+    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'In 2026, Google AdSense site reviews typically take between 24 hours and 14 days, with the average evaluation completing in 3 to 7 business days. Automated crawl scans occur within the first 48 hours, while secondary algorithmic quality checks and human Quality Evaluator reviews can extend the timeline up to 2 to 4 weeks during policy release cycles.',
     policyHeadEvaluation: {
@@ -308,23 +308,23 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
-                Priority 4 • Position 0 Featured Snippets
+                Publisher Policy FAQ
               </span>
               <span className="text-xs text-indigo-300 font-bold uppercase tracking-wider">
-                Google Search Policies &amp; AdSense Compliance Evaluation Team
+                Google Search Policies &amp; AdSense Compliance Evaluation
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-['Google_Sans',sans-serif]">
-              &quot;People Also Ask&quot; Question Keywords Intelligence
+              &quot;People Also Ask&quot; AdSense Compliance Intelligence
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Targeting these 7 exact high-volume search phrases in your site FAQ section gets your domain pulled directly into Google expandable PAA result accordions. Structured according to the Princeton 3-Pill rule: a 45–55 word direct-answer target paragraph, bulleted evaluation heuristics, and institutional policy guidance.
+              Definitive policy, technical, and operational answers to the most frequently asked Google AdSense questions, evaluated according to official Search Quality Rater Guidelines and crawler systems.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10 shrink-0 text-center md:text-right space-y-1 backdrop-blur-xs">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">PAA Question Roster</div>
-            <div className="text-2xl font-black font-mono text-emerald-400">7 / 7 Key Phrases</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Verified FAQs</div>
+            <div className="text-2xl font-black font-mono text-emerald-400">7 Essential Answers</div>
             <div className="text-[11px] text-slate-300">Schema.org FAQPage Verified</div>
           </div>
         </div>
@@ -335,7 +335,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Filter by exact PAA question or policy trigger..."
+              placeholder="Filter by question keyword or policy topic..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-slate-950/70 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -363,7 +363,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
 
       {/* 7 Questions Interactive Accordion Suite */}
       <div className="space-y-4">
-        {filteredQuestions.map((item, index) => {
+        {filteredQuestions.map((item) => {
           const isOpen = expandedId === item.id;
           const isSerpOpen = showSerpPreview[item.id] ?? showSnippetPreviewByDefault;
 
@@ -384,13 +384,10 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
               >
                 <div className="space-y-1.5 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">
-                      Query #{index + 1}
-                    </span>
-                    <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+                    <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 uppercase tracking-wider">
                       {item.category}
                     </span>
-                    <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                    <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
                       {item.difficulty}
                     </span>
                   </div>
@@ -414,12 +411,12 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
               {/* Accordion Content Body */}
               {isOpen && (
                 <div className="px-5 sm:px-8 pb-6 pt-2 border-t border-slate-100 space-y-6 animate-in fade-in duration-150">
-                  {/* Position 0 Featured Snippet Answer Target Box */}
+                  {/* Direct Answer Compliance Box */}
                   <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-2.5">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
                       <span className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
                         <Sparkles className="w-4 h-4 text-[#1a73e8]" />
-                        <span>Position 0 Direct-Answer Target Paragraph (40–55 Words)</span>
+                        <span>Direct Compliance Answer</span>
                       </span>
                       <button
                         type="button"
@@ -427,7 +424,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                         className="text-[11px] font-bold text-[#1a73e8] hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <Globe className="w-3.5 h-3.5" />
-                        <span>{isSerpOpen ? 'Hide SERP Preview' : 'Show Google SERP Preview'}</span>
+                        <span>{isSerpOpen ? 'Hide Search Preview' : 'Show Google Search Preview'}</span>
                       </button>
                     </div>
 
@@ -440,7 +437,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                   {isSerpOpen && (
                     <div className="p-4 rounded-2xl bg-white border border-slate-300 shadow-sm space-y-2 text-left animate-in fade-in duration-200 font-sans">
                       <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                        Google Search Engine Results Page (SERP) Position 0 Simulation
+                        Google Search Answer Preview
                       </div>
                       <div className="flex items-center gap-2 text-xs text-slate-600">
                         <div className="w-4 h-4 rounded-full bg-[#1a73e8] text-white text-[9px] flex items-center justify-center font-bold">

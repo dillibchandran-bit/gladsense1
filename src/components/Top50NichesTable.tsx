@@ -109,7 +109,7 @@ export const Top50NichesTable: React.FC = () => {
             <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#e8f0fe] text-[#1a73e8]">
               AdSense Market Intelligence
             </span>
-            <span className="text-xs text-[#5f6368] font-normal">• KD: 21 • Top 50 Comprehensive Index</span>
+            <span className="text-xs text-[#5f6368] font-normal">• Top 50 Comprehensive Index</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
             Top 50 Highest Paying AdSense Niches: 2026 CPC &amp; Profitability Table

@@ -103,7 +103,7 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
             <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#e8f0fe] text-[#1a73e8]">
               AdSense Revenue Calculator
             </span>
-            <span className="text-xs text-[#5f6368] font-normal">• KD: 18 • Interactive Tool</span>
+            <span className="text-xs text-[#5f6368] font-normal">• Interactive Calculator</span>
             <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
               12 Niche Presets Included
             </span>
@@ -448,7 +448,7 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
               <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                 Direct Financial Calculation
               </span>
-              <span className="text-xs text-slate-500 font-semibold">• KD: 10 • Fast-Rank Target</span>
+              <span className="text-xs text-slate-500 font-semibold">• 2026 Traffic Benchmark</span>
               {focusVisitorCalculator && (
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
                   Direct Target Active

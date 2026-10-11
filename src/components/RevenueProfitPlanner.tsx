@@ -85,13 +85,13 @@ export const RevenueProfitPlanner: React.FC<RevenueProfitPlannerProps> = ({
         </div>
       </div>
 
-      {/* Sub-Tool 1: Traffic & RPM Earnings Simulator (KD: 18) */}
+      {/* Sub-Tool 1: Traffic & RPM Earnings Simulator */}
       {subTab === 'revenue-sim' && <RevenueCalculator initialRpm={initialRpm} />}
 
-      {/* Sub-Tool 2: Pay for 1,000 Visitors (KD: 10) */}
+      {/* Sub-Tool 2: Pay for 1,000 Visitors */}
       {subTab === 'visitors-1000' && <RevenueCalculator initialRpm={initialRpm} focusVisitorCalculator={true} />}
 
-      {/* Sub-Tool 3: RPM vs CPM vs CPC Formula Calculator (KD: 6) */}
+      {/* Sub-Tool 3: RPM vs CPM vs CPC Formula Calculator */}
       {subTab === 'rpm-cpm-calc' && <RpmCpmCalculator />}
 
       {/* Sub-Tool 4: $10/yr Edge Stack vs WordPress Budget P&L */}

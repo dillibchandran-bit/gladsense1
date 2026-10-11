@@ -190,10 +190,7 @@ Sitemap: ${s}`,
           <div>
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
-                KD: 8 • Very Low Difficulty
-              </span>
-              <span className="text-xs text-slate-400">
-                • Google Search Central Verified Standard
+                Google Search Central Verified Standard
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-['Google_Sans',sans-serif]">

@@ -366,12 +366,12 @@ Verified by GladSense AI Auditor`;
             </button>
           </div>
 
-          {/* Priority 3: Technical Webmaster & Crawl Diagnostics Suite Quick Toolbar */}
+          {/* Technical Webmaster & Crawl Diagnostics Suite Quick Toolbar */}
           <div className="max-w-4xl mx-auto p-3 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl border border-indigo-900/40 shadow-md flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="font-bold text-slate-200">
-                Priority 3 Webmaster Tools:
+                Webmaster Diagnostic Tools:
               </span>
             </div>
             <div className="flex items-center gap-1.5 flex-wrap justify-center">
@@ -385,7 +385,7 @@ Verified by GladSense AI Auditor`;
                 title="Free Online ads.txt Validator & Syntax Checker for Publishers"
               >
                 <FileCode className="w-3.5 h-3.5" />
-                <span>1. ads.txt Validator (KD: 14)</span>
+                <span>ads.txt Validator</span>
               </button>
               <button
                 type="button"
@@ -397,7 +397,7 @@ Verified by GladSense AI Auditor`;
                 title="The Ideal robots.txt for Google AdSense & Googlebot-Image Approval"
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>2. robots.txt (KD: 8)</span>
+                <span>robots.txt Generator</span>
               </button>
               <button
                 type="button"
@@ -409,7 +409,7 @@ Verified by GladSense AI Auditor`;
                 title="Google AdSense Compliant Privacy Policy & Cookie Disclosure Template"
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>3. Privacy Policy (KD: 17)</span>
+                <span>Privacy Policy Generator</span>
               </button>
               <button
                 type="button"
@@ -418,7 +418,7 @@ Verified by GladSense AI Auditor`;
                 title="How to Get Google AdSense Approved on React / Next.js / Vite SPA Apps"
               >
                 <Code2 className="w-3.5 h-3.5" />
-                <span>4. SPA Guide (KD: 6)</span>
+                <span>SPA AdSense Guide</span>
               </button>
               <button
                 type="button"
@@ -427,7 +427,7 @@ Verified by GladSense AI Auditor`;
                 title="How to Fix AdSense Crawler Errors: Cloudflare, Firewalls & 403 Forbidden"
               >
                 <Server className="w-3.5 h-3.5" />
-                <span>5. Firewall Lab (KD: 11)</span>
+                <span>Firewall &amp; 403 Diagnostics</span>
               </button>
             </div>
           </div>

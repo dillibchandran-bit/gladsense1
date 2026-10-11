@@ -11,7 +11,7 @@ export const SiteDoctorEducation: React.FC = () => {
       <div className="border-b border-slate-100 pb-5 space-y-2">
         <div className="flex items-center gap-2 text-indigo-700 text-xs font-bold uppercase tracking-wider">
           <ShieldCheck className="w-4 h-4 text-indigo-600" />
-          <span>Priority 1 Diagnostic Manual • Google Publisher Policies 2026</span>
+          <span>Publisher Diagnostics Manual • Google Publisher Policies 2026</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
           How to Fix Low Value Content in AdSense (2026 Checklist & Live Auditor)
@@ -72,7 +72,7 @@ export const SiteDoctorEducation: React.FC = () => {
             <span>2. Fixing "Site Down or Programmatically Unavailable" for AdSense Crawlers</span>
           </h3>
           <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200">
-            KD: 12 • Fast-Rank Target
+            Crawler &amp; Indexation Guide
           </span>
         </div>
         <p className="text-sm">
@@ -156,7 +156,7 @@ export const SiteDoctorEducation: React.FC = () => {
             <span>4. 2026 AdSense "Low Value Content" Checklist & Live Auditor Protocol</span>
           </h3>
           <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200">
-            KD: 8 • Fast-Rank Target
+            Pre-Flight Audit Protocol
           </span>
         </div>
         <p className="text-sm">
@@ -210,7 +210,7 @@ export const SiteDoctorEducation: React.FC = () => {
             <span>5. How to Resolve "Valuable Inventory: Under Construction" in Google AdSense</span>
           </h3>
           <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
-            KD: 14 • Policy Compliance Checklist
+            Policy Compliance Checklist
           </span>
         </div>
         <p className="text-sm">

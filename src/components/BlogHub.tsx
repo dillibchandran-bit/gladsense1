@@ -658,14 +658,14 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-800/40 pb-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
-                      Priority 3 • KD: 6 (Very Low Difficulty)
+                      Developer Engineering Spotlight
                     </span>
                     <span className="text-xs text-indigo-300 font-bold uppercase tracking-wider">
-                      Technical Docs &amp; Developer SEO
+                      SPA Architecture
                     </span>
                   </div>
                   <span className="text-xs text-slate-300">
-                    Target Keyword: <code className="bg-black/30 px-1.5 py-0.5 rounded text-amber-300 font-mono text-[11px]">single page application adsense approval requirements</code>
+                    Frameworks: <span className="text-amber-300 font-mono text-[11px]">React • Next.js • Vite • Vue</span>
                   </span>
                 </div>
 
@@ -710,7 +710,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                     }}
                     className="hover:text-white underline transition-colors cursor-pointer"
                   >
-                    Free ads.txt Validator (KD: 14)
+                    Free ads.txt Validator
                   </button>
                   <span>•</span>
                   <button
@@ -720,7 +720,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                     }}
                     className="hover:text-white underline transition-colors cursor-pointer"
                   >
-                    robots.txt for AdSense (KD: 8)
+                    robots.txt Generator
                   </button>
                   <span>•</span>
                   <button
@@ -730,7 +730,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                     }}
                     className="hover:text-white underline transition-colors cursor-pointer"
                   >
-                    Privacy Policy Generator (KD: 17)
+                    Privacy Policy Generator
                   </button>
                   <span>•</span>
                   <button
@@ -740,7 +740,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
                     }}
                     className="hover:text-white underline transition-colors cursor-pointer"
                   >
-                    Firewall &amp; 403 Forbidden Lab (KD: 11)
+                    Firewall &amp; 403 Diagnostics Lab
                   </button>
                 </div>
               </div>
