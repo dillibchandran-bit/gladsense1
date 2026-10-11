@@ -13,7 +13,6 @@ import {
   Share2,
 } from 'lucide-react';
 import { useSocialShare } from '../context/SocialShareContext';
-import { GladSenseSocialLinks } from './GladSenseSocialLinks';
 
 export type NavTabType =
   | 'site-doctor'
@@ -81,14 +80,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Center: Desktop Navigation Tabs (Visible on lg+ screens) */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 h-14 py-0 flex-1 justify-center max-w-3xl">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 h-14 py-0 flex-1 justify-center max-w-4xl">
             {navItems.map((item) => {
               const isActive = isTabActive(item.id);
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative h-14 px-2 xl:px-3.5 text-xs xl:text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  className={`relative h-14 px-2.5 xl:px-4 text-[13px] font-medium transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     isActive
                       ? 'text-[#1a73e8] font-semibold'
                       : 'text-[#4b5563] hover:text-[#111827] hover:bg-slate-50'
@@ -111,11 +110,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Suite: Corporate Buttons & Mobile Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Official GladSense Social Channels (LinkedIn, X, YouTube) */}
-            <div className="hidden xl:flex items-center pl-1 pr-2.5 border-r border-slate-200 h-5">
-              <GladSenseSocialLinks variant="minimal" size="sm" />
-            </div>
-
             {/* Share Platform Button */}
             <button
               onClick={() => openShare()}
@@ -134,10 +128,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               Sign in
             </button>
 
-            {/* Corporate Solid Brand Button */}
+            {/* Corporate Solid Brand Button - Links directly to Niche & Keyword Lab */}
             <button
-              onClick={() => handleNavClick('policy-toolkit')}
+              onClick={() => handleNavClick('niche-lab')}
               className="px-2.5 sm:px-3.5 h-8 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap flex items-center"
+              title="Open Niche & Keyword Lab"
             >
               Sign up
             </button>
@@ -234,18 +229,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Sign in
               </button>
               <button
-                onClick={() => handleNavClick('policy-toolkit')}
+                onClick={() => handleNavClick('niche-lab')}
                 className="w-full py-2.5 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-xl shadow-xs text-center cursor-pointer"
               >
                 Sign up Free
               </button>
-            </div>
-
-            <div className="pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                Follow Official Channels:
-              </span>
-              <GladSenseSocialLinks variant="pill" size="sm" showLabels={true} />
             </div>
           </div>
         </div>
