@@ -32,6 +32,7 @@ import { NavTabType } from './Navbar';
 import { useSocialShare } from '../context/SocialShareContext';
 import { createGuideSharePayload } from '../utils/socialShare';
 import { SocialShareBar } from './SocialShareBar';
+import { PeopleAlsoAskFaqSuite } from './PeopleAlsoAskFaqSuite';
 
 interface BlogHubProps {
   onNavigateToTab?: (tab: NavTabType) => void;
@@ -996,6 +997,11 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               </div>
             </div>
           )}
+
+          {/* Priority 4: People Also Ask (PAA) Question Keywords & Position 0 Snippet Accordion Suite */}
+          <div className="mt-14 pt-10 border-t border-slate-200">
+            <PeopleAlsoAskFaqSuite onNavigateToTab={onNavigateToTab as any} />
+          </div>
         </div>
       )}
     </div>

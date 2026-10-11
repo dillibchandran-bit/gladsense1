@@ -40,6 +40,9 @@ const NicheDetailModal = React.lazy(() =>
 const LegalModal = React.lazy(() =>
   import('./components/LegalModal').then((m) => ({ default: m.LegalModal }))
 );
+const PeopleAlsoAskFaqSuite = React.lazy(() =>
+  import('./components/PeopleAlsoAskFaqSuite').then((m) => ({ default: m.PeopleAlsoAskFaqSuite }))
+);
 
 const SuiteSuspenseFallback: React.FC = () => (
   <div className="max-w-7xl mx-auto px-4 py-24 flex flex-col items-center justify-center text-center space-y-4">
@@ -150,6 +153,16 @@ export default function App() {
         {state.route === 'about' && <AboutPage />}
         {state.route === 'contact' && <ContactPage />}
         {state.route === 'editorial-policy' && <EditorialPolicyPage />}
+        {state.route === 'faq' && (
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <React.Suspense fallback={<SuiteSuspenseFallback />}>
+              <PeopleAlsoAskFaqSuite
+                showSnippetPreviewByDefault={true}
+                onNavigateToTab={(tab) => handleTabChange(tab as NavTabType)}
+              />
+            </React.Suspense>
+          </div>
+        )}
 
         {/* Pillar 1: Flagship Site Doctor & Crawler Firewall Diagnostics Lab */}
         {(state.route === 'home' || state.route === 'site-doctor' || state.route === 'crawler-firewall') && (
@@ -166,7 +179,7 @@ export default function App() {
           activeTab === 'niches' ||
           activeTab === 'ai-evaluator' ||
           activeTab === 'kgr') &&
-          !['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'policy-toolkit', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'guides'].includes(state.route) && (
+          !['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'policy-toolkit', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'faq', 'guides'].includes(state.route) && (
             <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
               <React.Suspense fallback={<SuiteSuspenseFallback />}>
                 <NicheKeywordLab
@@ -180,7 +193,7 @@ export default function App() {
 
         {/* Pillar 3: Revenue & Profit Planner */}
         {(state.route === 'adsense-rpm-calculator' ||
-          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'guides'].includes(state.route) &&
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'faq', 'guides'].includes(state.route) &&
             (activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget'))) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
@@ -196,7 +209,7 @@ export default function App() {
         {(state.route === 'ads-txt-generator' ||
           state.route === 'robots-txt' ||
           state.route === 'privacy-policy-generator' ||
-          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'guides'].includes(state.route) &&
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'faq', 'guides'].includes(state.route) &&
             (activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click'))) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
@@ -224,7 +237,7 @@ export default function App() {
 
         {/* Pillar 5: Knowledge Base & Compliance Guides */}
         {(state.route === 'guides' ||
-          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator'].includes(state.route) &&
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'faq'].includes(state.route) &&
             activeTab === 'blog')) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
@@ -282,6 +295,17 @@ export default function App() {
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-bold text-[#1a73e8]"
               >
                 Knowledge Base (30 Guides)
+              </a>
+              <a
+                href="/faq/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/faq/');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
+              >
+                PAA FAQ Intelligence (7)
               </a>
               <a
                 href="/privacy-policy/"

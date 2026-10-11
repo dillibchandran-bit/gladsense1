@@ -25,6 +25,7 @@ import {
   Search,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
+import { PeopleAlsoAskFaqSuite } from './PeopleAlsoAskFaqSuite';
 
 interface HomeExplainerSuiteProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -474,50 +475,9 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
         </div>
       </section>
 
-      {/* 6. Directly Visible FAQ Accordion */}
-      <section className="space-y-6 text-center flex flex-col items-center">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold text-[#1a73e8] uppercase tracking-wider">Frequently Asked Questions</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Google_Sans',sans-serif]">
-            Publisher Questions Answered
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
-            Clear, actionable answers regarding Google AdSense requirements, micro-tool monetization, and policy compliance.
-          </p>
-        </div>
-
-        <div className="w-full max-w-3xl mx-auto space-y-3">
-          {faqs.map((faq, idx) => {
-            const isOpen = expandedFaq === idx;
-            return (
-              <div
-                key={idx}
-                className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs transition-colors text-center"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full p-5 text-center flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors cursor-pointer"
-                >
-                  <span className="text-sm font-bold text-slate-900 font-['Google_Sans',sans-serif] text-center flex-1">
-                    {faq.question}
-                  </span>
-                  {isOpen ? (
-                    <ChevronUp className="w-4 h-4 text-[#1a73e8] shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                  )}
-                </button>
-
-                {isOpen && (
-                  <div className="px-6 pb-5 pt-2 text-xs text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/40 text-center">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      {/* 6. Priority 4: People Also Ask (Position 0 Featured Snippets) Suite */}
+      <section className="w-full">
+        <PeopleAlsoAskFaqSuite onNavigateToTab={(tab) => onSwitchTab?.(tab as NavTabType)} />
       </section>
 
       {/* 7. Knowledge Base Spotlight (30 Peer-Reviewed Guides) */}
@@ -528,7 +488,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
             <span>Official Knowledge Base</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold font-['Google_Sans',sans-serif] text-center">
-            30 In-Depth Publisher Guides & Policy Manuals
+            30 In-Depth Publisher Guides &amp; Policy Manuals
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-center max-w-xl mx-auto">
             Written according to Googlebot technical requirements, Core Ranking systems, and Search Quality Evaluator Guidelines. Covering Low Value Content fixes, E-E-A-T author bios, KGR discovery, and Core Web Vitals.
@@ -545,7 +505,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
           }}
           className="px-6 py-3.5 rounded-2xl bg-white text-slate-900 hover:bg-blue-50 font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer mx-auto"
         >
-          <span>Explore All 27 Guides</span>
+          <span>Explore All 30 Guides</span>
           <ArrowRight className="w-4 h-4 text-[#1a73e8]" />
         </button>
       </section>

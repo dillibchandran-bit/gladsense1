@@ -51,6 +51,11 @@ const TAB_METADATA: TabMetadataMap = {
     description: 'Generate an audit-proof, legally robust Privacy Policy customized for Google AdSense compliance including mandatory DoubleClick DART cookies, Consent Mode v2, and GDPR/CCPA disclosures.',
     canonicalPath: '/tools/privacy-policy-generator/',
   },
+  'faq': {
+    title: 'Google AdSense FAQs & PAA Featured Snippet Answers (2026 Policy Standards) — GladSense',
+    description: 'Direct institutional answers to Google\'s most frequent People Also Ask search queries: required article count, 1-month domain approvals, subfolder vs subdomain authority, and education RPMs.',
+    canonicalPath: '/faq/',
+  },
   'blog': {
     title: 'Google AdSense Compliance & Search Monetization Knowledge Hub — GladSense',
     description: 'Peer-reviewed guides by institutional Search Quality Evaluators. Learn how to fix Low Value Content in 2026, overturn Valuable Inventory flags, and implement E-E-A-T.',
