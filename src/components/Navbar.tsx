@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'niche-lab', label: 'Niche & Keyword Lab', icon: Layers },
     { id: 'revenue-planner', label: 'Revenue & Profit Planner', icon: DollarSign },
     { id: 'policy-toolkit', label: 'Compliance & SOP Suite', icon: Scale, badge: 'SOP 2.0' },
-    { id: 'blog', label: 'Knowledge Base (27)', icon: BookOpen },
+    { id: 'blog', label: 'Knowledge Base (30)', icon: BookOpen },
   ];
 
   const isTabActive = (itemId: NavTabType) => {

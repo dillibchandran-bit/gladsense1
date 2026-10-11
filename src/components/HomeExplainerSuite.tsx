@@ -520,7 +520,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
         </div>
       </section>
 
-      {/* 7. Knowledge Base Spotlight (27 Peer-Reviewed Guides) */}
+      {/* 7. Knowledge Base Spotlight (30 Peer-Reviewed Guides) */}
       <section className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 text-white flex flex-col items-center justify-center text-center space-y-6 shadow-lg max-w-4xl mx-auto w-full">
         <div className="space-y-3 max-w-2xl mx-auto flex flex-col items-center text-center">
           <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold mx-auto">
@@ -528,7 +528,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
             <span>Official Knowledge Base</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold font-['Google_Sans',sans-serif] text-center">
-            27 In-Depth Publisher Guides & Policy Manuals
+            30 In-Depth Publisher Guides & Policy Manuals
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-center max-w-xl mx-auto">
             Written according to Googlebot technical requirements, Core Ranking systems, and Search Quality Evaluator Guidelines. Covering Low Value Content fixes, E-E-A-T author bios, KGR discovery, and Core Web Vitals.

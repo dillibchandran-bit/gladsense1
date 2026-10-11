@@ -28,6 +28,7 @@ import {
   ArrowRight,
   Zap,
   FileText,
+  FileCode,
   DollarSign,
   Code2,
   Users,
@@ -36,6 +37,8 @@ import {
   Share2,
   Printer,
   Link2,
+  Server,
+  Lock,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
@@ -48,15 +51,17 @@ import { createAuditSharePayload } from '../utils/socialShare';
 import { TrademarkDisclaimer } from './TrademarkDisclaimer';
 import { SiteDoctorEducation } from './educational/SiteDoctorEducation';
 import { AdSlotPlaceholder, ContextualAffiliateCard } from './monetization/AdPlaceholders';
+import { CrawlerFirewallDiagnosticsLab } from './technical/CrawlerFirewallDiagnosticsLab';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
+  initialMode?: SiteAuditMode;
 }
 
-export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
-  const { state } = useAppRouter();
+export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab, initialMode }) => {
+  const { state, navigate } = useAppRouter();
   const { openShare } = useSocialShare();
-  const [mode, setMode] = useState<SiteAuditMode>('rejection-doctor');
+  const [mode, setMode] = useState<SiteAuditMode>(initialMode || 'rejection-doctor');
   const [url, setUrl] = useState<string>('');
   const [rejectionReason, setRejectionReason] = useState<RejectionCategory>('low-value-content');
   const [customNotes, setCustomNotes] = useState<string>('');
@@ -74,6 +79,18 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab }) => {
   const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
   const [copiedAiScore, setCopiedAiScore] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<{ [index: number]: boolean }>({});
+
+  useEffect(() => {
+    if (initialMode) {
+      setMode(initialMode);
+    }
+  }, [initialMode]);
+
+  useEffect(() => {
+    if (state.route === 'crawler-firewall' || state.params.mode === 'crawler-firewall') {
+      setMode('crawler-firewall');
+    }
+  }, [state.route, state.params.mode]);
 
   // Auto-run when URL param exists (e.g. /tools/site-doctor/?url=https://example.com)
   useEffect(() => {
@@ -309,32 +326,110 @@ Verified by GladSense AI Auditor`;
             </p>
           </div>
 
-          {/* Clinical Mode Switcher (2 Distinct Operating Modes) */}
-          <div className="inline-flex p-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200 shadow-md gap-1">
+          {/* Clinical Mode Switcher (3 Operating Modes) */}
+          <div className="inline-flex p-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200 shadow-md gap-1 flex-wrap justify-center">
             <button
               type="button"
               onClick={() => setMode('rejection-doctor')}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
                 mode === 'rejection-doctor'
                   ? 'bg-gradient-to-r from-[#9d62ec] to-[#7c3aed] text-white shadow-md shadow-purple-900/20'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <Stethoscope className="w-4 h-4" />
-              <span>🩺 Rejection Doctor (Fix Rejected Site)</span>
+              <span>🩺 Rejection Doctor (Fix Rejection)</span>
             </button>
             <button
               type="button"
               onClick={() => setMode('pre-approval')}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
                 mode === 'pre-approval'
                   ? 'bg-gradient-to-r from-[#1a73e8] to-[#1557b0] text-white shadow-md shadow-blue-900/20'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <ShieldCheck className="w-4 h-4" />
-              <span>🛡️ Pre-Approval Audit (Check Eligibility)</span>
+              <span>🛡️ Pre-Approval Audit</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setMode('crawler-firewall')}
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                mode === 'crawler-firewall'
+                  ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white shadow-md shadow-rose-900/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Server className="w-4 h-4" />
+              <span>🛑 Crawler &amp; Firewall Lab (403 Fixes)</span>
+            </button>
+          </div>
+
+          {/* Priority 3: Technical Webmaster & Crawl Diagnostics Suite Quick Toolbar */}
+          <div className="max-w-4xl mx-auto p-3 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl border border-indigo-900/40 shadow-md flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="font-bold text-slate-200">
+                Priority 3 Webmaster Tools:
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 flex-wrap justify-center">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSwitchTab) onSwitchTab('policy-toolkit');
+                  navigate('/tools/ads-txt-validator/');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-indigo-300 font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="Free Online ads.txt Validator & Syntax Checker for Publishers"
+              >
+                <FileCode className="w-3.5 h-3.5" />
+                <span>1. ads.txt Validator (KD: 14)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSwitchTab) onSwitchTab('policy-toolkit');
+                  navigate('/tools/robots-txt/');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-300 font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="The Ideal robots.txt for Google AdSense & Googlebot-Image Approval"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>2. robots.txt (KD: 8)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSwitchTab) onSwitchTab('policy-toolkit');
+                  navigate('/tools/privacy-policy-generator/');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-blue-300 font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="Google AdSense Compliant Privacy Policy & Cookie Disclosure Template"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>3. Privacy Policy (KD: 17)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/guides/single-page-application-adsense-approval-requirements/')}
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="How to Get Google AdSense Approved on React / Next.js / Vite SPA Apps"
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                <span>4. SPA Guide (KD: 6)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('crawler-firewall')}
+                className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold transition-all flex items-center gap-1 cursor-pointer"
+                title="How to Fix AdSense Crawler Errors: Cloudflare, Firewalls & 403 Forbidden"
+              >
+                <Server className="w-3.5 h-3.5" />
+                <span>5. Firewall Lab (KD: 11)</span>
+              </button>
+            </div>
           </div>
 
           {/* Rejection Reason Triage Bar (In Rejection Doctor mode) */}
@@ -376,6 +471,22 @@ Verified by GladSense AI Auditor`;
                 ))}
               </div>
 
+              {/* Specific shortcut for Site Down / Bot Blocked */}
+              {rejectionReason === 'site-down-or-unavailable' && (
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <span className="text-rose-900 font-semibold">
+                    Cloudflare Turnstile or 403 Forbidden blocking Mediapartners-Google crawlers?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setMode('crawler-firewall')}
+                    className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg text-xs transition-colors shrink-0 cursor-pointer"
+                  >
+                    Launch Firewall Lab →
+                  </button>
+                </div>
+              )}
+
               {/* Extended Dropdown Selector */}
               <div className="pt-1">
                 <select
@@ -395,8 +506,16 @@ Verified by GladSense AI Auditor`;
             </div>
           )}
 
-          {/* CLINICAL COMMAND SEARCH BOX */}
-          <form
+          {/* CRAWLER & FIREWALL DIAGNOSTIC LAB VIEW */}
+          {mode === 'crawler-firewall' && (
+            <div className="pt-2 max-w-4xl mx-auto text-left">
+              <CrawlerFirewallDiagnosticsLab />
+            </div>
+          )}
+
+          {/* CLINICAL COMMAND SEARCH BOX (Only in pre-approval and rejection-doctor modes) */}
+          {mode !== 'crawler-firewall' && (
+            <form
             onSubmit={(e) => {
               e.preventDefault();
               handleRunAudit();
@@ -530,6 +649,7 @@ Verified by GladSense AI Auditor`;
               </div>
             )}
           </form>
+          )}
 
           {/* 4-POINT CLINICAL TRUST & VERIFICATION RIBBON */}
           <div className="pt-1 max-w-3xl mx-auto">
@@ -1143,22 +1263,50 @@ Verified by GladSense AI Auditor`;
                             </div>
                           </div>
 
-                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                             <span className="text-[11px] text-purple-700 font-semibold flex items-center gap-1">
                               <Sparkles className="w-3.5 h-3.5 text-purple-600" />
                               <span>Prescription Ready</span>
                             </span>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setActiveRemedyType(remedy);
-                                setRemedyModalOpen(true);
-                              }}
-                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-98 shrink-0"
-                            >
-                              <Stethoscope className="w-3.5 h-3.5" />
-                              <span>🩺 {remedyLabel}</span>
-                            </button>
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              {remedy === 'ads-txt' && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (onSwitchTab) onSwitchTab('policy-toolkit');
+                                    navigate('/tools/ads-txt-validator/');
+                                  }}
+                                  className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all flex items-center gap-1 cursor-pointer"
+                                >
+                                  <FileCode className="w-3.5 h-3.5 text-indigo-600" />
+                                  <span>Open ads.txt Validator</span>
+                                </button>
+                              )}
+                              {remedy === 'privacy-policy' && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (onSwitchTab) onSwitchTab('policy-toolkit');
+                                    navigate('/tools/privacy-policy-generator/');
+                                  }}
+                                  className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all flex items-center gap-1 cursor-pointer"
+                                >
+                                  <Lock className="w-3.5 h-3.5 text-blue-600" />
+                                  <span>Policy Generator</span>
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setActiveRemedyType(remedy);
+                                  setRemedyModalOpen(true);
+                                }}
+                                className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-98 shrink-0"
+                              >
+                                <Stethoscope className="w-3.5 h-3.5" />
+                                <span>🩺 {remedyLabel}</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       );

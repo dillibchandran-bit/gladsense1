@@ -6,6 +6,9 @@ export type AppRoute =
   | 'adsense-rpm-calculator'
   | 'kgr-keyword-lab'
   | 'ads-txt-generator'
+  | 'robots-txt'
+  | 'privacy-policy-generator'
+  | 'crawler-firewall'
   | 'guides'
   | 'guide-detail'
   | 'privacy-policy'
@@ -20,6 +23,7 @@ export interface RouteState {
   search: string;
   params: Record<string, string>;
   guideSlug?: string;
+  techTool?: 'ads-txt' | 'robots-txt' | 'privacy-policy';
 }
 
 interface RouterContextType {
@@ -44,13 +48,19 @@ export function parseLocation(): RouteState {
   let pathname = window.location.pathname;
   const search = window.location.search;
 
-  // Seamless hash migration
+  // Seamless hash migration for legacy and shared URLs
   if (hash) {
     if (hash === 'site-doctor') pathname = '/tools/site-doctor/';
+    else if (hash === 'crawler-firewall' || hash === 'firewall' || hash === '403-forbidden') pathname = '/tools/crawler-firewall/';
     else if (hash === 'niche-lab' || hash === 'kgr' || hash === 'niches') pathname = '/tools/kgr-keyword-lab/';
     else if (hash === 'revenue-planner' || hash === 'calculator' || hash === 'budget') pathname = '/tools/adsense-rpm-calculator/';
+    else if (hash === 'ads-txt-validator' || hash === 'ads-txt' || hash === 'ads.txt') pathname = '/tools/ads-txt-validator/';
+    else if (hash === 'robots-txt' || hash === 'robots.txt') pathname = '/tools/robots-txt/';
+    else if (hash === 'privacy-policy-generator' || hash === 'privacy-generator') pathname = '/tools/privacy-policy-generator/';
     else if (hash === 'policy-toolkit' || hash === 'audit' || hash === 'single-click') pathname = '/tools/ads-txt-generator/';
-    else if (hash === 'blog') pathname = '/guides/';
+    else if (hash === 'spa-adsense' || hash === 'spa-approval' || hash === 'single-page-application-adsense-approval-requirements' || hash === 'blog-single-page-application-adsense-approval-requirements') pathname = '/guides/single-page-application-adsense-approval-requirements/';
+    else if (hash.startsWith('blog-')) pathname = `/guides/${hash.replace(/^blog-/, '')}/`;
+    else if (hash === 'blog' || hash === 'guides') pathname = '/guides/';
     else if (hash === 'privacy-policy') pathname = '/privacy-policy/';
     else if (hash === 'terms-of-service' || hash === 'terms') pathname = '/terms/';
     else if (hash === 'about-us' || hash === 'about') pathname = '/about/';
@@ -76,6 +86,23 @@ export function parseLocation(): RouteState {
     return { route: 'home', pathname: '/', search, params };
   }
 
+  // Priority 3: Technical Webmaster & Crawl Diagnostics Routes
+  if (cleanPath.startsWith('/tools/crawler-firewall') || cleanPath.startsWith('/tools/site-doctor/crawler-firewall')) {
+    return { route: 'crawler-firewall', pathname: '/tools/crawler-firewall/', search, params };
+  }
+
+  if (cleanPath.startsWith('/tools/ads-txt-validator') || cleanPath === '/tools/ads-txt' || cleanPath === '/tools/ads-txt/') {
+    return { route: 'ads-txt-generator', pathname: '/tools/ads-txt-validator/', search, params, techTool: 'ads-txt' };
+  }
+
+  if (cleanPath.startsWith('/tools/robots-txt')) {
+    return { route: 'robots-txt', pathname: '/tools/robots-txt/', search, params, techTool: 'robots-txt' };
+  }
+
+  if (cleanPath.startsWith('/tools/privacy-policy-generator')) {
+    return { route: 'privacy-policy-generator', pathname: '/tools/privacy-policy-generator/', search, params, techTool: 'privacy-policy' };
+  }
+
   if (cleanPath.startsWith('/tools/site-doctor')) {
     return { route: 'site-doctor', pathname: '/tools/site-doctor/', search, params };
   }
@@ -89,7 +116,7 @@ export function parseLocation(): RouteState {
   }
 
   if (cleanPath.startsWith('/tools/ads-txt-generator')) {
-    return { route: 'ads-txt-generator', pathname: '/tools/ads-txt-generator/', search, params };
+    return { route: 'ads-txt-generator', pathname: '/tools/ads-txt-generator/', search, params, techTool: 'ads-txt' };
   }
 
   if (cleanPath === '/guides' || cleanPath === '/guides/') {

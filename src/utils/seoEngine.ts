@@ -231,7 +231,7 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
     case 'guides': {
       const canonical = `${CANONICAL_BASE}/guides/`;
       return {
-        title: 'AdSense Publisher Knowledge Base & Compliance Guides (27 Tutorials)',
+        title: 'AdSense Publisher Knowledge Base & Compliance Guides (30 Tutorials)',
         description: 'Comprehensive technical tutorials covering crawler directives, thin content remedies, E-E-A-T author schema, and Core Web Vitals optimization.',
         canonical,
         ogType: 'website',

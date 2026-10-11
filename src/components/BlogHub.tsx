@@ -214,7 +214,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               onClick={() => setActiveArticle(null)}
               className="text-xs font-bold text-[#1a73e8] hover:text-[#1557b0] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <span>← Back to All 27 Guides</span>
+              <span>← Back to All {BLOG_POSTS.length} Compliance Guides</span>
             </button>
 
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
@@ -647,6 +647,104 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               </div>
             </div>
           </div>
+
+          {/* Priority 3 Developer SEO & Technical Docs Spotlight */}
+          {(() => {
+            const spaPost = BLOG_POSTS.find((p) => p.slug === 'single-page-application-adsense-approval-requirements');
+            if (!spaPost) return null;
+            return (
+              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white shadow-md border border-indigo-900/40 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-800/40 pb-3">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
+                      Priority 3 • KD: 6 (Very Low Difficulty)
+                    </span>
+                    <span className="text-xs text-indigo-300 font-bold uppercase tracking-wider">
+                      Technical Docs &amp; Developer SEO
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-300">
+                    Target Keyword: <code className="bg-black/30 px-1.5 py-0.5 rounded text-amber-300 font-mono text-[11px]">single page application adsense approval requirements</code>
+                  </span>
+                </div>
+
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="space-y-1.5 max-w-3xl">
+                    <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white font-['Google_Sans',sans-serif]">
+                      How to Get Google AdSense Approved on React / Next.js / Vite SPA Apps
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      The 5 engineering mandates, client-side route listeners, static DOM text ratios (&gt;25%), and prerender architectures required to pass AdSense review on modern single-page applications.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenArticle(spaPost)}
+                      className="px-4 py-2 bg-[#1a73e8] hover:bg-[#1557b0] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>Read Engineering Guide</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleCopySlug(spaPost.slug)}
+                      className="px-3 py-2 bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold rounded-xl transition-all border border-white/10 flex items-center gap-1.5 cursor-pointer"
+                      title="Copy Deep Link"
+                    >
+                      {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedLink ? 'Copied' : 'Copy Link'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Technical Webmaster Cross-Links */}
+                <div className="pt-3 border-t border-indigo-800/30 flex items-center gap-2 flex-wrap text-xs text-slate-300">
+                  <span className="text-slate-400 font-semibold">Webmaster Utility Suite:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onNavigateToTab) onNavigateToTab('policy-toolkit');
+                    }}
+                    className="hover:text-white underline transition-colors cursor-pointer"
+                  >
+                    Free ads.txt Validator (KD: 14)
+                  </button>
+                  <span>•</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onNavigateToTab) onNavigateToTab('policy-toolkit');
+                    }}
+                    className="hover:text-white underline transition-colors cursor-pointer"
+                  >
+                    robots.txt for AdSense (KD: 8)
+                  </button>
+                  <span>•</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onNavigateToTab) onNavigateToTab('policy-toolkit');
+                    }}
+                    className="hover:text-white underline transition-colors cursor-pointer"
+                  >
+                    Privacy Policy Generator (KD: 17)
+                  </button>
+                  <span>•</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onNavigateToTab) onNavigateToTab('site-doctor');
+                    }}
+                    className="hover:text-white underline transition-colors cursor-pointer"
+                  >
+                    Firewall &amp; 403 Forbidden Lab (KD: 11)
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Anchor for smooth page scroll */}
           <div id="blog-posts-grid-anchor" className="scroll-mt-8" />

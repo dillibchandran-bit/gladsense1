@@ -13,6 +13,13 @@ import { MobileDiscoveryBar } from './components/MobileDiscoveryBar';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { GladSenseSocialLinks } from './components/GladSenseSocialLinks';
 import { useSeoMetadata } from './hooks/useSeoMetadata';
+import { useAppRouter } from './context/RouterContext';
+import { GuideDetailPage } from './pages/GuideDetailPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
+import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
+import { EditorialPolicyPage } from './pages/EditorialPolicyPage';
 
 // Code-split and lazy-load secondary calculation engines, generator suites, and legal modals
 const NicheKeywordLab = React.lazy(() =>
@@ -47,12 +54,32 @@ const SuiteSuspenseFallback: React.FC = () => (
 );
 
 export default function App() {
+  const { state, navigate } = useAppRouter();
   const [activeTab, setActiveTab] = useState<NavTabType>('site-doctor');
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | 'about' | 'contact' | null>(null);
   const [showCookiePreferences, setShowCookiePreferences] = useState<boolean>(false);
 
   const [selectedNiche, setSelectedNiche] = useState<Niche | null>(null);
   const [calculatorRpm, setCalculatorRpm] = useState<number>(22);
+
+  // Sync activeTab whenever router state changes
+  useEffect(() => {
+    if (state.route === 'site-doctor' || state.route === 'crawler-firewall' || state.route === 'home') {
+      setActiveTab('site-doctor');
+    } else if (state.route === 'kgr-keyword-lab') {
+      setActiveTab('niche-lab');
+    } else if (state.route === 'adsense-rpm-calculator') {
+      setActiveTab('revenue-planner');
+    } else if (
+      state.route === 'ads-txt-generator' ||
+      state.route === 'robots-txt' ||
+      state.route === 'privacy-policy-generator'
+    ) {
+      setActiveTab('policy-toolkit');
+    } else if (state.route === 'guides') {
+      setActiveTab('blog');
+    }
+  }, [state.route]);
 
   // Persistent Audit Checklist
   const [checklist, setChecklist] = useState<AuditItem[]>(() => {
@@ -80,20 +107,30 @@ export default function App() {
   const handleSimulateInCalculator = (rpm: number) => {
     setCalculatorRpm(rpm);
     setActiveTab('revenue-planner');
+    navigate('/tools/adsense-rpm-calculator/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleTabChange = (tab: NavTabType) => {
+    setActiveTab(tab);
+    if (tab === 'site-doctor') navigate('/tools/site-doctor/');
+    else if (tab === 'niche-lab') navigate('/tools/kgr-keyword-lab/');
+    else if (tab === 'revenue-planner') navigate('/tools/adsense-rpm-calculator/');
+    else if (tab === 'policy-toolkit') navigate('/tools/ads-txt-generator/');
+    else if (tab === 'blog') navigate('/guides/');
   };
 
   const auditPassedCount = checklist.filter((item) => item.isPassed).length;
 
-  // Instant Technical SEO & Schema Guard Synchronization
-  useSeoMetadata(activeTab);
+  // Instant Technical SEO & Schema Guard Synchronization with Priority 3 routes support
+  useSeoMetadata(state.route, state.guideSlug);
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-white text-[#202124] selection:bg-[#d2e3fc] selection:text-[#174ea6]">
       {/* Top Navigation */}
       <Navbar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         auditPassedCount={auditPassedCount}
         totalAuditCount={checklist.length}
       />
@@ -101,31 +138,50 @@ export default function App() {
       {/* Mobile-First Always-Visible Quick Discovery Strip (lg:hidden) */}
       <MobileDiscoveryBar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
       />
 
-      {/* Main Content Area: 4-Pillar Architecture */}
+      {/* Main Content Area */}
       <main className="flex-1 w-full bg-white pb-20 lg:pb-0">
-        {/* Pillar 1: Flagship Site Doctor */}
-        {activeTab === 'site-doctor' && (
-          <SiteAuditor onSwitchTab={(tab) => setActiveTab(tab)} />
+        {/* Dedicated Route Views */}
+        {state.route === 'guide-detail' && <GuideDetailPage />}
+        {state.route === 'privacy-policy' && <PrivacyPolicyPage />}
+        {state.route === 'terms' && <TermsPage />}
+        {state.route === 'about' && <AboutPage />}
+        {state.route === 'contact' && <ContactPage />}
+        {state.route === 'editorial-policy' && <EditorialPolicyPage />}
+
+        {/* Pillar 1: Flagship Site Doctor & Crawler Firewall Diagnostics Lab */}
+        {(state.route === 'home' || state.route === 'site-doctor' || state.route === 'crawler-firewall') && (
+          <SiteAuditor
+            onSwitchTab={handleTabChange}
+            initialMode={state.route === 'crawler-firewall' ? 'crawler-firewall' : undefined}
+          />
         )}
 
         {/* Pillar 2: Niche & Keyword Lab */}
-        {(activeTab === 'niche-lab' || activeTab === 'niches' || activeTab === 'ai-evaluator' || activeTab === 'kgr') && (
-          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <React.Suspense fallback={<SuiteSuspenseFallback />}>
-              <NicheKeywordLab
-                initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
-                onSelectNiche={(niche) => setSelectedNiche(niche)}
-                onSimulateInCalculator={handleSimulateInCalculator}
-              />
-            </React.Suspense>
-          </div>
-        )}
+        {(state.route === 'kgr-keyword-lab' ||
+          (state.route === 'home' && false) ||
+          activeTab === 'niche-lab' ||
+          activeTab === 'niches' ||
+          activeTab === 'ai-evaluator' ||
+          activeTab === 'kgr') &&
+          !['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'policy-toolkit', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'guides'].includes(state.route) && (
+            <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+              <React.Suspense fallback={<SuiteSuspenseFallback />}>
+                <NicheKeywordLab
+                  initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
+                  onSelectNiche={(niche) => setSelectedNiche(niche)}
+                  onSimulateInCalculator={handleSimulateInCalculator}
+                />
+              </React.Suspense>
+            </div>
+          )}
 
         {/* Pillar 3: Revenue & Profit Planner */}
-        {(activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget') && (
+        {(state.route === 'adsense-rpm-calculator' ||
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator', 'guides'].includes(state.route) &&
+            (activeTab === 'revenue-planner' || activeTab === 'calculator' || activeTab === 'budget'))) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <RevenueProfitPlanner
@@ -136,26 +192,45 @@ export default function App() {
           </div>
         )}
 
-        {/* Pillar 4: Compliance & SOP Suite */}
-        {(activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click') && (
+        {/* Pillar 4: Compliance, Policy Toolkit & Priority 3 Technical Webmaster Tools */}
+        {(state.route === 'ads-txt-generator' ||
+          state.route === 'robots-txt' ||
+          state.route === 'privacy-policy-generator' ||
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'guides'].includes(state.route) &&
+            (activeTab === 'policy-toolkit' || activeTab === 'audit' || activeTab === 'single-click'))) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <PolicyToolkit
                 checklist={checklist}
                 onToggleItem={handleToggleAuditItem}
-                initialSubTab={activeTab === 'single-click' ? 'generators' : 'audit-sop'}
+                initialSubTab={
+                  state.route === 'ads-txt-generator' || state.route === 'robots-txt' || state.route === 'privacy-policy-generator'
+                    ? 'technical-webmaster'
+                    : activeTab === 'single-click'
+                    ? 'generators'
+                    : 'audit-sop'
+                }
+                initialTechTool={
+                  state.route === 'robots-txt'
+                    ? 'robots-txt'
+                    : state.route === 'privacy-policy-generator'
+                    ? 'privacy-policy'
+                    : 'ads-txt'
+                }
               />
             </React.Suspense>
           </div>
         )}
 
-        {/* Pillar 5: Knowledge Base & Compliance Guides (27 Blog Posts) */}
-        {activeTab === 'blog' && (
+        {/* Pillar 5: Knowledge Base & Compliance Guides */}
+        {(state.route === 'guides' ||
+          (!['guide-detail', 'privacy-policy', 'terms', 'about', 'contact', 'editorial-policy', 'site-doctor', 'crawler-firewall', 'adsense-rpm-calculator', 'ads-txt-generator', 'robots-txt', 'privacy-policy-generator'].includes(state.route) &&
+            activeTab === 'blog')) && (
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <React.Suspense fallback={<SuiteSuspenseFallback />}>
               <BlogHub
                 onNavigateToTab={(tab) => {
-                  setActiveTab(tab);
+                  handleTabChange(tab);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               />
@@ -198,21 +273,21 @@ export default function App() {
             </div>
             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-5 text-[12px] text-[#5f6368]">
               <a
-                href="#blog"
+                href="/guides/"
                 onClick={(e) => {
                   e.preventDefault();
-                  setActiveTab('blog');
+                  handleTabChange('blog');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-bold text-[#1a73e8]"
               >
-                Knowledge Base (27 Guides)
+                Knowledge Base (30 Guides)
               </a>
               <a
-                href="#privacy-policy"
+                href="/privacy-policy/"
                 onClick={(e) => {
                   e.preventDefault();
-                  setLegalModalType('privacy');
+                  navigate('/privacy-policy/');
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
@@ -226,30 +301,30 @@ export default function App() {
                 Cookie Preferences
               </button>
               <a
-                href="#terms-of-service"
+                href="/terms/"
                 onClick={(e) => {
                   e.preventDefault();
-                  setLegalModalType('terms');
+                  navigate('/terms/');
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
                 Terms of Service
               </a>
               <a
-                href="#about-us"
+                href="/about/"
                 onClick={(e) => {
                   e.preventDefault();
-                  setLegalModalType('about');
+                  navigate('/about/');
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
                 About Us (E-E-A-T)
               </a>
               <a
-                href="#contact"
+                href="/contact/"
                 onClick={(e) => {
                   e.preventDefault();
-                  setLegalModalType('contact');
+                  navigate('/contact/');
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
@@ -300,7 +375,7 @@ export default function App() {
 
       {/* GDPR, CCPA & Google Consent Mode v2 Cookie Banner */}
       <CookieConsent
-        onOpenPrivacyPolicy={() => setLegalModalType('privacy')}
+        onOpenPrivacyPolicy={() => navigate('/privacy-policy/')}
         forceOpen={showCookiePreferences}
         onCloseForce={() => setShowCookiePreferences(false)}
       />
@@ -308,7 +383,7 @@ export default function App() {
       {/* 100% Mobile-First Fixed Bottom Navigation Bar (lg:hidden) */}
       <MobileBottomNav
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
       />
     </div>
   );
