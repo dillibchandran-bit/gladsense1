@@ -52,8 +52,8 @@ const TAB_METADATA: TabMetadataMap = {
     canonicalPath: '/tools/privacy-policy-generator/',
   },
   'faq': {
-    title: 'Google AdSense FAQs & PAA Featured Snippet Answers (2026 Policy Standards) — GladSense',
-    description: 'Direct institutional answers to Google\'s most frequent People Also Ask search queries: required article count, 1-month domain approvals, subfolder vs subdomain authority, and education RPMs.',
+    title: 'Google AdSense Frequently Asked Questions (2026 Approval & Policy Standards) — GladSense',
+    description: 'Authoritative answers to the most common Google AdSense questions: article counts, domain age requirements, subdomains vs subfolders, scraped content fixes, and education RPM benchmarks.',
     canonicalPath: '/faq/',
   },
   'blog': {

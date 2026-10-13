@@ -125,7 +125,7 @@ export default function App() {
 
   const auditPassedCount = checklist.filter((item) => item.isPassed).length;
 
-  // Instant Technical SEO & Schema Guard Synchronization with Priority 3 routes support
+  // Instant Technical SEO & Schema Guard Synchronization
   useSeoMetadata(state.route, state.guideSlug);
 
   return (
@@ -205,7 +205,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Pillar 4: Compliance, Policy Toolkit & Priority 3 Technical Webmaster Tools */}
+        {/* Pillar 4: Compliance, Policy Toolkit & Technical Webmaster Tools */}
         {(state.route === 'ads-txt-generator' ||
           state.route === 'robots-txt' ||
           state.route === 'privacy-policy-generator' ||
@@ -305,7 +305,7 @@ export default function App() {
                 }}
                 className="hover:text-[#1a73e8] transition-colors cursor-pointer font-medium"
               >
-                PAA FAQ Intelligence (7)
+                Frequently Asked Questions
               </a>
               <a
                 href="/privacy-policy/"

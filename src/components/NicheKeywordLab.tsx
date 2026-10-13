@@ -103,10 +103,10 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
         </div>
       </div>
 
-      {/* Sub-Tool 1: Top 50 Highest Paying AdSense Niches: 2026 CPC & Profitability Table (KD: 21) */}
+      {/* Sub-Tool 1: Top 50 Highest Paying AdSense Niches: 2026 CPC & Profitability Table */}
       {subTab === 'top-50-cpc' && <Top50NichesTable />}
 
-      {/* Sub-Tool 2: Education Niche AdSense RPM Benchmarks: CPC, Page RPM & Earning Potential (KD: 7) */}
+      {/* Sub-Tool 2: Education Niche AdSense RPM Benchmarks: CPC, Page RPM & Earning Potential */}
       {subTab === 'education-rpm' && <EducationRpmBenchmarks />}
 
       {/* Sub-Tool 3: Curated Niche Explorer & Matrix */}

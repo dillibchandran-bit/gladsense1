@@ -6,27 +6,18 @@ import {
   ChevronDown,
   ChevronUp,
   Sparkles,
-  Copy,
-  Check,
   ShieldCheck,
-  ExternalLink,
-  BookOpen,
   ArrowRight,
-  Clock,
-  Globe,
-  FileCode,
-  DollarSign,
+  BookOpen,
   AlertTriangle,
-  Layers,
-  Terminal,
 } from 'lucide-react';
 import { useAppRouter } from '../context/RouterContext';
 
 export interface PaaQuestionItem {
   id: string;
   exactKeyword: string;
+  displayQuestion: string;
   category: 'Inventory & Content' | 'Domain & Hosting' | 'Monetization & RPM' | 'Policy & Review';
-  difficulty: string;
   positionZeroSnippet: string;
   policyHeadEvaluation: {
     overview: string;
@@ -38,12 +29,12 @@ export interface PaaQuestionItem {
   recommendedToolLabel?: string;
 }
 
-export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
+export const ADSENSE_POLICY_FAQS: PaaQuestionItem[] = [
   {
     id: 'paa-1',
     exactKeyword: 'how many articles needed for google adsense approval in 2026',
+    displayQuestion: 'How Many Articles Are Needed for Google AdSense Approval in 2026?',
     category: 'Inventory & Content',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'For standard informational blogs, Google AdSense requires between 15 and 20 original, indexed articles averaging 1,000 to 1,500 words each before application submission. Interactive web applications or calculator suites require 5 to 8 distinct tool views, each accompanied by at least 800 words of formula derivations, practical user guides, and structured FAQs.',
     policyHeadEvaluation: {
@@ -68,8 +59,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-2',
     exactKeyword: 'can a 1 month old domain get approved for adsense',
+    displayQuestion: 'Can a 1-Month-Old Domain Get Approved for AdSense?',
     category: 'Domain & Hosting',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, a 1-month-old domain can get approved for Google AdSense in 2026. Google does not enforce a statutory domain age minimum in most countries (excluding specific territories like China and India, where a 6-month guideline historically applied), provided the site fulfills all content depth, navigation integrity, and legal disclosure policies.',
     policyHeadEvaluation: {
@@ -94,8 +85,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-3',
     exactKeyword: 'does subfolder or subdomain affect adsense approval',
+    displayQuestion: 'Does a Subfolder or Subdomain Affect AdSense Approval?',
     category: 'Domain & Hosting',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, subdomains and subfolders are evaluated very differently by Google AdSense. In Google AdSense, you must first apply with and gain approval for the root apex domain (e.g., yourdomain.com). Individual subdomains (e.g., tools.yourdomain.com) cannot be submitted for primary site review on standard accounts, whereas subfolders (e.g., yourdomain.com/tools/) inherit root domain approval automatically.',
     policyHeadEvaluation: {
@@ -120,8 +111,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-4',
     exactKeyword: 'what is a good rpm for education blog on adsense',
+    displayQuestion: 'What is a Good Page RPM for an Education Blog on AdSense?',
     category: 'Monetization & RPM',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'A good Page RPM for an education blog or academic tool site on Google AdSense ranges between $18.50 and $36.00 for Tier 1 traffic (US, UK, Canada, Australia). High-intent academic sub-niches—such as professional licensure exam prep (CPA, NCLEX) and higher education grade calculators—reach $28.00 to $34.00 RPM, while general K-12 informational articles average $12.00 to $18.00 RPM.',
     policyHeadEvaluation: {
@@ -146,8 +137,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-5',
     exactKeyword: 'why is my site showing adsense valuable inventory scraped content',
+    displayQuestion: 'Why is My Site Showing "Valuable Inventory: Scraped Content"?',
     category: 'Policy & Review',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Google AdSense triggers the "Valuable Inventory: Scraped Content" violation when automated classifiers or human Search Quality Evaluators determine that your pages lack Information Gain. This occurs if your content paraphrases top search results without original data, aggregates automated RSS/news feeds, copies product specifications verbatim, or relies on generic AI summaries without first-party testing.',
     policyHeadEvaluation: {
@@ -172,8 +163,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-6',
     exactKeyword: 'can i apply for adsense without organic search traffic',
+    displayQuestion: 'Can I Apply for AdSense Without Organic Search Traffic?',
     category: 'Inventory & Content',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'Yes, you can apply for Google AdSense without organic search traffic, as Google does not publish a statutory minimum traffic number for application eligibility. However, sites with zero organic search impressions face a 70%+ higher rejection risk because review crawlers require verified Google Search Console query logs to validate site legitimacy.',
     policyHeadEvaluation: {
@@ -198,8 +189,8 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   {
     id: 'paa-7',
     exactKeyword: 'how long does google take to review an adsense site in 2026',
+    displayQuestion: 'How Long Does Google Take to Review an AdSense Site in 2026?',
     category: 'Policy & Review',
-    difficulty: 'Verified Policy Answer',
     positionZeroSnippet:
       'In 2026, Google AdSense site reviews typically take between 24 hours and 14 days, with the average evaluation completing in 3 to 7 business days. Automated crawl scans occur within the first 48 hours, while secondary algorithmic quality checks and human Quality Evaluator reviews can extend the timeline up to 2 to 4 weeks during policy release cycles.',
     policyHeadEvaluation: {
@@ -223,6 +214,9 @@ export const PRIORITY_4_PAA_QUESTIONS: PaaQuestionItem[] = [
   },
 ];
 
+// Retain alias for existing imports
+export const PRIORITY_4_PAA_QUESTIONS = ADSENSE_POLICY_FAQS;
+
 interface PeopleAlsoAskFaqSuiteProps {
   onNavigateToTab?: (tab: string) => void;
   showSnippetPreviewByDefault?: boolean;
@@ -230,20 +224,18 @@ interface PeopleAlsoAskFaqSuiteProps {
 
 export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
   onNavigateToTab,
-  showSnippetPreviewByDefault = false,
 }) => {
   const { navigate } = useAppRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [expandedId, setExpandedId] = useState<string | null>('paa-1');
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [showSerpPreview, setShowSerpPreview] = useState<{ [id: string]: boolean }>({});
 
   const categories = ['All', 'Inventory & Content', 'Domain & Hosting', 'Monetization & RPM', 'Policy & Review'];
 
-  const filteredQuestions = PRIORITY_4_PAA_QUESTIONS.filter((item) => {
+  const filteredQuestions = ADSENSE_POLICY_FAQS.filter((item) => {
     const matchesCat = selectedCategory === 'All' || item.category === selectedCategory;
     const matchesQuery =
+      item.displayQuestion.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.exactKeyword.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.positionZeroSnippet.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.policyHeadEvaluation.overview.toLowerCase().includes(searchQuery.toLowerCase());
@@ -252,38 +244,6 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
 
   const toggleAccordion = (id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
-  };
-
-  const toggleSerpPreview = (id: string) => {
-    setShowSerpPreview((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const handleCopySnippet = (item: PaaQuestionItem, format: 'markdown' | 'jsonld') => {
-    let textToCopy = '';
-    if (format === 'markdown') {
-      textToCopy = `### ${item.exactKeyword}\n\n${item.positionZeroSnippet}\n\n*Source: GladSense Google AdSense Compliance Evaluation Standards (https://gladsenseedu.app)*`;
-    } else {
-      textToCopy = JSON.stringify(
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Question',
-          name: item.exactKeyword,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.positionZeroSnippet,
-          },
-        },
-        null,
-        2
-      );
-    }
-
-    navigator.clipboard.writeText(textToCopy);
-    setCopiedId(`${item.id}-${format}`);
-    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const handleToolAction = (tabId?: string) => {
@@ -302,40 +262,40 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
 
   return (
     <div className="space-y-8 font-sans">
-      {/* Header Banner */}
+      {/* Header Banner - Clean and Viewer-Centric */}
       <div className="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl space-y-5 border border-indigo-900/50">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
-                Publisher Policy FAQ
+              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold">
+                Publisher Policy FAQs
               </span>
-              <span className="text-xs text-indigo-300 font-bold uppercase tracking-wider">
-                Google Search Policies &amp; AdSense Compliance Evaluation
+              <span className="text-xs text-indigo-300 font-semibold tracking-wide">
+                AdSense Approval &amp; Monetization Standards
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-['Google_Sans',sans-serif]">
-              &quot;People Also Ask&quot; AdSense Compliance Intelligence
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-['Google_Sans',sans-serif]">
+              Google AdSense Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Definitive policy, technical, and operational answers to the most frequently asked Google AdSense questions, evaluated according to official Search Quality Rater Guidelines and crawler systems.
+              Authoritative answers to the most common Google AdSense approval, inventory, and policy questions based on official Search Quality Rater Guidelines and review systems.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10 shrink-0 text-center md:text-right space-y-1 backdrop-blur-xs">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Verified FAQs</div>
-            <div className="text-2xl font-black font-mono text-emerald-400">7 Essential Answers</div>
-            <div className="text-[11px] text-slate-300">Schema.org FAQPage Verified</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Policy Knowledge</div>
+            <div className="text-xl font-bold font-mono text-emerald-400">7 Core Answers</div>
+            <div className="text-[11px] text-slate-300">Updated for 2026 Reviews</div>
           </div>
         </div>
 
-        {/* Quick Search & Filter Controls */}
+        {/* Quick Search & Category Filter */}
         <div className="pt-4 border-t border-indigo-900/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Filter by question keyword or policy topic..."
+              placeholder="Search frequently asked questions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-slate-950/70 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -348,7 +308,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
+                className={`text-xs px-3 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
@@ -361,11 +321,10 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
         </div>
       </div>
 
-      {/* 7 Questions Interactive Accordion Suite */}
+      {/* Accordion List */}
       <div className="space-y-4">
         {filteredQuestions.map((item) => {
           const isOpen = expandedId === item.id;
-          const isSerpOpen = showSerpPreview[item.id] ?? showSnippetPreviewByDefault;
 
           return (
             <div
@@ -376,7 +335,7 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                   : 'border-slate-200 bg-white hover:border-slate-300 shadow-xs'
               }`}
             >
-              {/* Accordion Question Header */}
+              {/* Question Header */}
               <button
                 type="button"
                 onClick={() => toggleAccordion(item.id)}
@@ -387,13 +346,13 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                     <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 uppercase tracking-wider">
                       {item.category}
                     </span>
-                    <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
-                      {item.difficulty}
+                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                      Verified Policy
                     </span>
                   </div>
 
                   <h3 className="text-base sm:text-lg font-bold text-slate-900 font-['Google_Sans',sans-serif] leading-snug">
-                    {item.exactKeyword}
+                    {item.displayQuestion}
                   </h3>
                 </div>
 
@@ -408,24 +367,14 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                 </div>
               </button>
 
-              {/* Accordion Content Body */}
+              {/* Accordion Content */}
               {isOpen && (
                 <div className="px-5 sm:px-8 pb-6 pt-2 border-t border-slate-100 space-y-6 animate-in fade-in duration-150">
-                  {/* Direct Answer Compliance Box */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-2.5">
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-[#1a73e8]" />
-                        <span>Direct Compliance Answer</span>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => toggleSerpPreview(item.id)}
-                        className="text-[11px] font-bold text-[#1a73e8] hover:underline flex items-center gap-1 cursor-pointer"
-                      >
-                        <Globe className="w-3.5 h-3.5" />
-                        <span>{isSerpOpen ? 'Hide Search Preview' : 'Show Google Search Preview'}</span>
-                      </button>
+                  {/* Direct Answer Box */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 uppercase tracking-wider">
+                      <Sparkles className="w-4 h-4 text-[#1a73e8]" />
+                      <span>Direct Answer</span>
                     </div>
 
                     <p className="text-sm font-medium text-slate-800 leading-relaxed bg-white p-3.5 rounded-xl border border-blue-100 shadow-xs">
@@ -433,35 +382,12 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                     </p>
                   </div>
 
-                  {/* Simulated Google SERP Card Preview */}
-                  {isSerpOpen && (
-                    <div className="p-4 rounded-2xl bg-white border border-slate-300 shadow-sm space-y-2 text-left animate-in fade-in duration-200 font-sans">
-                      <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                        Google Search Answer Preview
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <div className="w-4 h-4 rounded-full bg-[#1a73e8] text-white text-[9px] flex items-center justify-center font-bold">
-                          G
-                        </div>
-                        <span className="text-xs text-slate-800 font-semibold">gladsenseedu.app</span>
-                        <span className="text-slate-400">›</span>
-                        <span className="text-xs text-slate-500">faq › adsense-policy</span>
-                      </div>
-                      <div className="text-base sm:text-lg font-medium text-[#1a0dab] hover:underline cursor-pointer leading-tight">
-                        {item.exactKeyword}
-                      </div>
-                      <div className="p-3 bg-slate-50 border-l-4 border-[#1a73e8] text-xs text-slate-700 leading-relaxed rounded-r-lg">
-                        <strong>Featured Snippet Answer:</strong> {item.positionZeroSnippet}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Policy Head In-Depth Evaluation */}
+                  {/* Detailed Policy Evaluation */}
                   <div className="space-y-4 pt-1">
                     <div className="space-y-1.5">
                       <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                         <ShieldCheck className="w-4 h-4 text-purple-600" />
-                        <span>Head of AdSense Compliance Evaluation Directive</span>
+                        <span>Compliance Evaluation &amp; Policy Background</span>
                       </h4>
                       <p className="text-xs text-slate-600 leading-relaxed">
                         {item.policyHeadEvaluation.overview}
@@ -469,11 +395,11 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                      {/* Algorithmic Classifier Triggers */}
+                      {/* What Triggers This Flag */}
                       <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <span className="font-bold text-slate-900 flex items-center gap-1 text-[11px] uppercase tracking-wider text-rose-700">
+                        <span className="font-bold flex items-center gap-1 text-[11px] uppercase tracking-wider text-rose-700">
                           <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-                          <span>Algorithmic Classifier Triggers:</span>
+                          <span>What Triggers This Review Flag:</span>
                         </span>
                         <ul className="space-y-1.5 text-slate-600 list-disc pl-4">
                           {item.policyHeadEvaluation.algorithmicTriggers.map((trig, tIdx) => (
@@ -484,11 +410,11 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                         </ul>
                       </div>
 
-                      {/* Evaluator Guidelines Heuristics */}
+                      {/* Evaluator Guidelines */}
                       <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <span className="font-bold text-slate-900 flex items-center gap-1 text-[11px] uppercase tracking-wider text-indigo-700">
+                        <span className="font-bold flex items-center gap-1 text-[11px] uppercase tracking-wider text-indigo-700">
                           <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-                          <span>Search Quality Rater Standards:</span>
+                          <span>Search Quality Evaluator Standards:</span>
                         </span>
                         <p className="text-slate-600 leading-relaxed">
                           {item.policyHeadEvaluation.evaluatorGuidelines}
@@ -496,11 +422,11 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                       </div>
                     </div>
 
-                    {/* Step-by-Step Remediation Protocol */}
+                    {/* Step-by-Step Remediation */}
                     <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 space-y-2 text-xs">
                       <span className="font-bold text-emerald-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Standard Operating Procedure (SOP) Remediation:</span>
+                        <span>Actionable Remediation Steps:</span>
                       </span>
                       <div className="space-y-1.5">
                         {item.policyHeadEvaluation.remediationProtocol.map((step, sIdx) => (
@@ -515,49 +441,19 @@ export const PeopleAlsoAskFaqSuite: React.FC<PeopleAlsoAskFaqSuiteProps> = ({
                     </div>
                   </div>
 
-                  {/* Actions & Webmaster Copy Tools */}
-                  <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <button
-                        type="button"
-                        onClick={() => handleCopySnippet(item, 'markdown')}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                        title="Copy Markdown for blog FAQ section"
-                      >
-                        {copiedId === `${item.id}-markdown` ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                        <span>{copiedId === `${item.id}-markdown` ? 'Copied' : 'Copy FAQ Markdown'}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleCopySnippet(item, 'jsonld')}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                        title="Copy Schema.org JSON-LD microdata"
-                      >
-                        {copiedId === `${item.id}-jsonld` ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <FileCode className="w-3.5 h-3.5" />
-                        )}
-                        <span>{copiedId === `${item.id}-jsonld` ? 'Copied' : 'Copy Schema JSON-LD'}</span>
-                      </button>
-                    </div>
-
-                    {item.recommendedToolTab && (
+                  {/* Diagnostic Tool Link */}
+                  {item.recommendedToolTab && (
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
                       <button
                         type="button"
                         onClick={() => handleToolAction(item.recommendedToolTab)}
-                        className="px-4 py-2 bg-[#1a73e8] hover:bg-[#1557b0] text-white rounded-xl font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
+                        className="px-4 py-2 bg-[#1a73e8] hover:bg-[#1557b0] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
                       >
                         <span>{item.recommendedToolLabel || 'Open Diagnostic Tool'}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

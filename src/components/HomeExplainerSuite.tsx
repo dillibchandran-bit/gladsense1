@@ -475,7 +475,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
         </div>
       </section>
 
-      {/* 6. Priority 4: People Also Ask (Position 0 Featured Snippets) Suite */}
+      {/* 6. Frequently Asked Questions Suite */}
       <section className="w-full">
         <PeopleAlsoAskFaqSuite onNavigateToTab={(tab) => onSwitchTab?.(tab as NavTabType)} />
       </section>

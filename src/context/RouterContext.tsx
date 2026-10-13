@@ -88,7 +88,7 @@ export function parseLocation(): RouteState {
     return { route: 'home', pathname: '/', search, params };
   }
 
-  // Priority 3: Technical Webmaster & Crawl Diagnostics Routes
+  // Technical Webmaster & Crawl Diagnostics Routes
   if (cleanPath.startsWith('/tools/crawler-firewall') || cleanPath.startsWith('/tools/site-doctor/crawler-firewall')) {
     return { route: 'crawler-firewall', pathname: '/tools/crawler-firewall/', search, params };
   }

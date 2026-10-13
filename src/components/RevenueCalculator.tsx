@@ -432,7 +432,6 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
       </div>
       {/* ========================================================
           DEDICATED MODULE: HOW MUCH DOES ADSENSE PAY FOR 1,000 VISITORS?
-          (Target Keyword: 'how much does adsense pay for 1000 visitors in education' • KD: 10)
          ======================================================== */}
       <div
         id="how-much-adsense-pays-1000-visitors"

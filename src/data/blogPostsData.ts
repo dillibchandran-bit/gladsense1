@@ -1497,7 +1497,7 @@ function protectAdUnits() {
     ],
   },
   // =========================================================================
-  // ARTICLE 30: PRIORITY 3 "TECHNICAL WEBMASTER & CRAWL DIAGNOSTICS"
+  // ARTICLE 30: TECHNICAL WEBMASTER & CRAWL DIAGNOSTICS
   // =========================================================================
   {
     id: 'post-30',

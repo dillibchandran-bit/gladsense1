@@ -649,7 +649,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </div>
           </div>
 
-          {/* Priority 3 Developer SEO & Technical Docs Spotlight */}
+          {/* Developer SEO & Technical Architecture Spotlight */}
           {(() => {
             const spaPost = BLOG_POSTS.find((p) => p.slug === 'single-page-application-adsense-approval-requirements');
             if (!spaPost) return null;
@@ -998,7 +998,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </div>
           )}
 
-          {/* Priority 4: People Also Ask (PAA) Question Keywords & Position 0 Snippet Accordion Suite */}
+          {/* Google AdSense Frequently Asked Questions Suite */}
           <div className="mt-14 pt-10 border-t border-slate-200">
             <PeopleAlsoAskFaqSuite onNavigateToTab={onNavigateToTab as any} />
           </div>
