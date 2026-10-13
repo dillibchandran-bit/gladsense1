@@ -192,7 +192,42 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab, initialMo
       verdict: result.metrics.aiDetection.verdict,
     } : null);
 
-    const text = `Google AdSense Site Audit Report (5-Pillar Standard)
+    const isDoctor = result.mode === 'rejection-doctor';
+
+    const text = isDoctor
+      ? `Google AdSense Rejection Doctor — Clinical Triage & Prescription Report
+Website: ${result.url}
+Diagnosis: ${result.rejectionDiagnosis?.rejectionReason || 'Google AdSense Policy Rejection'}
+Current Re-Appeal Readiness: ${result.approvalProbability}% (${result.overallStatus.toUpperCase()})
+Analyzed At: ${new Date(result.analyzedAt).toLocaleDateString()}
+
+Verdict:
+${result.verdictSummary}
+
+Root Cause Diagnosis:
+${result.rejectionDiagnosis?.primaryTrigger || 'Multiple policy obstacles identified.'}
+
+🤖 Googlebot Crawler Perspective:
+${result.rejectionDiagnosis?.googleBotPerspective || 'Inspected DOM elements and structure.'}
+
+👤 Human Quality Rater Perspective:
+${result.rejectionDiagnosis?.humanReviewerPerspective || 'Evaluated site intent and trustworthiness.'}
+
+Critical Policy Blockers (${result.criticalBlockers.length}):
+${
+  result.criticalBlockers.length > 0
+    ? result.criticalBlockers.map((b, i) => `${i + 1}. [${b.severity.toUpperCase()}] ${b.title}: ${b.fixAdvice}`).join('\n')
+    : 'None! 100% clean for submission.'
+}
+
+${ai ? `🤖 AI & Content Originality Analysis:
+• AI Rejection Risk: ${ai.riskLevel} Risk
+• AI Cliché Density: ${ai.clicheScore}% (Target: <15%)
+• Information Gain Score: ${ai.informationGainScore}/100 (Target: >75)
+` : ''}
+Audited by GladSense Rejection Doctor — Google AdSense Compliance Engine
+`
+      : `Google AdSense Site Audit Report (5-Pillar Standard)
 Website: ${result.url}
 Overall Approval Probability: ${result.approvalProbability}% (${result.overallStatus.toUpperCase()})
 Analyzed At: ${new Date(result.analyzedAt).toLocaleDateString()}
@@ -943,7 +978,13 @@ Verified by GladSense AI Auditor`;
                           : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
                       }`}
                     >
-                      {result.overallStatus === 'ready'
+                      {result.mode === 'rejection-doctor'
+                        ? result.approvalProbability >= 80
+                          ? 'Overturn Ready'
+                          : result.approvalProbability >= 50
+                          ? 'Remediation Required'
+                          : 'Active Policy Rejection'
+                        : result.overallStatus === 'ready'
                         ? 'AdSense Ready (Pass)'
                         : result.overallStatus === 'needs-work'
                         ? 'Remediation Required'
@@ -972,10 +1013,16 @@ Verified by GladSense AI Auditor`;
                   <div className="flex items-center justify-between sm:justify-start gap-4 bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800">
                     <div className="text-right">
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                        AdSense Approval Probability
+                        {result.mode === 'rejection-doctor' ? 'Overturn Readiness Score' : 'AdSense Approval Probability'}
                       </span>
                       <span className="text-xs text-slate-400">
-                        {result.approvalProbability >= 85
+                        {result.mode === 'rejection-doctor'
+                          ? result.approvalProbability >= 80
+                            ? 'Ready for Re-Appeal'
+                            : result.approvalProbability >= 50
+                            ? 'Remediation Required'
+                            : 'Critical Policy Blockers'
+                          : result.approvalProbability >= 85
                           ? 'High Confidence Pass'
                           : result.approvalProbability >= 60
                           ? 'Moderate Risk'
@@ -1018,171 +1065,320 @@ Verified by GladSense AI Auditor`;
                 </div>
               </div>
 
-              {/* 5 Google Core Pillars Scoring Metric Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8 pt-6 border-t border-slate-800">
-                {/* Pillar 1: Content Value & Depth (35%) */}
-                {(() => {
-                  const s = result.scoreBreakdown.contentValueScore ?? result.scoreBreakdown.contentDepthScore ?? 0;
-                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
-                  return (
-                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="1. Content Value & Depth">
-                            1. Content Value
-                          </span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                            35%
-                          </span>
-                        </div>
-                        <div className="flex items-baseline justify-between mb-2">
-                          <span className="text-[10px] text-slate-400">Depth & Utility</span>
-                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
-                        </div>
+              {/* Rejection Doctor Mode: Clinical Triage & Prognosis Grid (Replaces 5 Generic Pillars) */}
+              {result.mode === 'rejection-doctor' ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8 pt-6 border-t border-purple-900/40">
+                  {/* Card 1: Primary Diagnosed Cause */}
+                  <div className="p-3.5 rounded-xl bg-purple-950/60 border border-purple-800/60 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-purple-300 font-bold text-[11px] truncate flex items-center gap-1">
+                          <Activity className="w-3.5 h-3.5 text-purple-400" />
+                          <span>Diagnosis</span>
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-900/80 text-purple-200">
+                          Google Notice
+                        </span>
                       </div>
-                      {(() => {
-                        const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
-                          riskLevel: result.metrics.aiDetection.aiRiskLevel,
-                          clicheScore: result.metrics.aiDetection.clicheScore,
-                        } : null);
-                        return (
-                          <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 leading-tight">
-                            <span>~{result.metrics.estimatedWordCount} words</span>
-                            <span className={ai?.riskLevel === 'Low' ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
-                              {ai ? `AI: ${ai.riskLevel} Risk` : 'Original Voice'}
+                      <div className="text-xs sm:text-sm font-black text-white capitalize truncate mb-1">
+                        {result.rejectionDiagnosis?.rejectionReason?.replace(/-/g, ' ') || rejectionReason.replace(/-/g, ' ')}
+                      </div>
+                      <p className="text-[10px] text-purple-300/80 line-clamp-2 leading-tight">
+                        Primary violation cited in publisher rejection email
+                      </p>
+                    </div>
+                    <div className="text-[10px] font-semibold text-purple-400 mt-2 pt-1.5 border-t border-purple-800/40">
+                      Status: Flagged in Review
+                    </div>
+                  </div>
+
+                  {/* Card 2: Scanned Root Cause Evidence */}
+                  <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Crawler Evidence</span>
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                          Live Scan
+                        </span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-black text-amber-400 font-mono mb-1">
+                        {(() => {
+                          if (rejectionReason === 'low-value-content') {
+                            return `~${result.metrics.estimatedWordCount} Words`;
+                          } else if (rejectionReason === 'site-behavior-navigation') {
+                            return `${result.metrics.navigationHealth.emptyHashLinks} Broken Links`;
+                          } else if (rejectionReason === 'site-down-or-unavailable') {
+                            return result.metrics.hasRobotsNoindex ? 'Robots Noindex' : 'Bot Challenge';
+                          } else if (rejectionReason === 'policy-violations') {
+                            return result.metrics.legalPagesFound.privacyPolicy ? 'TOS/Ad Issue' : 'Missing DART Policy';
+                          }
+                          return `~${result.metrics.estimatedWordCount} Words`;
+                        })()}
+                      </div>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
+                        {(() => {
+                          if (rejectionReason === 'low-value-content') {
+                            return result.metrics.estimatedWordCount < 600
+                              ? 'Below 800-word indexation bar'
+                              : 'Insufficient information gain';
+                          } else if (rejectionReason === 'site-behavior-navigation') {
+                            return result.metrics.navigationHealth.emptyHashLinks > 0
+                              ? 'Empty # placeholder anchors detected'
+                              : 'Confusing click hierarchy';
+                          } else if (rejectionReason === 'policy-violations') {
+                            return 'Missing Google DART disclosures';
+                          }
+                          return 'Root trigger identified in DOM scan';
+                        })()}
+                      </p>
+                    </div>
+                    <div className="text-[10px] text-amber-400/90 font-semibold mt-2 pt-1.5 border-t border-slate-800">
+                      Reviewer: Trigger Detected
+                    </div>
+                  </div>
+
+                  {/* Card 3: Active Policy Blockers */}
+                  <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
+                          <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                          <span>Active Blockers</span>
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-800/50">
+                          {result.criticalBlockers.length} Critical
+                        </span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-black text-rose-400 mb-1">
+                        {result.criticalBlockers.length === 0 ? '0 Blockers' : `${result.criticalBlockers.length} Unresolved`}
+                      </div>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
+                        Issues causing automatic rejection upon re-submission
+                      </p>
+                    </div>
+                    <div className="text-[10px] text-rose-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
+                      {result.criticalBlockers.length === 0 ? 'Passed Verification' : 'Must Clear 100%'}
+                    </div>
+                  </div>
+
+                  {/* Card 4: Cooling Period Window */}
+                  <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-blue-400" />
+                          <span>Cooling Window</span>
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300">
+                          Official SOP
+                        </span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-black text-blue-400 font-mono mb-1">
+                        14-Day Cycle
+                      </div>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
+                        Recommended cooling period before submitting re-appeal
+                      </p>
+                    </div>
+                    <div className="text-[10px] text-blue-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
+                      Prevents Algorithmic Ban
+                    </div>
+                  </div>
+
+                  {/* Card 5: Target Readiness Prognosis */}
+                  <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Target Prognosis</span>
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300">
+                          Post-Fix
+                        </span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-black text-emerald-400 font-mono mb-1">
+                        95% - 100%
+                      </div>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
+                        Projected pass rate once prescriptions are implemented
+                      </p>
+                    </div>
+                    <div className="text-[10px] text-emerald-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
+                      High Confidence Pass
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Pre-Approval Auditor Mode: 5 Google Core Pillars Scoring Metric Cards */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8 pt-6 border-t border-slate-800">
+                  {/* Pillar 1: Content Value & Depth (35%) */}
+                  {(() => {
+                    const s = result.scoreBreakdown.contentValueScore ?? result.scoreBreakdown.contentDepthScore ?? 0;
+                    const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                    return (
+                      <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-slate-200 font-semibold text-[11px] truncate" title="1. Content Value & Depth">
+                              1. Content Value
+                            </span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                              35%
                             </span>
                           </div>
-                        );
-                      })()}
-                    </div>
-                  );
-                })()}
-
-                {/* Pillar 2: Policy & Compliance (25%) */}
-                {(() => {
-                  const s = result.scoreBreakdown.policyComplianceScore ?? result.scoreBreakdown.legalComplianceScore ?? 0;
-                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
-                  return (
-                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="2. Policy & Compliance">
-                            2. Policy & TOS
-                          </span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                            25%
-                          </span>
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-[10px] text-slate-400">Depth & Utility</span>
+                            <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                          </div>
                         </div>
-                        <div className="flex items-baseline justify-between mb-2">
-                          <span className="text-[10px] text-slate-400">DART & Ad Rules</span>
-                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
-                        </div>
+                        {(() => {
+                          const ai = result.metrics.aiContentRisk || (result.metrics.aiDetection ? {
+                            riskLevel: result.metrics.aiDetection.aiRiskLevel,
+                            clicheScore: result.metrics.aiDetection.clicheScore,
+                          } : null);
+                          return (
+                            <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 leading-tight">
+                              <span>~{result.metrics.estimatedWordCount} words</span>
+                              <span className={ai?.riskLevel === 'Low' ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+                                {ai ? `AI: ${ai.riskLevel} Risk` : 'Original Voice'}
+                              </span>
+                            </div>
+                          );
+                        })()}
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
-                        {result.metrics.legalPagesFound.privacyPolicy ? '✓ Privacy Policy' : '✗ Missing Privacy'} • {result.metrics.legalPagesFound.termsOfService ? '✓ TOS' : '✗ No TOS'}
-                      </span>
-                    </div>
-                  );
-                })()}
+                    );
+                  })()}
 
-                {/* Pillar 3: UX & Navigation (15%) */}
-                {(() => {
-                  const s = result.scoreBreakdown.uxNavigationScore ?? result.scoreBreakdown.navigationUxScore ?? 0;
-                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
-                  return (
-                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="3. UX & Navigation">
-                            3. UX & Nav
-                          </span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                            15%
-                          </span>
+                  {/* Pillar 2: Policy & Compliance (25%) */}
+                  {(() => {
+                    const s = result.scoreBreakdown.policyComplianceScore ?? result.scoreBreakdown.legalComplianceScore ?? 0;
+                    const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                    return (
+                      <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-slate-200 font-semibold text-[11px] truncate" title="2. Policy & Compliance">
+                              2. Policy & TOS
+                            </span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                              25%
+                            </span>
+                          </div>
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-[10px] text-slate-400">DART & Ad Rules</span>
+                            <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                          </div>
                         </div>
-                        <div className="flex items-baseline justify-between mb-2">
-                          <span className="text-[10px] text-slate-400">Links & Layout</span>
-                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
-                        </div>
+                        <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                          {result.metrics.legalPagesFound.privacyPolicy ? '✓ Privacy Policy' : '✗ Missing Privacy'} • {result.metrics.legalPagesFound.termsOfService ? '✓ TOS' : '✗ No TOS'}
+                        </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
-                        {result.metrics.navigationHealth.emptyHashLinks > 0
-                          ? `⚠️ ${result.metrics.navigationHealth.emptyHashLinks} empty # links`
-                          : '✓ 0 broken anchors'} • {result.metrics.navigationHealth.internalLinks} internal
-                      </span>
-                    </div>
-                  );
-                })()}
+                    );
+                  })()}
 
-                {/* Pillar 4: Essential Pages & Trust (15%) */}
-                {(() => {
-                  const s = result.scoreBreakdown.essentialPagesScore ?? (result.metrics.legalPagesFound.aboutUs && result.metrics.legalPagesFound.contactUs ? 100 : result.metrics.legalPagesFound.aboutUs ? 60 : 30);
-                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
-                  return (
-                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="4. Essential Pages & Trust">
-                            4. Trust & Pages
-                          </span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                            15%
-                          </span>
+                  {/* Pillar 3: UX & Navigation (15%) */}
+                  {(() => {
+                    const s = result.scoreBreakdown.uxNavigationScore ?? result.scoreBreakdown.navigationUxScore ?? 0;
+                    const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                    return (
+                      <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-slate-200 font-semibold text-[11px] truncate" title="3. UX & Navigation">
+                              3. UX & Nav
+                            </span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                              15%
+                            </span>
+                          </div>
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-[10px] text-slate-400">Links & Layout</span>
+                            <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                          </div>
                         </div>
-                        <div className="flex items-baseline justify-between mb-2">
-                          <span className="text-[10px] text-slate-400">About & Contact</span>
-                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
-                        </div>
+                        <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                          {result.metrics.navigationHealth.emptyHashLinks > 0
+                            ? `⚠️ ${result.metrics.navigationHealth.emptyHashLinks} empty # links`
+                            : '✓ 0 broken anchors'} • {result.metrics.navigationHealth.internalLinks} internal
+                        </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
-                        About: {result.metrics.legalPagesFound.aboutUs ? '✓ E-E-A-T' : '✗ None'} • Contact: {result.metrics.legalPagesFound.contactUs ? '✓ OK' : '✗ None'}
-                      </span>
-                    </div>
-                  );
-                })()}
+                    );
+                  })()}
 
-                {/* Pillar 5: Technical Infrastructure (10%) */}
-                {(() => {
-                  const s = result.scoreBreakdown.technicalInfraScore ?? result.scoreBreakdown.technicalSeoScore ?? 0;
-                  const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
-                  return (
-                    <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-slate-200 font-semibold text-[11px] truncate" title="5. Technical Infrastructure">
-                            5. Technical Infra
-                          </span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                            10%
-                          </span>
+                  {/* Pillar 4: Essential Pages & Trust (15%) */}
+                  {(() => {
+                    const s = result.scoreBreakdown.essentialPagesScore ?? (result.metrics.legalPagesFound.aboutUs && result.metrics.legalPagesFound.contactUs ? 100 : result.metrics.legalPagesFound.aboutUs ? 60 : 30);
+                    const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                    return (
+                      <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-slate-200 font-semibold text-[11px] truncate" title="4. Essential Pages & Trust">
+                              4. Trust & Pages
+                            </span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                              15%
+                            </span>
+                          </div>
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-[10px] text-slate-400">About & Contact</span>
+                            <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                          </div>
                         </div>
-                        <div className="flex items-baseline justify-between mb-2">
-                          <span className="text-[10px] text-slate-400">SSL, Mobile & SEO</span>
-                          <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
-                        </div>
+                        <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                          About: {result.metrics.legalPagesFound.aboutUs ? '✓ E-E-A-T' : '✗ None'} • Contact: {result.metrics.legalPagesFound.contactUs ? '✓ OK' : '✗ None'}
+                        </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
-                        {result.metrics.isHttps ? '✓ SSL' : '✗ HTTP'} • {result.metrics.hasMobileViewport ? '✓ Responsive' : '✗ Desktop'}
-                      </span>
-                    </div>
-                  );
-                })()}
-              </div>
+                    );
+                  })()}
+
+                  {/* Pillar 5: Technical Infrastructure (10%) */}
+                  {(() => {
+                    const s = result.scoreBreakdown.technicalInfraScore ?? result.scoreBreakdown.technicalSeoScore ?? 0;
+                    const color = s >= 85 ? 'text-emerald-400 bg-emerald-400' : s >= 60 ? 'text-amber-400 bg-amber-400' : 'text-rose-400 bg-rose-400';
+                    return (
+                      <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-slate-200 font-semibold text-[11px] truncate" title="5. Technical Infrastructure">
+                              5. Technical Infra
+                            </span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                              10%
+                            </span>
+                          </div>
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-[10px] text-slate-400">SSL, Mobile & SEO</span>
+                            <span className={`font-mono font-bold text-xs ${color.split(' ')[0]}`}>{s}/100</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${color.split(' ')[1]}`} style={{ width: `${s}%` }} />
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-slate-400 mt-2 block leading-tight">
+                          {result.metrics.isHttps ? '✓ SSL' : '✗ HTTP'} • {result.metrics.hasMobileViewport ? '✓ Responsive' : '✗ Desktop'}
+                        </span>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
 
             {/* Critical Blockers Callout */}
@@ -1414,55 +1610,85 @@ Verified by GladSense AI Auditor`;
             <div className="p-6 sm:p-8 bg-white">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3 gap-2 overflow-x-auto">
                 <div className="flex space-x-2">
-                  <button
-                    onClick={() => setActiveResultTab('overview')}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                      activeResultTab === 'overview'
-                        ? 'bg-slate-900 text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Info className="w-4 h-4" />
-                    <span>Audit Signals</span>
-                  </button>
+                  {result.mode === 'rejection-doctor' ? (
+                    <>
+                      {result.rejectionDiagnosis && (
+                        <button
+                          onClick={() => setActiveResultTab('plan')}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            activeResultTab === 'plan'
+                              ? 'bg-[#9d62ec] text-white shadow-sm'
+                              : 'text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <Clock className="w-4 h-4" />
+                          <span>14-Day Recovery Prescription</span>
+                        </button>
+                      )}
 
-                  <button
-                    onClick={() => setActiveResultTab('evaluator-roles')}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                      activeResultTab === 'evaluator-roles'
-                        ? 'bg-[#1a73e8] text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>6 Google Inspector Roles</span>
-                  </button>
+                      <button
+                        onClick={() => setActiveResultTab('checklist')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'checklist'
+                            ? 'bg-emerald-600 text-white shadow-sm'
+                            : 'text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Pre-Submission Checklist ({Object.values(checkedItems).filter(Boolean).length}/{result.reApplicationChecklist.length})</span>
+                      </button>
 
-                  {result.rejectionDiagnosis && (
-                    <button
-                      onClick={() => setActiveResultTab('plan')}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        activeResultTab === 'plan'
-                          ? 'bg-[#9d62ec] text-white shadow-sm'
-                          : 'text-slate-600 hover:bg-slate-100'
-                      }`}
-                    >
-                      <Clock className="w-4 h-4" />
-                      <span>14-Day Recovery Prescription</span>
-                    </button>
+                      <button
+                        onClick={() => setActiveResultTab('overview')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'overview'
+                            ? 'bg-slate-900 text-white shadow-sm'
+                            : 'text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Info className="w-4 h-4" />
+                        <span>Diagnostic Signals</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setActiveResultTab('overview')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'overview'
+                            ? 'bg-slate-900 text-white shadow-sm'
+                            : 'text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Info className="w-4 h-4" />
+                        <span>Audit Signals (5 Pillars)</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveResultTab('evaluator-roles')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'evaluator-roles'
+                            ? 'bg-[#1a73e8] text-white shadow-sm'
+                            : 'text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Users className="w-4 h-4" />
+                        <span>6 Google Inspector Roles</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveResultTab('checklist')}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          activeResultTab === 'checklist'
+                            ? 'bg-emerald-600 text-white shadow-sm'
+                            : 'text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Pre-Submission Checklist ({Object.values(checkedItems).filter(Boolean).length}/{result.reApplicationChecklist.length})</span>
+                      </button>
+                    </>
                   )}
-
-                  <button
-                    onClick={() => setActiveResultTab('checklist')}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                      activeResultTab === 'checklist'
-                        ? 'bg-emerald-600 text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Pre-Submission Checklist ({Object.values(checkedItems).filter(Boolean).length}/{result.reApplicationChecklist.length})</span>
-                  </button>
 
                   {/* New Tab: Website AdSense Earnings & Ad Stack */}
                   {result.revenueEstimation && (

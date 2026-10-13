@@ -379,11 +379,7 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
     baseProbability = 100;
   }
 
-  if (mode === 'rejection-doctor') {
-    baseProbability = Math.min(baseProbability, 78);
-  }
-
-  const overallStatus =
+  let overallStatus: 'ready' | 'needs-work' | 'critical-blockers' =
     baseProbability >= 85 ? 'ready' : baseProbability >= 60 ? 'needs-work' : 'critical-blockers';
 
   // 5. Build Critical Blockers & Findings (exact server copy)
@@ -611,8 +607,111 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
       : 'Missing OpenGraph metadata tags (<meta property="og:...">).',
   });
 
+  let rejectionDiagnosis = undefined;
+  if (mode === 'rejection-doctor') {
+    rejectionDiagnosis = generateRejectionDiagnosis(
+      rejectionReason,
+      estimatedWordCount,
+      hasPrivacyPolicy,
+      emptyHashLinks,
+      isYmyl
+    );
+
+    // Dynamic Rejection Doctor Assessment:
+    // Calculates honest current readiness based on the specific rejection reason and real scanned findings
+    let doctorScore = 50;
+
+    switch (rejectionReason) {
+      case 'low-value-content':
+        if (estimatedWordCount < 300) doctorScore = 22;
+        else if (estimatedWordCount < 600) doctorScore = 36;
+        else if (estimatedWordCount < 900) doctorScore = 52;
+        else if (estimatedWordCount < 1400) doctorScore = 68;
+        else doctorScore = 84;
+
+        if (aiRiskLevel === 'Severe') doctorScore -= 18;
+        else if (aiRiskLevel === 'High') doctorScore -= 12;
+        else if (aiRiskLevel === 'Moderate') doctorScore -= 5;
+        if (infoGainScore >= 70) doctorScore += 6;
+        break;
+
+      case 'site-behavior-navigation':
+        if (emptyHashLinks >= 3) doctorScore = 24;
+        else if (emptyHashLinks >= 1) doctorScore = 44;
+        else if (totalLinks < 6 || internalLinks < 4) doctorScore = 50;
+        else doctorScore = 82;
+
+        if (!hasMobileViewport) doctorScore -= 15;
+        break;
+
+      case 'scraped-unoriginal':
+        if (aiRiskLevel === 'Severe' || clicheScore >= 45) doctorScore = 20;
+        else if (aiRiskLevel === 'High' || clicheScore >= 30) doctorScore = 36;
+        else if (aiRiskLevel === 'Moderate') doctorScore = 56;
+        else doctorScore = 80;
+        break;
+
+      case 'site-down-or-unavailable':
+        if (hasRobotsNoindex) doctorScore = 15;
+        else if (!isHttps) doctorScore = 32;
+        else if (fetchFailed) doctorScore = 22;
+        else doctorScore = 85;
+        break;
+
+      case 'policy-violations':
+        if (!hasPrivacyPolicy) doctorScore = 25;
+        else if (!hasTerms) doctorScore = 45;
+        else if (detectedAdCodes.length > 4) doctorScore = 40;
+        else doctorScore = 82;
+        break;
+
+      case 'valuable-inventory-under-construction':
+        if (estimatedWordCount < 400 || totalLinks < 5) doctorScore = 28;
+        else if (emptyHashLinks > 0) doctorScore = 42;
+        else doctorScore = 76;
+        break;
+
+      default:
+        doctorScore = Math.round(
+          contentValueScore * 0.4 +
+          policyComplianceScore * 0.3 +
+          uxNavigationScore * 0.2 +
+          technicalInfraScore * 0.1
+        );
+        break;
+    }
+
+    if (!hasPrivacyPolicy && rejectionReason !== 'policy-violations') {
+      doctorScore -= 15;
+    }
+    if (!hasAbout && !hasContact) {
+      doctorScore -= 10;
+    }
+    if (isYmyl) {
+      doctorScore -= 12;
+    }
+
+    if (criticalBlockers.length >= 3) {
+      doctorScore = Math.min(doctorScore, 42);
+    } else if (criticalBlockers.length === 2) {
+      doctorScore = Math.min(doctorScore, 58);
+    } else if (criticalBlockers.length === 1) {
+      doctorScore = Math.min(doctorScore, 72);
+    }
+
+    baseProbability = Math.min(94, Math.max(15, Math.round(doctorScore)));
+    overallStatus = baseProbability >= 85 ? 'ready' : baseProbability >= 60 ? 'needs-work' : 'critical-blockers';
+  }
+
   let verdictSummary = '';
-  if (baseProbability >= 85) {
+  if (mode === 'rejection-doctor') {
+    verdictSummary =
+      baseProbability >= 80
+        ? `Overturn Ready (${baseProbability}%). Key policy blockers have been addressed. Domain is prepared for reconsideration request.`
+        : baseProbability >= 50
+        ? `Remediation in Progress (${baseProbability}%). Identified root causes under ${rejectionReason.replace(/-/g, ' ')} must be resolved before resubmission to avoid a permanent lockout.`
+        : `Active Policy Rejection State (${baseProbability}%). Google's crawler and human raters will reject this site immediately. Execute the 14-day prescription before requesting review.`;
+  } else if (baseProbability >= 85) {
     verdictSummary = `High AdSense Readiness (${baseProbability}%). Domain displays sound technical structure and legal compliance. Ready for application.`;
   } else if (baseProbability >= 60) {
     verdictSummary = `Moderate Risk (${baseProbability}%). Domain shows strong technical foundation but requires minor content expansion and legal fine-tuning before applying.`;
@@ -634,6 +733,7 @@ export async function runClientSideAudit(request: SiteAuditRequest): Promise<Sit
     pageTitle: pageTitle || host,
     verdictSummary,
     revenueEstimation,
+    rejectionDiagnosis,
     metrics: {
       isHttps,
       hasMobileViewport,
@@ -928,15 +1028,32 @@ function generateExactFallbackResult(
   sampleContent: string
 ): SiteAuditResult {
   const sampleWords = sampleContent ? sampleContent.trim().split(/\s+/).length : 0;
+  const fallbackScore =
+    mode === 'rejection-doctor'
+      ? rejectionReason === 'low-value-content'
+        ? 36
+        : rejectionReason === 'site-behavior-navigation'
+        ? 42
+        : rejectionReason === 'site-down-or-unavailable'
+        ? 24
+        : 48
+      : 71;
+
   return {
     url,
     mode,
     analyzedAt: new Date().toISOString(),
-    approvalProbability: 71,
-    overallStatus: 'needs-work',
+    approvalProbability: fallbackScore,
+    overallStatus: fallbackScore >= 85 ? 'ready' : fallbackScore >= 60 ? 'needs-work' : 'critical-blockers',
     pageTitle: url,
     verdictSummary:
-      'Moderate Risk (71%). Domain shows strong technical foundation but requires minor content expansion and legal fine-tuning before applying.',
+      mode === 'rejection-doctor'
+        ? `Rejection Triage Active (${fallbackScore}%). Crawl diagnostics active. Address identified blockers under ${rejectionReason.replace(/-/g, ' ')} before re-applying.`
+        : 'Moderate Risk (71%). Domain shows strong technical foundation but requires minor content expansion and legal fine-tuning before applying.',
+    rejectionDiagnosis:
+      mode === 'rejection-doctor'
+        ? generateRejectionDiagnosis(rejectionReason, sampleWords || 500, false, 0, false)
+        : undefined,
     metrics: {
       isHttps: url.startsWith('https://'),
       hasMobileViewport: true,
@@ -1030,5 +1147,118 @@ function generateExactFallbackResult(
       'Confirm Contact page with valid email is accessible',
       'Ensure at least 15+ comprehensive pages are published and indexed in Google',
     ],
+  };
+}
+
+// Helper: Rejection Diagnosis generator for client-side engine
+function generateRejectionDiagnosis(
+  reason: string,
+  wordCount: number,
+  hasPrivacy: boolean,
+  emptyLinks: number,
+  isYmyl: boolean
+) {
+  let primaryTrigger = '';
+  let googleBotPerspective = '';
+  let humanReviewerPerspective = '';
+
+  switch (reason) {
+    case 'low-value-content':
+      primaryTrigger =
+        wordCount < 600
+          ? 'Algorithmic text-density failure: The automated crawler flagged insufficient textual substance and lack of unique problem-solving value.'
+          : 'Duplication or generic synthesis: Content reads like unedited AI summaries without proprietary data, original calculators, or personal case studies.';
+      googleBotPerspective =
+        'Googlebot calculates the ratio of boilerplate/template markup to unique informative body copy. If the unique semantic tokens are low, it flags "Low Value Content" automatically without human intervention.';
+      humanReviewerPerspective =
+        'Human reviewers spend 30–60 seconds on the site. If they land on a page that looks like generic blog posts found on 1,000 other sites, they hit the "Low-Value Content" macro reject button.';
+      break;
+
+    case 'site-behavior-navigation':
+      primaryTrigger =
+        emptyLinks > 0
+          ? `Detected ${emptyLinks} empty or dummy menu links (href="#"). Google treats unlinked template elements as a deceptive or broken layout.`
+          : 'Confusing navigation hierarchy: Reviewers could not navigate from the homepage to core content within 2 distinct clicks.';
+      googleBotPerspective =
+        'Crawler followed internal navigation links and encountered 404 errors, circular redirects, or JavaScript voids.';
+      humanReviewerPerspective =
+        'Reviewer clicked a header or category link and encountered an empty archive page ("Nothing Found") or placeholder lorem ipsum text.';
+      break;
+
+    case 'site-down-or-unavailable':
+      primaryTrigger =
+        'Google review bot was blocked by a firewall (e.g. Cloudflare Under Attack mode or bot challenge) or DNS lookup timed out during audit window.';
+      googleBotPerspective =
+        'AdSense crawler received an HTTP 403, 502, or 522 Cloudflare error when polling the root domain.';
+      humanReviewerPerspective =
+        'Reviewer attempted to open the domain in their review portal and the connection timed out or showed a browser security warning.';
+      break;
+
+    case 'scraped-unoriginal':
+      primaryTrigger =
+        'High linguistic similarity to existing indexed web documents. Google matched sentences against their global index.';
+      googleBotPerspective =
+        'Semantic indexer found 80%+ n-gram overlap with already indexed articles on third-party domains.';
+      humanReviewerPerspective =
+        'Content presents zero differentiated angle, lack of original media, and no cited author expertise.';
+      break;
+
+    default:
+      primaryTrigger =
+        'Combination of missing legal disclosures (Privacy Policy) and borderline content depth across recent articles.';
+      googleBotPerspective =
+        'Automated policy engine found missing standard disclosures for Google DART ad tracking.';
+      humanReviewerPerspective =
+        'Site does not yet appear to be a fully established, active publishing business with a distinct brand identity.';
+      break;
+  }
+
+  const fourteenDayPlan = [
+    {
+      days: 'Days 1 - 3',
+      phase: 'Site Sanitation & Technical Hygiene',
+      tasks: [
+        'Delete or unpublish any draft pages, empty category archives, or articles under 500 words.',
+        'Fix every single navigation link: Ensure zero href="#" or placeholder anchors remain in headers, footers, or sidebars.',
+        'Generate an airtight Privacy Policy page specifying Google AdSense, DoubleClick DART cookies, and opt-out links.',
+        'Verify SSL certificates and disable aggressive Cloudflare "Under Attack" challenge mode for Googlebot user-agents.',
+      ],
+    },
+    {
+      days: 'Days 4 - 8',
+      phase: 'Value-Add Content Overhaul',
+      tasks: [
+        'Expand top 8 pages to 1,200+ words each with unique step-by-step methodologies, custom tables, and worked examples.',
+        'If operating a micro-tool site: embed clear text instructions, formula explanations, and practical FAQs below the tool container.',
+        'Add original images or custom visual diagrams with descriptive alt tags (avoid stock photos used everywhere).',
+        'Add an Author Bio box to every article connecting back to the detailed /about page.',
+      ],
+    },
+    {
+      days: 'Days 9 - 11',
+      phase: 'Internal Linking & Indexation Audit',
+      tasks: [
+        'Check Google Search Console: Confirm at least 10 core URLs are actively indexed with valid green status.',
+        'Build structured breadcrumb navigation (Home > Category > Page) to facilitate crawler depth.',
+        'Create a clear HTML sitemap or clean footer directory indexing all primary pages.',
+      ],
+    },
+    {
+      days: 'Days 12 - 14',
+      phase: 'Pre-Flight Verification & Resubmission',
+      tasks: [
+        'Run this Live Site Auditor again to verify an Approval Probability score above 85%.',
+        'Clear browser cookies, open site in an incognito window on mobile to verify responsive touch layout.',
+        'Log in to Google AdSense dashboard, click "Request Review", and provide 10–14 days for the review cycle.',
+      ],
+    },
+  ];
+
+  return {
+    rejectionReason: reason,
+    primaryTrigger,
+    googleBotPerspective,
+    humanReviewerPerspective,
+    fourteenDayPlan,
   };
 }

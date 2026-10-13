@@ -439,12 +439,7 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
     baseProbability = 100;
   }
 
-  if (mode === 'rejection-doctor') {
-    // If site is already rejected, probability starts from an honest baseline
-    baseProbability = Math.min(baseProbability, 78);
-  }
-
-  const overallStatus =
+  let overallStatus: 'ready' | 'needs-work' | 'critical-blockers' =
     baseProbability >= 85 ? 'ready' : baseProbability >= 60 ? 'needs-work' : 'critical-blockers';
 
   // 5. Build Critical Blockers & Findings
@@ -726,10 +721,103 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
       emptyHashLinks,
       isYmyl
     );
+
+    // Dynamic Rejection Doctor Assessment:
+    // Calculates honest current readiness based on the specific rejection reason and real scanned findings
+    let doctorScore = 50;
+
+    switch (rejectionReason) {
+      case 'low-value-content':
+        if (estimatedWordCount < 300) doctorScore = 22;
+        else if (estimatedWordCount < 600) doctorScore = 36;
+        else if (estimatedWordCount < 900) doctorScore = 52;
+        else if (estimatedWordCount < 1400) doctorScore = 68;
+        else doctorScore = 84;
+
+        if (aiRiskLevel === 'Severe') doctorScore -= 18;
+        else if (aiRiskLevel === 'High') doctorScore -= 12;
+        else if (aiRiskLevel === 'Moderate') doctorScore -= 5;
+        if (infoGainScore >= 70) doctorScore += 6;
+        break;
+
+      case 'site-behavior-navigation':
+        if (emptyHashLinks >= 3) doctorScore = 24;
+        else if (emptyHashLinks >= 1) doctorScore = 44;
+        else if (totalLinks < 6 || internalLinks < 4) doctorScore = 50;
+        else doctorScore = 82;
+
+        if (!hasMobileViewport) doctorScore -= 15;
+        break;
+
+      case 'scraped-unoriginal':
+        if (aiRiskLevel === 'Severe' || clicheScore >= 45) doctorScore = 20;
+        else if (aiRiskLevel === 'High' || clicheScore >= 30) doctorScore = 36;
+        else if (aiRiskLevel === 'Moderate') doctorScore = 56;
+        else doctorScore = 80;
+        break;
+
+      case 'site-down-or-unavailable':
+        if (hasRobotsNoindex) doctorScore = 15;
+        else if (!isHttps) doctorScore = 32;
+        else if (fetchFailed) doctorScore = 22;
+        else doctorScore = 85;
+        break;
+
+      case 'policy-violations':
+        if (!hasPrivacyPolicy) doctorScore = 25;
+        else if (!hasTerms) doctorScore = 45;
+        else if (detectedAdCodes.length > 4) doctorScore = 40;
+        else doctorScore = 82;
+        break;
+
+      case 'valuable-inventory-under-construction':
+        if (estimatedWordCount < 400 || totalLinks < 5) doctorScore = 28;
+        else if (emptyHashLinks > 0) doctorScore = 42;
+        else doctorScore = 76;
+        break;
+
+      default:
+        doctorScore = Math.round(
+          contentValueScore * 0.4 +
+          policyComplianceScore * 0.3 +
+          uxNavigationScore * 0.2 +
+          technicalInfraScore * 0.1
+        );
+        break;
+    }
+
+    // Additional deductions for missing foundational trust elements
+    if (!hasPrivacyPolicy && rejectionReason !== 'policy-violations') {
+      doctorScore -= 15;
+    }
+    if (!hasAbout && !hasContact) {
+      doctorScore -= 10;
+    }
+    if (isYmyl) {
+      doctorScore -= 12;
+    }
+
+    // Impact of detected critical blockers
+    if (criticalBlockers.length >= 3) {
+      doctorScore = Math.min(doctorScore, 42);
+    } else if (criticalBlockers.length === 2) {
+      doctorScore = Math.min(doctorScore, 58);
+    } else if (criticalBlockers.length === 1) {
+      doctorScore = Math.min(doctorScore, 72);
+    }
+
+    baseProbability = Math.min(94, Math.max(15, Math.round(doctorScore)));
+    overallStatus = baseProbability >= 85 ? 'ready' : baseProbability >= 60 ? 'needs-work' : 'critical-blockers';
   }
 
   const verdictSummary =
-    baseProbability >= 85
+    mode === 'rejection-doctor'
+      ? baseProbability >= 80
+        ? `Overturn Ready (${baseProbability}%). Key policy blockers have been addressed. Domain is prepared for reconsideration request.`
+        : baseProbability >= 50
+        ? `Remediation in Progress (${baseProbability}%). Identified root causes under ${rejectionReason.replace(/-/g, ' ')} must be resolved before resubmission to avoid a permanent lockout.`
+        : `Active Policy Rejection State (${baseProbability}%). Google's crawler and human raters will reject this site immediately. Execute the 14-day prescription before requesting review.`
+      : baseProbability >= 85
       ? `High AdSense Readiness (${baseProbability}%). Domain displays sound technical structure and legal compliance. Ready for application.`
       : baseProbability >= 60
       ? `Moderate Readiness (${baseProbability}%). Essential infrastructure is present, but ${criticalBlockers.length} issues must be resolved to eliminate rejection risk.`
@@ -963,7 +1051,16 @@ function generateFetchFallbackResult(
     url,
     mode: mode as any,
     analyzedAt: new Date().toISOString(),
-    approvalProbability: 64,
+    approvalProbability:
+      mode === 'rejection-doctor'
+        ? rejectionReason === 'low-value-content'
+          ? 36
+          : rejectionReason === 'site-behavior-navigation'
+          ? 42
+          : rejectionReason === 'site-down-or-unavailable'
+          ? 24
+          : 48
+        : 64,
     overallStatus: 'needs-work',
     pageTitle: url,
     verdictSummary: `Connection Notice: Could not crawl live HTML directly (${fetchErrorMsg}). ${
