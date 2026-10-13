@@ -722,6 +722,110 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
       isYmyl
     );
 
+    // In Rejection Doctor mode, inject the active rejection obstacle into criticalBlockers
+    // so the publisher clearly sees the root cause and remedy that triggered their Google rejection:
+    if (rejectionReason === 'scraped-unoriginal') {
+      criticalBlockers.unshift({
+        title: 'Google Rejection: Scraped / Programmatically Syndicated Content',
+        description:
+          'Google review raters flagged this domain for unoriginal, aggregated, or syndicated content (such as programmatic job listings, third-party feeds, or public directory data) lacking unique first-party analysis.',
+        severity: 'critical',
+        fixAdvice:
+          'Inject proprietary salary comparison tables, firsthand company reviews, unique applicant guides, and original editorial commentary on each page to demonstrate authentic information gain.',
+      });
+      findings.unshift({
+        category: 'Content Originality & AI',
+        label: 'Unoriginal / Syndicated Listings',
+        status: 'fail',
+        detail: 'Flagged for aggregated or programmatic listings without sufficient original first-party analysis.',
+      });
+    } else if (rejectionReason === 'low-value-content') {
+      if (!criticalBlockers.some((b) => b.title.includes('Thin') || b.title.includes('Low-Value'))) {
+        criticalBlockers.unshift({
+          title: 'Google Rejection: Low-Value Content & Insufficient Information Gain',
+          description:
+            estimatedWordCount < 600
+              ? `Scanned page text (~${estimatedWordCount} words) is below Google's 800-word indexation bar for AdSense approval.`
+              : 'Content was flagged by Google automated raters as template-generated or lacking unique problem-solving value.',
+          severity: 'critical',
+          fixAdvice:
+            'Expand core articles to 1,000+ words with step-by-step methodologies, custom data tables, and practical worked examples.',
+        });
+        findings.unshift({
+          category: 'Content Depth',
+          label: 'Information Gain & Depth',
+          status: 'fail',
+          detail: 'Flagged for low textual depth or formulaic summaries without unique insights.',
+        });
+      }
+    } else if (rejectionReason === 'site-behavior-navigation') {
+      if (!criticalBlockers.some((b) => b.title.includes('Navigation'))) {
+        criticalBlockers.unshift({
+          title: 'Google Rejection: Site Behavior: Navigation Layout',
+          description:
+            'Reviewers reported difficulty navigating content, broken menu hierarchies, or empty category archives.',
+          severity: 'critical',
+          fixAdvice:
+            'Audit all header, footer, and category links. Eliminate archives with fewer than 3 articles and ensure clear breadcrumb links.',
+        });
+        findings.unshift({
+          category: 'Navigation & UX',
+          label: 'Navigation Hierarchy',
+          status: 'fail',
+          detail: 'Reviewers encountered menu dead-ends, broken links, or confusing click depth.',
+        });
+      }
+    } else if (rejectionReason === 'site-down-or-unavailable') {
+      if (!criticalBlockers.some((b) => b.title.includes('Indexing') || b.title.includes('Connection'))) {
+        criticalBlockers.unshift({
+          title: 'Google Rejection: Site Down or Crawler Bot Blocked',
+          description:
+            'Google review crawlers (Mediapartners-Google) received a connection timeout, HTTP 403, or Cloudflare challenge when polling your domain.',
+          severity: 'critical',
+          fixAdvice:
+            'Whitelist Googlebot in Cloudflare WAF Security Rules, verify web server uptime, and verify DNS records.',
+        });
+        findings.unshift({
+          category: 'Technical & SEO',
+          label: 'Crawler Accessibility',
+          status: 'fail',
+          detail: 'AdSense crawler encountered a firewall challenge, 403, or DNS timeout.',
+        });
+      }
+    } else if (rejectionReason === 'valuable-inventory-under-construction') {
+      criticalBlockers.unshift({
+        title: 'Google Rejection: Valuable Inventory: Under Construction',
+        description:
+          'Reviewers detected incomplete interactive features, coming-soon placeholders, or empty sections.',
+        severity: 'critical',
+        fixAdvice:
+          'Remove coming-soon notices, unpublish incomplete tools or pages, and ensure all buttons have fully functional implementations.',
+      });
+      findings.unshift({
+        category: 'Content Depth',
+        label: 'Site Completeness',
+        status: 'fail',
+        detail: 'Site flagged as under construction or containing placeholder content.',
+      });
+    } else if (rejectionReason === 'policy-violations') {
+      if (!criticalBlockers.some((b) => b.title.includes('Privacy') || b.title.includes('Policy'))) {
+        criticalBlockers.unshift({
+          title: 'Google Rejection: Publisher Policy Conflict',
+          description:
+            'Google flagged potential policy conflicts (e.g. missing legal cookie disclosures, copyright risks, or unvetted content).',
+          severity: 'critical',
+          fixAdvice:
+            'Audit site against Google Publisher Policies and verify mandatory DoubleClick DART cookie clauses.',
+        });
+        findings.unshift({
+          category: 'Legal & TOS',
+          label: 'Policy Compliance',
+          status: 'fail',
+          detail: 'Potential policy conflicts detected during review.',
+        });
+      }
+    }
+
     // Dynamic Rejection Doctor Assessment:
     // Calculates honest current readiness based on the specific rejection reason and real scanned findings
     let doctorScore = 50;
