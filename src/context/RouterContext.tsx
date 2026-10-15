@@ -74,7 +74,11 @@ export function parseLocation(): RouteState {
     else if (hash === 'editorial-policy') pathname = '/editorial-policy/';
 
     // Update browser URL without reload to clean hash
-    window.history.replaceState(null, '', `${pathname}${search}`);
+    try {
+      window.history.replaceState(null, '', `${pathname}${search}`);
+    } catch {
+      // Ignored in sandboxed iframes or cross-origin restrictions
+    }
   }
 
   // Parse search params
@@ -193,10 +197,14 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const navigate = useCallback((to: string, options?: { replace?: boolean }) => {
     if (typeof window === 'undefined') return;
 
-    if (options?.replace) {
-      window.history.replaceState(null, '', to);
-    } else {
-      window.history.pushState(null, '', to);
+    try {
+      if (options?.replace) {
+        window.history.replaceState(null, '', to);
+      } else {
+        window.history.pushState(null, '', to);
+      }
+    } catch {
+      // Ignored if sandbox restricts history API
     }
 
     setState(parseLocation());

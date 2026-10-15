@@ -20,6 +20,17 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Static public assets (favicon, robots, sitemap)
+  const publicDir = path.join(process.cwd(), 'public');
+  app.use(express.static(publicDir));
+  app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(publicDir, 'favicon.ico'));
+  });
+  app.get('/favicon.svg', (req, res) => {
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.sendFile(path.join(publicDir, 'favicon.svg'));
+  });
+
   // Track if current key is flagged by Google as leaked or invalid to prevent repeated 403 spam
   let isGeminiKeyCompromised = false;
   let lastTestedApiKey: string | undefined = undefined;

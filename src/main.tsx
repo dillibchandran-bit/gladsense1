@@ -3,14 +3,17 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import { RouterProvider } from './context/RouterContext';
 import { SocialShareProvider } from './context/SocialShareContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider>
-      <SocialShareProvider>
-        <App />
-      </SocialShareProvider>
-    </RouterProvider>
+    <ErrorBoundary>
+      <RouterProvider>
+        <SocialShareProvider>
+          <App />
+        </SocialShareProvider>
+      </RouterProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
