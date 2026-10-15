@@ -283,10 +283,10 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div className="flex items-center gap-3">
               <span className="font-['Google_Sans_Display','Google_Sans',sans-serif] font-bold text-sm text-[#202124]">
-                Glad<span className="text-[#1a73e8]">Sense</span> <span className="text-slate-400 font-mono text-xs font-normal">gladsenseedu.app</span>
+                Glad<span className="text-[#7c3aed]">Sense</span> <span className="text-slate-400 font-mono text-xs font-normal">gladsenseedu.app</span>
               </span>
               <span className="text-[#dadce0]">|</span>
-              <span className="text-[#5f6368] text-xs">Pre-Approval Site Auditor & Policy Doctor for Google AdSense</span>
+              <span className="text-[#5f6368] text-xs">Pre-Approval Audit • Rejection Remedy • Penalization Diagnostic</span>
             </div>
             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-5 text-[12px] text-[#5f6368]">
               <a
