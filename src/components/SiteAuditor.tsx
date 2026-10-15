@@ -39,6 +39,7 @@ import {
   Link2,
   Server,
   Lock,
+  Brain,
 } from 'lucide-react';
 import { NavTabType } from './Navbar';
 import { WebsiteRevenueCard } from './WebsiteRevenueCard';
@@ -52,6 +53,8 @@ import { TrademarkDisclaimer } from './TrademarkDisclaimer';
 import { SiteDoctorEducation } from './educational/SiteDoctorEducation';
 import { AdSlotPlaceholder, ContextualAffiliateCard } from './monetization/AdPlaceholders';
 import { CrawlerFirewallDiagnosticsLab } from './technical/CrawlerFirewallDiagnosticsLab';
+import { InformationGainMatrix } from './InformationGainMatrix';
+import { RejectionRoadmapExporter } from './RejectionRoadmapExporter';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -399,6 +402,18 @@ Verified by GladSense AI Auditor`;
               <Server className="w-4 h-4" />
               <span>🛑 Crawler &amp; Firewall Lab (403 Fixes)</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setMode('quality-matrix')}
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                mode === 'quality-matrix'
+                  ? 'bg-gradient-to-r from-indigo-600 to-indigo-800 text-white shadow-md shadow-indigo-900/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Brain className="w-4 h-4" />
+              <span>⚡ Quality Rater Matrix (E-E-A-T)</span>
+            </button>
           </div>
 
           {/* Technical Webmaster & Crawl Diagnostics Suite Quick Toolbar */}
@@ -548,8 +563,15 @@ Verified by GladSense AI Auditor`;
             </div>
           )}
 
+          {/* QUALITY RATER DIAGNOSTIC MATRIX VIEW */}
+          {mode === 'quality-matrix' && (
+            <div className="pt-2 max-w-5xl mx-auto text-left">
+              <InformationGainMatrix />
+            </div>
+          )}
+
           {/* CLINICAL COMMAND SEARCH BOX (Only in pre-approval and rejection-doctor modes) */}
-          {mode !== 'crawler-firewall' && (
+          {mode !== 'crawler-firewall' && mode !== 'quality-matrix' && (
             <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -2298,6 +2320,18 @@ Verified by GladSense AI Auditor`;
                         </div>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Prioritized Ticket Backlog & Exportable Remediation Roadmap */}
+                  <div className="pt-2">
+                    <RejectionRoadmapExporter
+                      rejectionReason={rejectionReason}
+                      domainUrl={result.url}
+                      onSelectRemedy={(rem) => {
+                        setActiveRemedyType(rem as RemedyType);
+                        setRemedyModalOpen(true);
+                      }}
+                    />
                   </div>
                 </div>
               )}

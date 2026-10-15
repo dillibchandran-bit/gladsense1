@@ -168,7 +168,7 @@ export default function App() {
         {(state.route === 'home' || state.route === 'site-doctor' || state.route === 'crawler-firewall') && (
           <SiteAuditor
             onSwitchTab={handleTabChange}
-            initialMode={state.route === 'crawler-firewall' ? 'crawler-firewall' : undefined}
+            initialMode={state.route === 'crawler-firewall' ? 'crawler-firewall' : (state.params.mode as any) || undefined}
           />
         )}
 
@@ -183,7 +183,7 @@ export default function App() {
             <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
               <React.Suspense fallback={<SuiteSuspenseFallback />}>
                 <NicheKeywordLab
-                  initialSubTab={activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'ai-evaluator'}
+                  initialSubTab={state.params.subTab === 'ymyl-analyzer' ? 'ymyl-analyzer' : activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'top-50-cpc'}
                   onSelectNiche={(niche) => setSelectedNiche(niche)}
                   onSimulateInCalculator={handleSimulateInCalculator}
                 />
@@ -217,7 +217,11 @@ export default function App() {
                 checklist={checklist}
                 onToggleItem={handleToggleAuditItem}
                 initialSubTab={
-                  state.route === 'ads-txt-generator' || state.route === 'robots-txt' || state.route === 'privacy-policy-generator'
+                  state.params.subTab === 'ad-simulator'
+                    ? 'ad-simulator'
+                    : state.route === 'ads-txt-generator' && state.techTool === 'ads-txt'
+                    ? 'technical-webmaster'
+                    : state.route === 'robots-txt' || state.route === 'privacy-policy-generator'
                     ? 'technical-webmaster'
                     : activeTab === 'single-click'
                     ? 'generators'

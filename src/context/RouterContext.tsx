@@ -53,6 +53,9 @@ export function parseLocation(): RouteState {
   if (hash) {
     if (hash === 'site-doctor') pathname = '/tools/site-doctor/';
     else if (hash === 'crawler-firewall' || hash === 'firewall' || hash === '403-forbidden') pathname = '/tools/crawler-firewall/';
+    else if (hash === 'quality-matrix' || hash === 'quality-rater') pathname = '/tools/quality-rater-matrix/';
+    else if (hash === 'ad-simulator' || hash === 'ad-placement' || hash === 'ad-layout') pathname = '/tools/ad-placement-simulator/';
+    else if (hash === 'ymyl' || hash === 'ymyl-analyzer') pathname = '/tools/ymyl-difficulty-analyzer/';
     else if (hash === 'niche-lab' || hash === 'kgr' || hash === 'niches') pathname = '/tools/kgr-keyword-lab/';
     else if (hash === 'revenue-planner' || hash === 'calculator' || hash === 'budget') pathname = '/tools/adsense-rpm-calculator/';
     else if (hash === 'ads-txt-validator' || hash === 'ads-txt' || hash === 'ads.txt') pathname = '/tools/ads-txt-validator/';
@@ -92,6 +95,18 @@ export function parseLocation(): RouteState {
   // Technical Webmaster & Crawl Diagnostics Routes
   if (cleanPath.startsWith('/tools/crawler-firewall') || cleanPath.startsWith('/tools/site-doctor/crawler-firewall')) {
     return { route: 'crawler-firewall', pathname: '/tools/crawler-firewall/', search, params };
+  }
+
+  if (cleanPath.startsWith('/tools/quality-rater-matrix')) {
+    return { route: 'site-doctor', pathname: '/tools/quality-rater-matrix/', search, params: { ...params, mode: 'quality-matrix' } };
+  }
+
+  if (cleanPath.startsWith('/tools/ad-placement-simulator') || cleanPath.startsWith('/tools/ad-layout-simulator')) {
+    return { route: 'ads-txt-generator', pathname: '/tools/ad-placement-simulator/', search, params: { ...params, subTab: 'ad-simulator' } };
+  }
+
+  if (cleanPath.startsWith('/tools/ymyl-analyzer') || cleanPath.startsWith('/tools/ymyl-difficulty-analyzer')) {
+    return { route: 'kgr-keyword-lab', pathname: '/tools/ymyl-difficulty-analyzer/', search, params: { ...params, subTab: 'ymyl-analyzer' } };
   }
 
   if (cleanPath.startsWith('/tools/ads-txt-validator') || cleanPath === '/tools/ads-txt' || cleanPath === '/tools/ads-txt/') {

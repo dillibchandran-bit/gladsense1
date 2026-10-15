@@ -135,7 +135,7 @@ export interface AiEvaluationResult {
   verdictReasoning: string;
 }
 
-export type SiteAuditMode = 'pre-approval' | 'rejection-doctor' | 'crawler-firewall';
+export type SiteAuditMode = 'pre-approval' | 'rejection-doctor' | 'crawler-firewall' | 'quality-matrix';
 
 export type RejectionCategory =
   | 'low-value-content'

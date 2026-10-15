@@ -6,6 +6,7 @@ import { SingleClickSolutions } from './SingleClickSolutions';
 import { AdsTxtValidatorTool } from './technical/AdsTxtValidatorTool';
 import { RobotsTxtGeneratorTool } from './technical/RobotsTxtGeneratorTool';
 import { AdSensePrivacyPolicyGenerator } from './technical/AdSensePrivacyPolicyGenerator';
+import { AdPlacementSimulator } from './AdPlacementSimulator';
 import {
   ShieldCheck,
   Zap,
@@ -21,13 +22,14 @@ import {
   Copy,
   Check,
   Share2,
+  Sliders,
 } from 'lucide-react';
 import { useAppRouter } from '../context/RouterContext';
 
 interface PolicyToolkitProps {
   checklist?: AuditItem[];
   onToggleItem?: (id: string) => void;
-  initialSubTab?: 'audit-sop' | 'content-sop' | 'technical-webmaster' | 'generators';
+  initialSubTab?: 'audit-sop' | 'content-sop' | 'technical-webmaster' | 'generators' | 'ad-simulator';
   initialTechTool?: 'ads-txt' | 'robots-txt' | 'privacy-policy';
 }
 
@@ -36,7 +38,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
   initialTechTool = 'ads-txt',
 }) => {
   const { navigate } = useAppRouter();
-  const [subTab, setSubTab] = useState<'audit-sop' | 'content-sop' | 'technical-webmaster' | 'generators'>(initialSubTab);
+  const [subTab, setSubTab] = useState<'audit-sop' | 'content-sop' | 'technical-webmaster' | 'generators' | 'ad-simulator'>(initialSubTab);
   const [techTool, setTechTool] = useState<'ads-txt' | 'robots-txt' | 'privacy-policy'>(initialTechTool);
   const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
 
@@ -112,6 +114,18 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
           >
             <Terminal className="w-3.5 h-3.5" />
             <span>Technical Webmaster</span>
+          </button>
+
+          <button
+            onClick={() => setSubTab('ad-simulator')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              subTab === 'ad-simulator'
+                ? 'bg-rose-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Sliders className="w-3.5 h-3.5" />
+            <span>Ad Layout Simulator</span>
           </button>
 
           <button
@@ -362,6 +376,9 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
 
       {/* Sub-Tool 4: 1-Click Code Solutions & Legal Suite */}
       {subTab === 'generators' && <SingleClickSolutions />}
+
+      {/* Sub-Tool 5: Google AdSense Real-Time Ad Placement & Density Safety Simulator */}
+      {subTab === 'ad-simulator' && <AdPlacementSimulator />}
     </div>
   );
 };

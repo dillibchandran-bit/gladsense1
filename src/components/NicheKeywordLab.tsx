@@ -6,10 +6,11 @@ import { AiNicheEvaluator } from './AiNicheEvaluator';
 import { KgrCalculator } from './KgrCalculator';
 import { Top50NichesTable } from './Top50NichesTable';
 import { EducationRpmBenchmarks } from './EducationRpmBenchmarks';
-import { Sparkles, Compass, Search, Table, GraduationCap } from 'lucide-react';
+import { YmylDifficultyAnalyzer } from './YmylDifficultyAnalyzer';
+import { Sparkles, Compass, Search, Table, GraduationCap, Scale } from 'lucide-react';
 
 interface NicheKeywordLabProps {
-  initialSubTab?: 'ai-evaluator' | 'matrix' | 'kgr' | 'top-50-cpc' | 'education-rpm';
+  initialSubTab?: 'ai-evaluator' | 'matrix' | 'kgr' | 'top-50-cpc' | 'education-rpm' | 'ymyl-analyzer';
   onSelectNiche: (niche: Niche) => void;
   onSimulateInCalculator: (rpm: number) => void;
 }
@@ -19,7 +20,7 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
   onSelectNiche,
   onSimulateInCalculator,
 }) => {
-  const [subTab, setSubTab] = useState<'ai-evaluator' | 'matrix' | 'kgr' | 'top-50-cpc' | 'education-rpm'>(initialSubTab);
+  const [subTab, setSubTab] = useState<'ai-evaluator' | 'matrix' | 'kgr' | 'top-50-cpc' | 'education-rpm' | 'ymyl-analyzer'>(initialSubTab);
 
   return (
     <div className="space-y-6">
@@ -100,6 +101,18 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
             <Search className="w-3.5 h-3.5" />
             <span>KGR Keyword Finder</span>
           </button>
+
+          <button
+            onClick={() => setSubTab('ymyl-analyzer')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              subTab === 'ymyl-analyzer'
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Scale className="w-3.5 h-3.5" />
+            <span>YMYL &amp; E-E-A-T Safety</span>
+          </button>
         </div>
       </div>
 
@@ -126,6 +139,9 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
 
       {/* Sub-Tool 5: Keyword Golden Ratio (KGR) Search */}
       {subTab === 'kgr' && <KgrCalculator />}
+
+      {/* Sub-Tool 6: Google Quality Evaluator YMYL & E-E-A-T Safety Analyzer */}
+      {subTab === 'ymyl-analyzer' && <YmylDifficultyAnalyzer />}
     </div>
   );
 };
