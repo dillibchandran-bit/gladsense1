@@ -60,6 +60,7 @@ export function parseLocation(): RouteState {
     else if (hash === 'privacy-policy-generator' || hash === 'privacy-generator') pathname = '/tools/privacy-policy-generator/';
     else if (hash === 'policy-toolkit' || hash === 'audit' || hash === 'single-click') pathname = '/tools/ads-txt-generator/';
     else if (hash === 'spa-adsense' || hash === 'spa-approval' || hash === 'single-page-application-adsense-approval-requirements' || hash === 'blog-single-page-application-adsense-approval-requirements') pathname = '/guides/single-page-application-adsense-approval-requirements/';
+    else if (hash === 'evaluation-standards' || hash === 'google-quality' || hash === 'adsense-compliance' || hash === 'google-search-quality-adsense-compliance-evaluation-standards') pathname = '/guides/google-search-quality-adsense-compliance-evaluation-standards/';
     else if (hash === 'faq' || hash === 'faqs' || hash === 'paa' || hash === 'people-also-ask' || hash === 'questions') pathname = '/faq/';
     else if (hash.startsWith('blog-')) pathname = `/guides/${hash.replace(/^blog-/, '')}/`;
     else if (hash === 'blog' || hash === 'guides') pathname = '/guides/';

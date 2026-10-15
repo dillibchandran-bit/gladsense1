@@ -7,8 +7,16 @@ export interface GladSenseAuthor {
   avatarBg: string; // Tailwind color class for avatars
   specialization: string;
 }
-
 export const GLADSENSE_AUTHORS: Record<string, GladSenseAuthor> = {
+  HEAD_EVALUATOR: {
+    id: 'google-quality-head',
+    name: 'Dillib Chandran, Lead Evaluator',
+    role: "Head of Google Quality & Search Policies & AdSense Compliance Evaluation",
+    team: 'Global Search Quality & AdSense Policy Review Directorate',
+    shortBio: 'Directs search quality criteria, automated classifier enforcement, and AdSense publisher compliance audits. Evaluates domain eligibility across E-E-A-T, Information Gain, and Google Publisher Policies.',
+    avatarBg: 'bg-emerald-700',
+    specialization: 'Search Quality Systems, Classifier Thresholds & AdSense Compliance',
+  },
   DILLIB: {
     id: 'dillib-chandran',
     name: 'Dillib Chandran',

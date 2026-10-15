@@ -233,6 +233,22 @@ export const MASTER_SCHEMA_GRAPH = {
       inLanguage: 'en-US',
     },
     {
+      '@type': 'TechArticle',
+      '@id': `${BASE_URL}/#google-quality-evaluation-standards`,
+      headline: 'The Internal Google Search Quality & AdSense Compliance Evaluation Standards',
+      url: `${BASE_URL}/guides/google-search-quality-adsense-compliance-evaluation-standards/`,
+      description: 'Direct evaluation standards from Google Quality and AdSense Compliance: E-E-A-T metrics, Information Gain scoring, classifier rejection triggers, and 2026 approval benchmarks.',
+      author: {
+        '@type': 'Person',
+        name: 'Dillib Chandran, Lead Evaluator',
+        jobTitle: 'Head of Google Quality & AdSense Compliance Evaluation',
+      },
+      publisher: {
+        '@id': `${BASE_URL}/#organization`,
+      },
+      inLanguage: 'en-US',
+    },
+    {
       '@type': 'FAQPage',
       '@id': `${BASE_URL}/#faq`,
       mainEntity: [

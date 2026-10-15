@@ -66,6 +66,11 @@ const TAB_METADATA: TabMetadataMap = {
     description: 'The 5 engineering mandates, client-side route listeners, and prerender architectures required to pass Google AdSense review on modern single page applications.',
     canonicalPath: '/guides/single-page-application-adsense-approval-requirements/',
   },
+  'google-search-quality-adsense-compliance-evaluation-standards': {
+    title: 'Google Search Quality & AdSense Compliance Evaluation Standards (2026) — GladSense',
+    description: 'Direct evaluation standards from Google Quality and AdSense Compliance: E-E-A-T metrics, Information Gain scoring, classifier rejection triggers, and 2026 approval benchmarks.',
+    canonicalPath: '/guides/google-search-quality-adsense-compliance-evaluation-standards/',
+  },
   'privacy-policy': {
     title: 'Privacy Policy & DoubleClick Cookie Disclosures — GladSense Labs',
     description: 'Official privacy policy, cookie disclosures, Google Consent Mode v2 standards, and data protection disclosures for GladSense Labs.',
