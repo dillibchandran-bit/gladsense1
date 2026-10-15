@@ -56,12 +56,12 @@ export const GoogleAdSenseLogo: React.FC<LogoProps> = ({
             fill="url(#logo-amethyst-2)"
           />
 
-          {/* Center Precision Dot in Black */}
+          {/* Center Precision Verification Dot in Vibrant Emerald Green */}
           <circle
             cx="24"
             cy="24.25"
             r="3"
-            fill="#000000"
+            fill="#10b981"
           />
         </svg>
       </div>
