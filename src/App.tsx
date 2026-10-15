@@ -50,8 +50,8 @@ const SuiteSuspenseFallback: React.FC = () => (
       <div className="w-6 h-6 border-2 border-[#1a73e8] border-t-transparent rounded-full animate-spin" />
     </div>
     <div className="space-y-1">
-      <h3 className="text-sm font-bold text-slate-800 font-['Google_Sans',sans-serif]">Loading Isolated Suite...</h3>
-      <p className="text-xs text-slate-500">Fetching protected analytical assets and algorithms</p>
+      <h3 className="text-sm font-bold text-slate-800 font-['Google_Sans',sans-serif]">Loading Compliance Tools...</h3>
+      <p className="text-xs text-slate-500">Preparing analytical benchmarks and policy guidelines</p>
     </div>
   </div>
 );

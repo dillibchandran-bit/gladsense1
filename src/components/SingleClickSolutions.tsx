@@ -615,8 +615,8 @@ export const SingleClickSolutions: React.FC = () => {
           }`}
         >
           <Shield className="w-3.5 h-3.5 text-rose-400" />
-          <span>3. Anti-Click Shield</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-800 font-bold">Account Guard</span>
+          <span>3. Invalid Traffic Protection</span>
+          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-800 font-bold">IVT Defense</span>
         </button>
 
         <button
@@ -1019,11 +1019,11 @@ export const SingleClickSolutions: React.FC = () => {
           {beginnerMode && (
             <KidExplainer
               toolNumber="3"
-              title="Anti-Click-Bombing Bodyguard"
-              what="A tiny invisible bodyguard code that counts how many times one person clicks your ads."
-              why="If a jealous person or naughty bot clicks your ads 10 times in a row, Google will think YOU cheated and permanently BAN your account!"
-              how="Slide the limit to 3 clicks (already set), click the green '1-Click Copy JS Snippet' button, and paste it into your website."
-              result="If someone clicks ads 3 times, all ads disappear just for that person! Google sees zero bad clicks and your account stays 100% safe."
+              title="Invalid Traffic & Accidental Click Guard"
+              what="A lightweight script that prevents abnormal repeat clicks on your ad units."
+              why="Repetitive clicks from a single user or automated bot generate invalid traffic that can trigger ad serving limits or account suspensions."
+              how="Set your preferred repeat-click limit (recommended: 3 clicks), copy the script, and include it in your website footer."
+              result="If a visitor reaches the limit, further clicks are temporarily suppressed, protecting your account from invalid traffic penalties."
             />
           )}
 
@@ -1458,7 +1458,7 @@ export const SingleClickSolutions: React.FC = () => {
             <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-emerald-500" />
-                <span className="font-bold text-slate-900 text-sm">{microAppTitle} — Live Sandbox Preview</span>
+                <span className="font-bold text-slate-900 text-sm">{microAppTitle} — Live Interactive Preview</span>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -1479,7 +1479,7 @@ export const SingleClickSolutions: React.FC = () => {
 
             <div className="flex-1 w-full bg-slate-100 p-2 sm:p-4">
               <iframe
-                title="Micro App Sandbox Preview"
+                title="Micro App Interactive Preview"
                 srcDoc={generateMicroAppHtml()}
                 className="w-full h-full rounded-xl border border-slate-300 bg-white shadow-xs"
                 sandbox="allow-scripts allow-modals"

@@ -195,10 +195,10 @@ export const SiteAuditor: React.FC<SiteAuditorProps> = ({ onSwitchTab, initialMo
     const isDoctor = result.mode === 'rejection-doctor';
 
     const text = isDoctor
-      ? `Google AdSense Rejection Doctor — Clinical Triage & Prescription Report
+      ? `Google AdSense Rejection Diagnosis & Fix Plan
 Website: ${result.url}
 Diagnosis: ${result.rejectionDiagnosis?.rejectionReason || 'Google AdSense Policy Rejection'}
-Current Re-Appeal Readiness: ${result.approvalProbability}% (${result.overallStatus.toUpperCase()})
+Current Re-Application Readiness: ${result.approvalProbability}% (${result.overallStatus.toUpperCase()})
 Analyzed At: ${new Date(result.analyzedAt).toLocaleDateString()}
 
 Verdict:
@@ -351,11 +351,11 @@ Verified by GladSense AI Auditor`;
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
               {mode === 'rejection-doctor' ? (
                 <span>
-                  Emergency clinical triage for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, <strong className="text-slate-900 font-bold">Valuable Inventory: Under Construction</strong> flags, broken navigational flows, and crawler timeouts with an exact prescriptive fix plan.
+                  Actionable diagnosis and fix plans for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, <strong className="text-slate-900 font-bold">Valuable Inventory: Under Construction</strong> notices, navigation errors, and crawler blocks with clear steps to get approved.
                 </span>
               ) : (
                 <span>
-                  Free online pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's 5 core operational gates</strong> (E-E-A-T depth, legal trust pages, mobile performance, clean navigation) before applying to guarantee first-time approval.
+                  Free online pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's core policy standards</strong> (content value, legal trust pages, mobile performance, clean navigation) before applying.
                 </span>
               )}
             </p>
@@ -476,7 +476,7 @@ Verified by GladSense AI Auditor`;
                   <span>Select Google AdSense Rejection Reason:</span>
                 </span>
                 <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
-                  Doctor Triage Active
+                  Diagnosis Mode Active
                 </span>
               </div>
 
@@ -1013,15 +1013,15 @@ Verified by GladSense AI Auditor`;
                   <div className="flex items-center justify-between sm:justify-start gap-4 bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800">
                     <div className="text-right">
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                        {result.mode === 'rejection-doctor' ? 'Overturn Readiness Score' : 'AdSense Approval Probability'}
+                        {result.mode === 'rejection-doctor' ? 'Re-Application Readiness' : 'AdSense Approval Probability'}
                       </span>
                       <span className="text-xs text-slate-400">
                         {result.mode === 'rejection-doctor'
                           ? result.approvalProbability >= 80
-                            ? 'Ready for Re-Appeal'
+                            ? 'Ready for Re-Application'
                             : result.approvalProbability >= 50
-                            ? 'Remediation Required'
-                            : 'Critical Policy Blockers'
+                            ? 'Action Items Recommended'
+                            : 'Policy Blockers Identified'
                           : result.approvalProbability >= 85
                           ? 'High Confidence Pass'
                           : result.approvalProbability >= 60
@@ -1140,51 +1140,65 @@ Verified by GladSense AI Auditor`;
                     </div>
                   </div>
 
-                  {/* Card 3: Active Policy Blockers */}
+                  {/* Card 3: Technical Foundation & Blockers */}
                   <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between text-xs mb-1">
                         <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
-                          <XCircle className="w-3.5 h-3.5 text-rose-400" />
-                          <span>Active Blockers</span>
+                          {result.criticalBlockers.length === 0 ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                          )}
+                          <span>Technical Blockers</span>
                         </span>
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-800/50">
-                          {result.criticalBlockers.length} Critical
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                          result.criticalBlockers.length === 0
+                            ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/50'
+                            : 'bg-rose-950/80 text-rose-300 border border-rose-800/50'
+                        }`}>
+                          {result.criticalBlockers.length === 0 ? 'Clear' : `${result.criticalBlockers.length} Found`}
                         </span>
                       </div>
-                      <div className="text-xs sm:text-sm font-black text-rose-400 mb-1">
-                        {result.criticalBlockers.length === 0 ? '0 Blockers' : `${result.criticalBlockers.length} Unresolved`}
+                      <div className={`text-xs sm:text-sm font-black mb-1 ${
+                        result.criticalBlockers.length === 0 ? 'text-emerald-400' : 'text-rose-400'
+                      }`}>
+                        {result.criticalBlockers.length === 0 ? 'None Detected' : `${result.criticalBlockers.length} Unresolved`}
                       </div>
                       <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
-                        Issues causing automatic rejection upon re-submission
+                        {result.criticalBlockers.length === 0
+                          ? 'Legal pages and crawl settings are in place'
+                          : 'Issues that must be resolved before re-submission'}
                       </p>
                     </div>
-                    <div className="text-[10px] text-rose-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
-                      {result.criticalBlockers.length === 0 ? 'Passed Verification' : 'Must Clear 100%'}
+                    <div className={`text-[10px] font-semibold mt-2 pt-1.5 border-t border-slate-800 ${
+                      result.criticalBlockers.length === 0 ? 'text-emerald-400' : 'text-rose-400'
+                    }`}>
+                      {result.criticalBlockers.length === 0 ? 'Foundation Passed' : 'Must Resolve First'}
                     </div>
                   </div>
 
-                  {/* Card 4: Cooling Period Window */}
+                  {/* Card 4: Recommended Waiting Window */}
                   <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between text-xs mb-1">
                         <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-blue-400" />
-                          <span>Cooling Window</span>
+                          <span>Waiting Interval</span>
                         </span>
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300">
-                          Official SOP
+                          Best Practice
                         </span>
                       </div>
                       <div className="text-xs sm:text-sm font-black text-blue-400 font-mono mb-1">
                         14-Day Cycle
                       </div>
                       <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
-                        Recommended cooling period before submitting re-appeal
+                        Recommended time to publish fresh content before re-requesting review
                       </p>
                     </div>
                     <div className="text-[10px] text-blue-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
-                      Prevents Algorithmic Ban
+                      Allows Search Crawlers to Re-Index
                     </div>
                   </div>
 
@@ -1194,21 +1208,21 @@ Verified by GladSense AI Auditor`;
                       <div className="flex items-center justify-between text-xs mb-1">
                         <span className="text-slate-300 font-bold text-[11px] truncate flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Target Prognosis</span>
+                          <span>Target Readiness</span>
                         </span>
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300">
-                          Post-Fix
+                          Target Goal
                         </span>
                       </div>
                       <div className="text-xs sm:text-sm font-black text-emerald-400 font-mono mb-1">
-                        95% - 100%
+                        90% - 100%
                       </div>
                       <p className="text-[10px] text-slate-400 line-clamp-2 leading-tight">
-                        Projected pass rate once prescriptions are implemented
+                        Projected approval probability once action items are completed
                       </p>
                     </div>
                     <div className="text-[10px] text-emerald-400 font-semibold mt-2 pt-1.5 border-t border-slate-800">
-                      High Confidence Pass
+                      Approval Ready
                     </div>
                   </div>
                 </div>
@@ -1594,12 +1608,18 @@ Verified by GladSense AI Auditor`;
                   )}
                 </div>
               ) : (
-                <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center gap-3.5">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-600 shrink-0" />
+                <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start sm:items-center gap-3.5">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">Zero Critical Blockers Found</h3>
-                    <p className="text-xs text-slate-600 mt-0.5">
-                      This domain conforms to the essential structural and technical requirements of the Google Publisher Policies.
+                    <h3 className="text-base font-bold text-slate-900">
+                      {result.mode === 'rejection-doctor'
+                        ? 'Technical & Policy Foundation Verified'
+                        : 'Baseline Policy & Technical Foundation Verified'}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                      {result.mode === 'rejection-doctor'
+                        ? 'Your website has the required legal pages, mobile responsiveness, and crawler access. Google\'s review flag was triggered by content depth or utility—follow the step-by-step remedy plan above to resolve it.'
+                        : 'This domain conforms to the essential structural and technical requirements of the Google Publisher Policies.'}
                     </p>
                   </div>
                 </div>
@@ -2174,7 +2194,7 @@ Verified by GladSense AI Auditor`;
                       </p>
                     </div>
 
-                    {/* Role 6: Google Search Engineers (Algorithmic Calibration) */}
+                    {/* Role 6: Google Search Engineers (Quality Standards) */}
                     <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -2199,24 +2219,24 @@ Verified by GladSense AI Auditor`;
                             </span>
                           </div>
                           <div className="flex items-center justify-between text-slate-600">
-                            <span>Anti-Manipulation Check:</span>
-                            <span className="text-emerald-600 font-bold">No Blackhat Signals</span>
+                            <span>Traffic &amp; Content Integrity:</span>
+                            <span className="text-emerald-600 font-bold">No Manipulation Signals</span>
                           </div>
                           <div className="flex items-center justify-between text-slate-600">
                             <span>Core Web Vitals Metric:</span>
                             <span className="text-emerald-600 font-bold">LCP &lt; 2.5s / 0 CLS</span>
                           </div>
                           <div className="flex items-center justify-between text-slate-600">
-                            <span>Algorithmic Approval Verdict:</span>
+                            <span>Policy Evaluation Verdict:</span>
                             <span className={result.approvalProbability >= 85 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
-                              {result.approvalProbability >= 85 ? 'PROCEED TO CONSOLE' : 'REMEDIATION MANDATORY'}
+                              {result.approvalProbability >= 85 ? 'READY TO APPLY' : 'ACTION ITEMS RECOMMENDED'}
                             </span>
                           </div>
                         </div>
                       </div>
 
                       <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
-                        <strong>Engineer Mandate:</strong> Enforcing strict multi-layer mathematical standards across all network publishers.
+                        <strong>Quality Guideline:</strong> Verifying site value, clean navigation, and publisher compliance standards prior to ad serving.
                       </p>
                     </div>
                   </div>

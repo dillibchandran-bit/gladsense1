@@ -103,7 +103,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
               <Sparkles className="w-3.5 h-3.5 text-[#9d62ec]" />
               AI Web App Feasibility Evaluator
             </span>
-            <span className="text-xs text-[#5f6368] font-normal">• Gemini & Algorithmic Policy Analysis</span>
+            <span className="text-xs text-[#5f6368] font-normal">• AI Quality &amp; Policy Analysis</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-normal text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
             Web App Idea & AdSense Viability Assessment
@@ -236,7 +236,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
                   </span>
                 ) : (
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold border border-slate-200">
-                    Algorithmic AdSense Auditor
+                    Policy Compliance Auditor
                   </span>
                 )}
               </div>

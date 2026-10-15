@@ -84,7 +84,7 @@ export const GLADSENSE_OFFICIAL_SOCIALS = [
     hoverBorder: 'hover:border-black',
     textHover: 'hover:text-black',
     icon: XIcon,
-    subtext: 'Daily Algorithmic & AdSense Alerts',
+    subtext: 'Daily Search & Policy Updates',
   },
   {
     id: 'youtube',
@@ -97,7 +97,7 @@ export const GLADSENSE_OFFICIAL_SOCIALS = [
     hoverBorder: 'hover:border-[#ff0000]',
     textHover: 'hover:text-[#ff0000]',
     icon: YouTubeIcon,
-    subtext: 'Video SOPs & 1-Click Site Fixes',
+    subtext: 'Video Walkthroughs & Website Fixes',
   },
 ];
 

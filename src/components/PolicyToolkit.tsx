@@ -68,10 +68,10 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
           </div>
           <div>
             <h2 className="text-sm font-bold text-slate-900 leading-tight">
-              AdSense Compliance, Webmaster &amp; Editorial SOP Suite
+              AdSense Compliance, Webmaster &amp; Policy Suite
             </h2>
             <p className="text-[11px] text-slate-500">
-              Audit domains against the 100-Point AdSense SOP, validate ads.txt &amp; robots.txt crawl access, and generate compliant legal disclosures.
+              Audit domains against the 100-Point AdSense Compliance Checklist, validate ads.txt &amp; robots.txt crawl access, and generate compliant legal disclosures.
             </p>
           </div>
         </div>
@@ -87,7 +87,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
             }`}
           >
             <FileCheck className="w-3.5 h-3.5" />
-            <span>100-Pt SOP Audit</span>
+            <span>100-Point Checklist</span>
           </button>
 
           <button
@@ -99,7 +99,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>E-E-A-T Content SOP</span>
+            <span>Content Quality Standards</span>
           </button>
 
           <button
@@ -123,7 +123,7 @@ export const PolicyToolkit: React.FC<PolicyToolkitProps> = ({
             }`}
           >
             <Zap className="w-3.5 h-3.5 text-amber-300" />
-            <span>Trust Pages &amp; 1-Click Code</span>
+            <span>Legal Pages &amp; Code</span>
           </button>
         </div>
       </div>

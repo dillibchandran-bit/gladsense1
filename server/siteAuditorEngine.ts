@@ -917,10 +917,10 @@ export async function runSiteAudit(request: SiteAuditRequest): Promise<SiteAudit
   const verdictSummary =
     mode === 'rejection-doctor'
       ? baseProbability >= 80
-        ? `Overturn Ready (${baseProbability}%). Key policy blockers have been addressed. Domain is prepared for reconsideration request.`
+        ? `Re-Application Ready (${baseProbability}%). Key policy items have been addressed. Domain is prepared for reconsideration review.`
         : baseProbability >= 50
-        ? `Remediation in Progress (${baseProbability}%). Identified root causes under ${rejectionReason.replace(/-/g, ' ')} must be resolved before resubmission to avoid a permanent lockout.`
-        : `Active Policy Rejection State (${baseProbability}%). Google's crawler and human raters will reject this site immediately. Execute the 14-day prescription before requesting review.`
+        ? `Action Items Needed (${baseProbability}%). Identified issues under ${rejectionReason.replace(/-/g, ' ')} must be resolved before resubmission to avoid repeated rejections.`
+        : `Policy Action Required (${baseProbability}%). Key policy criteria are unfulfilled. Implement the 14-day publishing and correction plan before requesting review.`
       : baseProbability >= 85
       ? `High AdSense Readiness (${baseProbability}%). Domain displays sound technical structure and legal compliance. Ready for application.`
       : baseProbability >= 60

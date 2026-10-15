@@ -61,16 +61,16 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
     },
     {
       title: 'KGR Keyword & Niche Discovery Lab',
-      badge: 'Math-Backed SEO',
+      badge: 'Keyword Discovery',
       icon: Target,
       color: 'emerald',
       description:
         'Calculates the Keyword Golden Ratio (AllInTitle / Search Volume ≤ 0.25) to uncover low-competition, high-RPM utility niches that rank on Google Page 1 in 14–30 days without backlink building.',
       features: [
-        'Algorithmic KGR Formula Verification',
+        'Low-Competition Keyword Formula',
         'Commercial Search Intent Categorization',
         '30+ Verified Micro-Niches ($18–$45 Page RPM)',
-        'Zero-Cost Static Architecture Blueprints',
+        'Free Static Hosting Blueprints',
       ],
       actionLabel: 'Explore 30+ Niches',
       targetTab: 'niche-lab' as NavTabType,
@@ -92,8 +92,8 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
       targetTab: 'calculator' as NavTabType,
     },
     {
-      title: 'Compliance & Legal SOP Suite',
-      badge: 'Zero-Tolerance SOP',
+      title: 'Compliance & Legal Policy Suite',
+      badge: 'Policy Standards',
       icon: Scale,
       color: 'purple',
       description:
@@ -265,7 +265,7 @@ export const HomeExplainerSuite: React.FC<HomeExplainerSuiteProps> = ({
             </div>
             <div className="flex flex-col items-center">
               <div className="text-2xl sm:text-3xl font-black text-emerald-400 font-mono">100 Pts</div>
-              <div className="text-xs text-slate-400 mt-1">5-Pillar SOP Matrix</div>
+              <div className="text-xs text-slate-400 mt-1">5-Pillar Compliance Framework</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="text-2xl sm:text-3xl font-black text-amber-400 font-mono">6 Layers</div>

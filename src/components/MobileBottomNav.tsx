@@ -17,9 +17,9 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     icon: React.ElementType;
   }[] = [
     { id: 'site-doctor', label: 'Doctor', icon: ShieldCheck },
-    { id: 'niche-lab', label: 'KGR Lab', icon: Layers },
+    { id: 'niche-lab', label: 'Niches', icon: Layers },
     { id: 'revenue-planner', label: 'Planner', icon: DollarSign },
-    { id: 'policy-toolkit', label: 'SOP Suite', icon: Scale },
+    { id: 'policy-toolkit', label: 'Policy Tools', icon: Scale },
     { id: 'blog', label: 'Guides', icon: BookOpen },
   ];
 

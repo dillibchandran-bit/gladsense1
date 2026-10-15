@@ -300,15 +300,15 @@ export const AdSenseComplianceAuditFramework: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                Official Compliance SOP
+                Compliance Framework
               </span>
-              <span className="text-xs text-[#5f6368]">• Google AdSense Pre-Submission Audit Framework</span>
+              <span className="text-xs text-[#5f6368]">• Google AdSense Pre-Submission Audit Standard</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
-              Google AdSense Pre-Submission Audit & Governance Matrix
+              Google AdSense Pre-Submission Audit &amp; Policy Matrix
             </h1>
             <p className="text-xs sm:text-sm text-[#5f6368] mt-1 max-w-3xl leading-relaxed">
-              Standardize the pre-submission audit process to guarantee a minimum score of <strong>85/100</strong> with zero critical policy violations before applying to Google AdSense.
+              Verify your website against the evaluation standard to achieve a minimum readiness score of <strong>85/100</strong> with zero policy violations prior to submitting to Google AdSense.
             </p>
           </div>
 
@@ -368,7 +368,7 @@ export const AdSenseComplianceAuditFramework: React.FC = () => {
               Mandatory Failure Gate Triggered: Immediate Rejection
             </h3>
             <p>
-              According to Section 1 of the AdSense Compliance SOP: <em>"Any critical policy flag results in an immediate 0/25 in Policy Compliance and an automatic REJECTION, regardless of total score."</em>
+              According to Google Publisher Policies: <em>"Any critical policy violation results in an immediate policy block and prevents approval, regardless of other metrics."</em>
             </p>
             <p className="font-medium text-rose-950">
               Resolve prohibited content, copyright integrity, or deceptive UI issues before submitting your application.

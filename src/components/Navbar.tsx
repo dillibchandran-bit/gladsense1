@@ -49,8 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'site-doctor', label: 'Site Auditor & Doctor', icon: ShieldCheck },
     { id: 'niche-lab', label: 'Niche & Keyword Lab', icon: Layers },
     { id: 'revenue-planner', label: 'Revenue & Profit Planner', icon: DollarSign },
-    { id: 'policy-toolkit', label: 'Compliance & SOP Suite', icon: Scale, badge: 'SOP 2.0' },
-    { id: 'blog', label: 'Knowledge Base (30)', icon: BookOpen },
+    { id: 'policy-toolkit', label: 'Compliance & Policy Tools', icon: Scale },
+    { id: 'blog', label: 'Publisher Guides', icon: BookOpen },
   ];
 
   const isTabActive = (itemId: NavTabType) => {

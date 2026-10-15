@@ -123,33 +123,33 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
               <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 text-xs text-purple-900 space-y-1">
                 <span className="font-bold block text-purple-950">
-                  Mandatory Editorial & AI Transparency Disclosure (Master SOP v4.1 Compliant):
+                  Editorial &amp; AI Transparency Disclosure:
                 </span>
                 <p className="italic text-purple-800 leading-relaxed">
-                  "Editorial Disclosure: We utilize automated research and linguistic tools to assist our editorial workflow. Every piece of content is fact-checked, structured, and reviewed by human domain specialists prior to publication."
+                  "Editorial Disclosure: We utilize research and assistive analytical tools to enhance our content. Every piece of guidance is verified, structured, and reviewed by experienced search quality and webmaster specialists prior to publication."
                 </p>
               </div>
 
               <div>
-                <h3 className="text-base font-bold text-[#202124]">Corporate Mission & Purpose</h3>
+                <h3 className="text-base font-bold text-[#202124]">Mission &amp; Purpose</h3>
                 <p className="mt-1">
                   Over 85% of independent website publishers and blog creators face immediate rejection upon their first Google AdSense application due to preventable policy misunderstandings—such as missing legal disclosures, thin boilerplate content, deceptive navigation anchors, or faulty ads.txt syntax.
                 </p>
                 <p className="mt-2">
-                  GladSense Labs was established to provide creators, indie webmasters, and engineering teams with enterprise-grade automated diagnostic audits, mathematical revenue modeling, and zero-cost policy compliance tooling.
+                  GladSense Labs was established to provide creators, indie webmasters, and engineering teams with enterprise-grade automated diagnostic audits, accurate revenue modeling, and accessible policy compliance tooling.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                  Leadership, Governance & Editorial Review Board
+                  Leadership, Governance &amp; Editorial Review Board
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block">Executive Leadership</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block">Lead Evaluator &amp; Founder</span>
                     <strong className="text-slate-900 block text-sm">Dillib Chandran</strong>
-                    <span className="text-slate-600 block">Founder & Chief Technology Architect</span>
-                    <span className="text-[11px] text-slate-500">Specialization: Algorithmic Search Architecture, Static Edge Infrastructure & High-RPM Monetization.</span>
+                    <span className="text-slate-600 block">Lead Quality Evaluator &amp; Platform Architect</span>
+                    <span className="text-[11px] text-slate-500">Specialization: Search Quality Evaluation Standards, Webmaster Policies &amp; Publisher Monetization.</span>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">

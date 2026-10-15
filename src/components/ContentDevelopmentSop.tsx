@@ -153,15 +153,15 @@ export const ContentDevelopmentSop: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-[#e8f0fe] text-[#1a73e8]">
-                Content Development SOP v2.0
+                Content Quality Standards
               </span>
-              <span className="text-xs text-[#5f6368]">• Google Ranking & SEO Quality Standard</span>
+              <span className="text-xs text-[#5f6368]">• Google Search Quality &amp; E-E-A-T Framework</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-[#202124] tracking-tight font-['Google_Sans',sans-serif]">
-              Content Quality & Search Intent Operating Standard
+              Content Quality &amp; Search Intent Guidelines
             </h1>
             <p className="text-xs sm:text-sm text-[#5f6368] mt-1 max-w-3xl leading-relaxed">
-              Standard operating procedures for writers, editors, and engineers to build content and web app pages that achieve top-tier Google search visibility.
+              Actionable quality standards for webmasters, creators, and engineers to build content that delivers authentic value and earns top search rankings.
             </p>
           </div>
 
@@ -335,7 +335,7 @@ export const ContentDevelopmentSop: React.FC = () => {
         {/* Live Dynamic Progress Bar */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs font-semibold">
-            <span className="text-slate-700">SOP Readiness Completion</span>
+            <span className="text-slate-700">Quality Standards Progress</span>
             <span className={progressPercent === 100 ? 'text-emerald-600' : 'text-[#1a73e8]'}>
               {progressPercent}% ({completedCount} of {checklist.length} Verified)
             </span>
@@ -449,7 +449,7 @@ export const ContentDevelopmentSop: React.FC = () => {
               className="w-full p-3 rounded-lg border border-purple-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-purple-500"
             />
             <p className="text-[11px] text-purple-800 leading-normal">
-              <strong>SOP Requirement:</strong> Place a 40–60 word direct summary immediately following key subheadings to maximize Google Position 0 snippet captures.
+              <strong>Quality Guideline:</strong> Place a 40–60 word direct summary immediately following key subheadings to maximize Google featured snippet captures.
             </p>
           </div>
 
