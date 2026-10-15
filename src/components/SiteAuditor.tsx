@@ -338,27 +338,38 @@ Verified by GladSense AI Auditor`;
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 flex items-center gap-1.5">
               <Stethoscope className="w-3.5 h-3.5 text-purple-600" />
-              <span>Free Online Auditor • 100-Point Rubric</span>
+              <span>Official 100-Point Audit Rubric</span>
             </span>
             <span className="text-slate-300">•</span>
-            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Free Google AdSense Eligibility & Policy Readiness Checker Tool
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              Search Quality Evaluator &amp; AdSense Compliance Engine
             </span>
           </div>
 
           {/* Main Hero Headline */}
-          <div className="space-y-2.5">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif]">
-              Free Google AdSense Eligibility & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">Policy Readiness Checker</span>
+          <div className="space-y-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif] leading-tight">
+              Google AdSense
+              <span className="block mt-1 text-2xl sm:text-3xl lg:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">
+                Pre-Approval Audit • Rejection Remedy • Penalization Diagnostic
+              </span>
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
               {mode === 'rejection-doctor' ? (
                 <span>
-                  Actionable diagnosis and fix plans for rejected websites. Pinpoint <strong className="text-slate-900 font-bold">Low-Value Content</strong>, <strong className="text-slate-900 font-bold">Valuable Inventory: Under Construction</strong> notices, navigation errors, and crawler blocks with clear steps to get approved.
+                  Actionable root-cause diagnosis and 14-day recovery roadmaps for publishers. Pinpoint why your domain was rejected for <strong className="text-slate-900 font-bold">"Low-Value Content"</strong>, resolve crawler blocks, or recover from sudden ad serving limitations.
+                </span>
+              ) : mode === 'quality-matrix' ? (
+                <span>
+                  Interactive Google Quality Evaluator (SQEG) audit. Measure your site&apos;s <strong className="text-slate-900 font-bold">Information Gain</strong>, author entity transparency, and unhelpful AI risk before submitting your application.
+                </span>
+              ) : mode === 'crawler-firewall' ? (
+                <span>
+                  Diagnostic firewall &amp; bot unblocking lab. Stop Cloudflare Turnstile, Bot Fight Mode, and 403 Forbidden errors from blocking <strong className="text-slate-900 font-bold">Mediapartners-Google</strong> crawlers.
                 </span>
               ) : (
                 <span>
-                  Free online pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google's core policy standards</strong> (content value, legal trust pages, mobile performance, clean navigation) before applying.
+                  Actionable pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google&apos;s core quality standards</strong> (content value, legal trust pages, zero broken links, mobile performance) before applying.
                 </span>
               )}
             </p>
@@ -755,7 +766,7 @@ Verified by GladSense AI Auditor`;
             {/* Standardized Princeton Generative Engine Optimization (GEO) 3-Pill Guide */}
             <div className="pt-2 text-left">
               <GeoQuickGuide
-                toolName="AdSense Rejection Doctor & Pre-Approval Auditor"
+                toolName="Google AdSense Pre-Approval Audit, Rejection Remedy & Penalization Diagnostic"
                 whatItIs="An automated 100-point diagnostic engine evaluating web applications against Google Publisher Policies, Human Search Quality Rater E-E-A-T criteria, and DoubleClick DART cookie mandates."
                 howToUse={[
                   "Enter your live domain or paste raw HTML markup for offline instant parsing",

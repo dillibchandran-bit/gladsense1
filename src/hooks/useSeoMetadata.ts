@@ -12,8 +12,8 @@ interface TabMetadataMap {
 
 const TAB_METADATA: TabMetadataMap = {
   'site-doctor': {
-    title: 'Free Google AdSense Eligibility & Policy Readiness Checker Tool — GladSense',
-    description: 'Free online Google AdSense eligibility and policy readiness checker tool. Fix Low Value Content in 2026, resolve Valuable Inventory: Under Construction flags, and verify first-attempt approval.',
+    title: 'Google AdSense — Pre-Approval Audit | Rejection Remedy | Penalization Diagnostic',
+    description: 'Google AdSense Pre-Approval Audit, Rejection Remedy & Penalization Diagnostic. Pinpoint why your domain was rejected for Low-Value Content, resolve crawler blocks, and get actionable 14-day recovery roadmaps.',
     canonicalPath: '/tools/site-doctor/',
   },
   'crawler-firewall': {
