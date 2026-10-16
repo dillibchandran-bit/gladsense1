@@ -14,6 +14,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface NicheExplorerProps {
   niches: Niche[];
@@ -442,6 +443,9 @@ export const NicheExplorer: React.FC<NicheExplorerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Official AdSense Probability & Policy Notice */}
+      <OfficialEvaluationDisclaimer compact sourceLabel="AdSense Micro-Niche Directory & Approval Probability Indices" />
     </div>
   );
 };

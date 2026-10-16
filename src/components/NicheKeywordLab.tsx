@@ -16,11 +16,17 @@ interface NicheKeywordLabProps {
 }
 
 export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
-  initialSubTab = 'top-50-cpc',
+  initialSubTab = 'ai-evaluator',
   onSelectNiche,
   onSimulateInCalculator,
 }) => {
   const [subTab, setSubTab] = useState<'ai-evaluator' | 'matrix' | 'kgr' | 'top-50-cpc' | 'education-rpm' | 'ymyl-analyzer'>(initialSubTab);
+
+  React.useEffect(() => {
+    if (initialSubTab) {
+      setSubTab(initialSubTab);
+    }
+  }, [initialSubTab]);
 
   return (
     <div className="space-y-6">
@@ -35,13 +41,25 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
               High-RPM Niche &amp; Keyword Discovery Lab
             </h2>
             <p className="text-[11px] text-slate-500">
-              Top 50 high-paying CPC niches, verified education RPM benchmarks (gladsenseedu.app), 30+ pre-vetted blueprints, and KGR formulas.
+              AI web app feasibility evaluator, Top 50 high-paying CPC niches, verified education RPM benchmarks (gladsenseedu.app), and KGR formulas.
             </p>
           </div>
         </div>
 
-        {/* 5 Unified Sub-Tabs */}
+        {/* Unified Sub-Tabs: AI Evaluator as Primary Default */}
         <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200/80 shadow-xs w-full sm:w-auto justify-center flex-wrap gap-1">
+          <button
+            onClick={() => setSubTab('ai-evaluator')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              subTab === 'ai-evaluator'
+                ? 'bg-[#9d62ec] text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>AI Evaluator</span>
+          </button>
+
           <button
             onClick={() => setSubTab('top-50-cpc')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -76,18 +94,6 @@ export const NicheKeywordLab: React.FC<NicheKeywordLabProps> = ({
           >
             <Compass className="w-3.5 h-3.5" />
             <span>30+ Curated Niches</span>
-          </button>
-
-          <button
-            onClick={() => setSubTab('ai-evaluator')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-              subTab === 'ai-evaluator'
-                ? 'bg-[#9d62ec] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AI Evaluator</span>
           </button>
 
           <button

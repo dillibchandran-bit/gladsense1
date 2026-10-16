@@ -183,7 +183,19 @@ export default function App() {
             <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
               <React.Suspense fallback={<SuiteSuspenseFallback />}>
                 <NicheKeywordLab
-                  initialSubTab={state.params.subTab === 'ymyl-analyzer' ? 'ymyl-analyzer' : activeTab === 'niches' ? 'matrix' : activeTab === 'kgr' ? 'kgr' : 'top-50-cpc'}
+                  initialSubTab={
+                    state.params.subTab === 'ymyl-analyzer'
+                      ? 'ymyl-analyzer'
+                      : state.params.subTab === 'top-50-cpc'
+                      ? 'top-50-cpc'
+                      : state.params.subTab === 'education-rpm'
+                      ? 'education-rpm'
+                      : state.params.subTab === 'matrix' || activeTab === 'niches'
+                      ? 'matrix'
+                      : state.params.subTab === 'kgr' || activeTab === 'kgr'
+                      ? 'kgr'
+                      : 'ai-evaluator'
+                  }
                   onSelectNiche={(niche) => setSelectedNiche(niche)}
                   onSimulateInCalculator={handleSimulateInCalculator}
                 />

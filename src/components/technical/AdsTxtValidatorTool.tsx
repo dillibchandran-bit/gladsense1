@@ -14,6 +14,7 @@ import {
   ExternalLink,
   ShieldCheck,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from '../OfficialEvaluationDisclaimer';
 
 interface ParsedLineResult {
   lineNumber: number;
@@ -515,6 +516,11 @@ contact=${generatorContactEmail}
                 <Download className="w-4 h-4" />
                 <span>Download ads.txt</span>
               </button>
+            </div>
+
+            {/* Official AdSense Probability & Policy Notice */}
+            <div className="pt-2">
+              <OfficialEvaluationDisclaimer compact sourceLabel="Authorized Digital Sellers (ads.txt) Validator & Syntax Diagnostics" />
             </div>
           </div>
         </div>

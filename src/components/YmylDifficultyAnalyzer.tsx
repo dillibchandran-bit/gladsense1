@@ -16,6 +16,7 @@ import {
   Sparkles,
   ExternalLink,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface NicheYmylProfile {
   name: string;
@@ -338,6 +339,9 @@ export const YmylDifficultyAnalyzer: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+      <OfficialEvaluationDisclaimer sourceLabel={`YMYL & E-E-A-T Safety Analysis: ${activeProfile.name}`} />
     </div>
   );
 };

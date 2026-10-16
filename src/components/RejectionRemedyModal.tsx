@@ -15,6 +15,7 @@ import {
   Layers,
   ArrowRight,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 export type RemedyType =
   | 'privacy-policy'
@@ -591,6 +592,11 @@ Sitemap: https://${cleanDomain}/sitemap.xml`;
               </div>
             </div>
           )}
+
+          {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+          <div className="pt-2">
+            <OfficialEvaluationDisclaimer compact sourceLabel={`AdSense Remediation Prescription: ${cleanDomain}`} />
+          </div>
         </div>
 
         {/* Modal Footer */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, ArrowUpDown, Filter, Download, Copy, Check, Sparkles, TrendingUp, DollarSign } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 export interface NicheCpcRow {
   rank: number;
@@ -254,6 +255,11 @@ export const Top50NichesTable: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Official AdSense Probability & Policy Notice */}
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+          <OfficialEvaluationDisclaimer compact sourceLabel="Top 50 High-Paying CPC & RPM Benchmarks" />
         </div>
       </div>
     </div>

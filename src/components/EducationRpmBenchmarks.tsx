@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GraduationCap, TrendingUp, DollarSign, Award, CheckCircle2, Info, Sparkles, Calculator, BookOpen } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface EducationSubNiche {
   id: string;
@@ -271,6 +272,11 @@ export const EducationRpmBenchmarks: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Official AdSense Probability & Policy Notice */}
+        <div className="pt-2">
+          <OfficialEvaluationDisclaimer compact sourceLabel="Education Niche RPM & CPC Benchmark Matrix" />
         </div>
       </div>
     </div>

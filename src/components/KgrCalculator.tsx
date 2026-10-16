@@ -16,6 +16,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 import { searchKgrClientSide } from '../services/kgrSearchClient';
 
 interface KgrItem {
@@ -474,6 +475,9 @@ export const KgrCalculator: React.FC = () => {
               {verdict.description}
             </p>
           </div>
+
+          {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+          <OfficialEvaluationDisclaimer compact sourceLabel="Keyword Golden Ratio (KGR) Ranking Model" />
         </div>
 
         {/* Right Column: Pre-Vetted KGR Opportunities (6 cols) */}

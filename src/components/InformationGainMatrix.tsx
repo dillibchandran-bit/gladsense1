@@ -20,6 +20,7 @@ import {
   Layers,
   Award,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface QualityMetric {
   id: string;
@@ -538,6 +539,9 @@ export const InformationGainMatrix: React.FC = () => {
                 </span>
               </div>
             </div>
+
+            {/* Official AdSense Probability & Policy Notice */}
+            <OfficialEvaluationDisclaimer compact sourceLabel="Information Gain & Quality Evaluation Model" />
           </div>
 
           {/* Prescriptive Remediation Fix 1: Author Entity Schema */}

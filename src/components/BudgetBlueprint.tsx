@@ -18,6 +18,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 export const BudgetBlueprint: React.FC = () => {
   const [activeView, setActiveView] = useState<'budget-calculator' | 'stack-guide'>('budget-calculator');
@@ -678,6 +679,11 @@ export const BudgetBlueprint: React.FC = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+
+            {/* Official AdSense Probability & Policy Notice */}
+            <div className="pt-2">
+              <OfficialEvaluationDisclaimer compact sourceLabel="AdSense 12-Month Launch Budget & Cumulative P&L Projection" />
             </div>
           </div>
         </div>

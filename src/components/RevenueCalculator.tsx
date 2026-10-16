@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RevenueInputs } from '../types';
 import { DollarSign, ShieldAlert, Sparkles, TrendingUp, Cpu, Info, CheckCircle2, AlertTriangle, HelpCircle, Share2 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 import { useSocialShare } from '../context/SocialShareContext';
 import { createRevenueSharePayload } from '../utils/socialShare';
 
@@ -394,6 +395,9 @@ export const RevenueCalculator: React.FC<RevenueCalculatorProps> = ({
                 By hosting client-side on Cloudflare Pages, your server cost remains strictly $0 even if your traffic surges to 500,000 visitors. You keep <strong>{profitMargin}%</strong> of every ad dollar generated.
               </p>
             </div>
+
+            {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+            <OfficialEvaluationDisclaimer compact sourceLabel="AdSense Revenue & Yield Model" />
           </div>
 
           {/* AdSense Policy Placement Preview */}

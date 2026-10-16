@@ -55,6 +55,7 @@ import { AdSlotPlaceholder, ContextualAffiliateCard } from './monetization/AdPla
 import { CrawlerFirewallDiagnosticsLab } from './technical/CrawlerFirewallDiagnosticsLab';
 import { InformationGainMatrix } from './InformationGainMatrix';
 import { RejectionRoadmapExporter } from './RejectionRoadmapExporter';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface SiteAuditorProps {
   onSwitchTab?: (tab: NavTabType) => void;
@@ -229,6 +230,9 @@ ${ai ? `🤖 AI & Content Originality Analysis:
 • Information Gain Score: ${ai.informationGainScore}/100 (Target: >75)
 ` : ''}
 Audited by GladSense Rejection Doctor — Google AdSense Compliance Engine
+
+DISCLAIMER & OFFICIAL EVALUATION NOTICE:
+We are sharing statistical probability benchmarks and algorithmic readiness estimates for educational guidance only. All final site review, approval, account status, and monetizability decisions are thoroughly and solely determined by Google AdSense and its official program policies.
 `
       : `Google AdSense Site Audit Report (5-Pillar Standard)
 Website: ${result.url}
@@ -259,6 +263,9 @@ ${
 }
 
 Audited by GladSense — Google AdSense Readiness Platform
+
+DISCLAIMER & OFFICIAL EVALUATION NOTICE:
+We are sharing statistical probability benchmarks and algorithmic readiness estimates for educational guidance only. All final site review, approval, account status, and monetizability decisions are thoroughly and solely determined by Google AdSense and its official program policies.
 `;
     navigator.clipboard.writeText(text);
     setCopiedReport(true);
@@ -1096,6 +1103,11 @@ Verified by GladSense AI Auditor`;
                     <span>Share Audit Score</span>
                   </button>
                 </div>
+              </div>
+
+              {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+              <div className="mt-5 pt-4 border-t border-slate-800/80">
+                <OfficialEvaluationDisclaimer dark sourceLabel={result.url} />
               </div>
 
               {/* Rejection Doctor Mode: Clinical Triage & Prognosis Grid (Replaces 5 Generic Pillars) */}
@@ -2682,6 +2694,10 @@ Verified by GladSense AI Auditor`;
                 </div>
               );
             })()}
+            </div>
+            {/* Bottom Evaluation Notice Footprint */}
+            <div className="p-6 sm:p-8 pt-4 border-t border-slate-100 bg-slate-50/50">
+              <OfficialEvaluationDisclaimer sourceLabel={result.url} />
             </div>
           </div>
         </section>

@@ -19,6 +19,7 @@ import {
   Clock,
   ArrowRight,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface AuditItem {
   id: string;
@@ -358,6 +359,9 @@ export const AdSenseComplianceAuditFramework: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+      <OfficialEvaluationDisclaimer sourceLabel="AdSense 100-Point Compliance & Policy Audit Framework" />
 
       {/* Mandatory Zero-Tolerance Gate Warning Banner (If policy item failed) */}
       {hasPolicyFailure && (

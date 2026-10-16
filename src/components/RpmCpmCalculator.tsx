@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calculator, ArrowRight, Info, CheckCircle2, TrendingUp, DollarSign, HelpCircle, Sparkles } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 export const RpmCpmCalculator: React.FC = () => {
   // Mode 1: Derive Metrics from Traffic & Revenue
@@ -229,6 +230,9 @@ export const RpmCpmCalculator: React.FC = () => {
                 Notice that your Page RPM (${pageRpm.toFixed(2)}) is higher than your Ad CPM (${adCpm.toFixed(2)}). This is because each pageview serves <strong>{adsPerPage.toFixed(1)} ad units</strong>. Multiple ad impressions per session multiply your publisher RPM without requiring higher traffic.
               </p>
             </div>
+
+            {/* Official AdSense Probability & Policy Notice */}
+            <OfficialEvaluationDisclaimer compact sourceLabel="AdSense RPM & CPM Derived Formula Results" />
           </div>
         </div>
       ) : (
@@ -317,6 +321,11 @@ export const RpmCpmCalculator: React.FC = () => {
                 <span className="text-slate-600">Derived Ad Impression CPM</span>
                 <span className="text-blue-700 font-mono font-bold">${projectedEffectiveCpm.toFixed(2)}</span>
               </div>
+            </div>
+
+            {/* Official AdSense Probability & Policy Notice */}
+            <div className="pt-2">
+              <OfficialEvaluationDisclaimer compact sourceLabel="AdSense Projected Revenue Model" />
             </div>
           </div>
         </div>

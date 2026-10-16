@@ -15,6 +15,7 @@ import {
   Lock,
   RefreshCw,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from '../OfficialEvaluationDisclaimer';
 
 export const CrawlerFirewallDiagnosticsLab: React.FC = () => {
   const [domain, setDomain] = useState<string>('yourdomain.com');
@@ -292,6 +293,9 @@ server {
             Expected Result: <code>HTTP/2 200</code>. If you receive <code>403 Forbidden</code> or <code>503 Service Temporarily Unavailable</code>, your firewall is rejecting AdSense approval crawlers.
           </div>
         </div>
+
+        {/* Official AdSense Probability & Policy Notice */}
+        <OfficialEvaluationDisclaimer compact sourceLabel="AdSense Commercial Crawler & Firewall Diagnostics" />
       </div>
     </div>
   );

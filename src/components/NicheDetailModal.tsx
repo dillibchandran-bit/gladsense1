@@ -21,6 +21,7 @@ import {
   Calendar,
   CheckCircle2,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface NicheDetailModalProps {
   niche: Niche;
@@ -789,6 +790,11 @@ export const NicheDetailModal: React.FC<NicheDetailModalProps> = ({
                 <p className="text-slate-500 mt-2 font-semibold">Tier 1 Traffic Mix: <span className="text-slate-800 font-normal">{niche.monetizationBlueprint.tier1TrafficShare}</span></p>
               </div>
             </div>
+          </div>
+
+          {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+          <div className="pt-2">
+            <OfficialEvaluationDisclaimer compact sourceLabel={`Niche Yield Model: ${niche.title}`} />
           </div>
         </div>
 

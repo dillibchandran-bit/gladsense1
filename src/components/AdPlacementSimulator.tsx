@@ -16,6 +16,7 @@ import {
   Maximize2,
   RefreshCw,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface AdUnitState {
   headerLeaderboard: boolean;
@@ -554,6 +555,9 @@ export const AdPlacementSimulator: React.FC = () => {
               {sampleZeroClsCss}
             </pre>
           </div>
+
+          {/* Official AdSense Probability & Policy Notice */}
+          <OfficialEvaluationDisclaimer compact sourceLabel="Ad Placement & Layout Density Simulator" />
         </div>
       </div>
     </div>

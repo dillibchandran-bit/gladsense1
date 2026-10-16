@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RevenueEstimation } from '../types';
 import { DollarSign, TrendingUp, Layers, HelpCircle, ArrowRight, Zap, ShieldCheck } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface WebsiteRevenueCardProps {
   estimation: RevenueEstimation;
@@ -208,6 +209,11 @@ export const WebsiteRevenueCard: React.FC<WebsiteRevenueCardProps> = ({
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           )}
+        </div>
+
+        {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+        <div className="mt-4">
+          <OfficialEvaluationDisclaimer compact sourceLabel={`Revenue Estimation: ${host}`} />
         </div>
       </div>
     </div>

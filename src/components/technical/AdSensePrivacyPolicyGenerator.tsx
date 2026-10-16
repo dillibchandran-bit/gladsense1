@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Code2,
 } from 'lucide-react';
+import { OfficialEvaluationDisclaimer } from '../OfficialEvaluationDisclaimer';
 
 export const AdSensePrivacyPolicyGenerator: React.FC = () => {
   const [siteName, setSiteName] = useState<string>('NicheCalc Tools');
@@ -388,6 +389,9 @@ For data privacy inquiries:
             Google AdSense Terms of Service state: <em>&quot;You must ensure that in the course of using the Service, a Privacy Policy is clearly displayed and adhered to... It must disclose that third parties may be placing and reading cookies on your users&apos; browsers, or using web beacons to collect information.&quot;</em> Websites missing an explicit DART cookie disclosure are rejected automatically during human evaluation.
           </p>
         </div>
+
+        {/* Official AdSense Probability & Policy Notice */}
+        <OfficialEvaluationDisclaimer compact sourceLabel="AdSense Legal Policy & Privacy Policy Template Generator" />
       </div>
     </div>
   );

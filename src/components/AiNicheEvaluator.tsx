@@ -21,6 +21,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { KidExplainer } from './KidExplainer';
+import { OfficialEvaluationDisclaimer } from './OfficialEvaluationDisclaimer';
 
 interface AiNicheEvaluatorProps {
   onSimulateRpm: (rpm: number) => void;
@@ -114,16 +115,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         </div>
       </div>
 
-      {/* Unified How-To Guide */}
-      <KidExplainer
-        title="Web App Idea Feasibility & Policy Check"
-        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
-        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
-        how="Enter your web app idea in the search box below, describe the user base and core functionality, then click 'Evaluate Feasibility'."
-        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
-      />
-
-      {/* Prominent High-Visibility Search & Evaluation Box (2nd Block - Color #B4E1EB) */}
+      {/* Prominent High-Visibility Search & Evaluation Box (Top Position - Color #B4E1EB) */}
       <form
         onSubmit={handleEvaluate}
         style={{ backgroundColor: '#B4E1EB' }}
@@ -137,7 +129,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
               <span>Web App Idea, Niche, or Concept *</span>
             </label>
             <span className="text-[11px] text-[#0369a1] font-semibold hidden sm:inline bg-white/80 px-2.5 py-0.5 rounded-md border border-[#82cee0]">
-              Instant AdSense policy & RPM feasibility check
+              Instant AdSense policy &amp; RPM feasibility check
             </span>
           </div>
 
@@ -158,7 +150,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div className="space-y-1.5">
             <label className="block text-xs font-bold text-slate-900 flex items-center justify-between">
-              <span>Target Audience & User Base</span>
+              <span>Target Audience &amp; User Base</span>
               <span className="text-[10px] font-normal text-slate-700">(Who will use this web app?)</span>
             </label>
             <input
@@ -172,7 +164,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
 
           <div className="space-y-1.5">
             <label className="block text-xs font-bold text-slate-900 flex items-center justify-between">
-              <span>Core Features & Content Structure</span>
+              <span>Core Features &amp; Content Structure</span>
               <span className="text-[10px] font-normal text-slate-700">(Key features, pages, or functionality)</span>
             </label>
             <textarea
@@ -189,7 +181,7 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-[#82cee0]/60">
           <div className="text-xs text-slate-800 font-medium flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-[#0369a1] shrink-0" />
-            <span>Audited against Google AdSense Thin Content, YMYL, Copyright & Value-Add policies.</span>
+            <span>Audited against Google AdSense Thin Content, YMYL, Copyright &amp; Value-Add policies.</span>
           </div>
 
           <button
@@ -211,6 +203,15 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
           </button>
         </div>
       </form>
+
+      {/* Unified How-To Guide (Positioned below the search input for quick onboarding) */}
+      <KidExplainer
+        title="Web App Idea Feasibility & Policy Check"
+        what="An automated feasibility engine that audits any web app idea, SaaS concept, interactive utility, or content platform against Google AdSense publisher policies, advertiser demand, and organic search competition."
+        why="Building and launching a web app requires major engineering and design effort. Testing your concept beforehand ensures you avoid high-risk YMYL policies, low advertiser bidding, and Google's Thin Content rejections."
+        how="Enter your web app idea in the search box above, describe the user base and core functionality, then click 'Evaluate Feasibility'."
+        result="Receive a policy approval score (0–100), estimated Page RPM, page-1 KGR keywords, and a tailored monetization and technical hosting blueprint."
+      />
 
       {error && (
         <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-center gap-2">
@@ -262,6 +263,9 @@ export const AiNicheEvaluator: React.FC<AiNicheEvaluatorProps> = ({ onSimulateRp
               <span>Simulate ${result.estimatedRPM.average} RPM in Calculator</span>
             </button>
           </div>
+
+          {/* Official Evaluation Notice & AdSense Probability Disclaimer */}
+          <OfficialEvaluationDisclaimer sourceLabel={result.nicheName} />
 
           {/* AdSense Approval Probability Card */}
           {(() => {
