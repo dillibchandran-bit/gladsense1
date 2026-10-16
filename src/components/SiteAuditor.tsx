@@ -382,7 +382,171 @@ Verified by GladSense AI Auditor`;
             </p>
           </div>
 
-          {/* Clinical Mode Switcher (3 Operating Modes) */}
+          {/* CLINICAL COMMAND SEARCH BOX (Permanently at the top across all modes) */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleRunAudit();
+            }}
+            className="max-w-2xl mx-auto pt-1 w-full"
+          >
+            <div className={`bg-white rounded-2xl p-2.5 sm:p-3 shadow-xl hover:shadow-2xl border-2 transition-all flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 ${
+              mode === 'rejection-doctor'
+                ? 'border-purple-300 focus-within:ring-4 focus-within:ring-purple-200 focus-within:border-purple-600'
+                : mode === 'crawler-firewall'
+                ? 'border-rose-300 focus-within:ring-4 focus-within:ring-rose-200 focus-within:border-rose-600'
+                : mode === 'quality-matrix'
+                ? 'border-indigo-300 focus-within:ring-4 focus-within:ring-indigo-200 focus-within:border-indigo-600'
+                : 'border-blue-300 focus-within:ring-4 focus-within:ring-blue-200 focus-within:border-[#1a73e8]'
+            }`}>
+              <div className="flex-1 flex items-center pl-3 gap-2.5">
+                {mode === 'rejection-doctor' ? (
+                  <Stethoscope className="w-5 h-5 text-purple-600 shrink-0" />
+                ) : mode === 'crawler-firewall' ? (
+                  <Server className="w-5 h-5 text-rose-600 shrink-0" />
+                ) : mode === 'quality-matrix' ? (
+                  <Brain className="w-5 h-5 text-indigo-600 shrink-0" />
+                ) : (
+                  <Search className="w-5 h-5 text-[#1a73e8] shrink-0" />
+                )}
+                <input
+                  id="search-input-box"
+                  type="text"
+                  required
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="Enter website domain or URL (e.g. https://example.com)"
+                  className="w-full bg-transparent py-2 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
+                />
+              </div>
+
+              {/* ACTION BUTTON */}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-lg whitespace-nowrap flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0 active:scale-98 ${
+                  mode === 'rejection-doctor'
+                    ? 'bg-gradient-to-r from-[#9d62ec] to-[#7c3aed] hover:from-[#8b4de3] hover:to-[#6d28d9]'
+                    : mode === 'crawler-firewall'
+                    ? 'bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600'
+                    : mode === 'quality-matrix'
+                    ? 'bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-500 hover:to-indigo-700'
+                    : 'bg-gradient-to-r from-[#1a73e8] to-[#1557b0] hover:from-[#1765cc] hover:to-[#124996]'
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Diagnosing Site...</span>
+                  </>
+                ) : (
+                  <>
+                    {mode === 'rejection-doctor' ? (
+                      <Stethoscope className="w-4 h-4" />
+                    ) : mode === 'crawler-firewall' ? (
+                      <Server className="w-4 h-4" />
+                    ) : mode === 'quality-matrix' ? (
+                      <Brain className="w-4 h-4" />
+                    ) : (
+                      <ShieldCheck className="w-4 h-4" />
+                    )}
+                    <span>
+                      {mode === 'rejection-doctor'
+                        ? 'Diagnose Rejection Cause'
+                        : mode === 'crawler-firewall'
+                        ? 'Test Crawler & Firewall'
+                        : mode === 'quality-matrix'
+                        ? 'Run Quality Rater Audit'
+                        : 'Run Pre-Approval Audit'}
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Quick Demo Fill & Advanced Crawl Links */}
+            <div className="mt-3 flex items-center justify-center gap-2 flex-wrap text-xs text-slate-500">
+              <span className="text-[11px] font-bold text-slate-400">1-Click Test Presets:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://gladsense1.pages.dev');
+                  handleRunAudit('https://gladsense1.pages.dev', 'pre-approval');
+                }}
+                className="text-[11px] text-purple-700 hover:text-purple-900 bg-purple-50/90 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-semibold transition-colors cursor-pointer"
+              >
+                🧪 Analyze Sample Tech Blog
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://cfmsizingcalc.pages.dev');
+                  handleRunAudit('https://cfmsizingcalc.pages.dev', 'pre-approval');
+                }}
+                className="text-[11px] text-blue-700 hover:text-blue-900 bg-blue-50/90 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 font-semibold transition-colors cursor-pointer"
+              >
+                🧮 Analyze Sample Calculator Tool
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('https://artisanresinmolds.pages.dev');
+                  handleRunAudit('https://artisanresinmolds.pages.dev', 'rejection-doctor', 'low-value-content');
+                }}
+                className="text-[11px] text-amber-700 hover:text-amber-900 bg-amber-50/90 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition-colors cursor-pointer"
+              >
+                🛍️ Analyze Sample E-Commerce Site
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="text-[11px] text-slate-600 hover:text-slate-900 hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <Code2 className="w-3.5 h-3.5 text-slate-400" />
+                <span>{showAdvanced ? 'Hide HTML paste' : 'Paste HTML source directly'}</span>
+                {showAdvanced ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            </div>
+
+            {/* HTML Source Drawer */}
+            {showAdvanced && (
+              <div className="w-full max-w-2xl mt-3 p-4 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md text-left transition-all space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-[#1a73e8]" />
+                    <span>Direct HTML Source Inspection (100% Free &amp; Zero-Cost):</span>
+                  </label>
+                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
+                    Bypasses Cloudflare Captchas &amp; CORS
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-normal">
+                  If an external website blocks automated bot crawlers or challenges visitors with Cloudflare Turnstile, right-click on the webpage in your browser, select <strong>&quot;View Page Source&quot;</strong> (or press Ctrl+U / Cmd+U), and paste the full HTML here. GladSense will audit the exact live DOM with 100% precision.
+                </p>
+                <textarea
+                  value={sampleContent}
+                  onChange={(e) => setSampleContent(e.target.value)}
+                  rows={4}
+                  placeholder="Paste <!DOCTYPE html> ... </html> here"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:border-[#1a73e8]"
+                />
+                {sampleContent && (
+                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Loaded ~{sampleContent.trim().split(/\s+/).length} words of HTML markup</span>
+                    <button
+                      type="button"
+                      onClick={() => setSampleContent('')}
+                      className="text-rose-600 hover:underline font-medium cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </form>
+
+          {/* Clinical Mode Switcher (4 Operating Modes) */}
           <div className="inline-flex p-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200 shadow-md gap-1 flex-wrap justify-center">
             <button
               type="button"
@@ -586,144 +750,6 @@ Verified by GladSense AI Auditor`;
             <div className="pt-2 max-w-5xl mx-auto text-left">
               <InformationGainMatrix />
             </div>
-          )}
-
-          {/* CLINICAL COMMAND SEARCH BOX (Only in pre-approval and rejection-doctor modes) */}
-          {mode !== 'crawler-firewall' && mode !== 'quality-matrix' && (
-            <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleRunAudit();
-            }}
-            className="max-w-2xl mx-auto pt-1"
-          >
-            <div className={`bg-white rounded-2xl p-2.5 sm:p-3 shadow-xl hover:shadow-2xl border-2 transition-all flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 ${
-              mode === 'rejection-doctor'
-                ? 'border-purple-300 focus-within:ring-4 focus-within:ring-purple-200 focus-within:border-purple-600'
-                : 'border-blue-300 focus-within:ring-4 focus-within:ring-blue-200 focus-within:border-[#1a73e8]'
-            }`}>
-              <div className="flex-1 flex items-center pl-3 gap-2.5">
-                {mode === 'rejection-doctor' ? (
-                  <Stethoscope className="w-5 h-5 text-purple-600 shrink-0" />
-                ) : (
-                  <Search className="w-5 h-5 text-[#1a73e8] shrink-0" />
-                )}
-                <input
-                  id="search-input-box"
-                  type="text"
-                  required
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Enter website domain or URL (e.g. https://example.com)"
-                  className="w-full bg-transparent py-2 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
-                />
-              </div>
-
-              {/* ACTION BUTTON */}
-              <button
-                type="submit"
-                disabled={loading}
-                className={`text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-lg whitespace-nowrap flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0 active:scale-98 ${
-                  mode === 'rejection-doctor'
-                    ? 'bg-gradient-to-r from-[#9d62ec] to-[#7c3aed] hover:from-[#8b4de3] hover:to-[#6d28d9]'
-                    : 'bg-gradient-to-r from-[#1a73e8] to-[#1557b0] hover:from-[#1765cc] hover:to-[#124996]'
-                }`}
-              >
-                {loading ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Diagnosing Site...</span>
-                  </>
-                ) : (
-                  <>
-                    {mode === 'rejection-doctor' ? <Stethoscope className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
-                    <span>{mode === 'rejection-doctor' ? 'Diagnose Rejection Cause' : 'Run Pre-Approval Audit'}</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Quick Demo Fill & Advanced Crawl Links */}
-            <div className="mt-3 flex items-center justify-center gap-2 flex-wrap text-xs text-slate-500">
-              <span className="text-[11px] font-bold text-slate-400">1-Click Test Presets:</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setUrl('https://gladsense1.pages.dev');
-                  handleRunAudit('https://gladsense1.pages.dev', 'pre-approval');
-                }}
-                className="text-[11px] text-purple-700 hover:text-purple-900 bg-purple-50/90 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-semibold transition-colors cursor-pointer"
-              >
-                🧪 Analyze Sample Tech Blog
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setUrl('https://cfmsizingcalc.pages.dev');
-                  handleRunAudit('https://cfmsizingcalc.pages.dev', 'pre-approval');
-                }}
-                className="text-[11px] text-blue-700 hover:text-blue-900 bg-blue-50/90 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 font-semibold transition-colors cursor-pointer"
-              >
-                🧮 Analyze Sample Calculator Tool
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setUrl('https://artisanresinmolds.pages.dev');
-                  handleRunAudit('https://artisanresinmolds.pages.dev', 'rejection-doctor', 'low-value-content');
-                }}
-                className="text-[11px] text-amber-700 hover:text-amber-900 bg-amber-50/90 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition-colors cursor-pointer"
-              >
-                🛍️ Analyze Sample E-Commerce Site
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowAdvanced(!showAdvanced)}
-                className="text-[11px] text-slate-600 hover:text-slate-900 hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                <Code2 className="w-3.5 h-3.5 text-slate-400" />
-                <span>{showAdvanced ? 'Hide HTML paste' : 'Paste HTML source directly'}</span>
-                {showAdvanced ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              </button>
-            </div>
-
-            {/* HTML Source Drawer */}
-            {showAdvanced && (
-              <div className="w-full max-w-2xl mt-3 p-4 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md text-left transition-all space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-[#1a73e8]" />
-                    <span>Direct HTML Source Inspection (100% Free & Zero-Cost):</span>
-                  </label>
-                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
-                    Bypasses Cloudflare Captchas & CORS
-                  </span>
-                </div>
-                <p className="text-[11px] text-slate-500 leading-normal">
-                  If an external website blocks automated bot crawlers or challenges visitors with Cloudflare Turnstile, right-click on the webpage in your browser, select <strong>"View Page Source"</strong> (or press Ctrl+U / Cmd+U), and paste the full HTML here. GladSense will audit the exact live DOM with 100% precision.
-                </p>
-                <textarea
-                  value={sampleContent}
-                  onChange={(e) => setSampleContent(e.target.value)}
-                  rows={4}
-                  placeholder="Paste <!DOCTYPE html> ... </html> here"
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:border-[#1a73e8]"
-                />
-                {sampleContent && (
-                  <div className="flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Loaded ~{sampleContent.trim().split(/\s+/).length} words of HTML markup</span>
-                    <button
-                      type="button"
-                      onClick={() => setSampleContent('')}
-                      className="text-rose-600 hover:underline font-medium cursor-pointer"
-                    >
-                      Clear
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </form>
           )}
 
           {/* 4-POINT CLINICAL TRUST & VERIFICATION RIBBON */}
