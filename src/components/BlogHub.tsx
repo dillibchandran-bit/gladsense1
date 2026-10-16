@@ -649,6 +649,69 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </div>
           </div>
 
+          {/* 2026 Core Algorithm & Helpful Content Recovery Directive */}
+          {(() => {
+            const hcsPost = BLOG_POSTS.find((p) => p.slug === 'google-helpful-content-core-algorithm-recovery-playbook-2026');
+            if (!hcsPost) return null;
+            return (
+              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 text-white shadow-xl border border-blue-500/40 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-800/40 pb-3">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-2.5 py-0.5 rounded-full bg-blue-500/25 text-blue-300 border border-blue-500/40 text-xs font-bold font-mono flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                      2026 Core Algorithm Directive
+                    </span>
+                    <span className="text-xs text-blue-200 font-bold uppercase tracking-wider">
+                      Helpful Content &amp; SERP Dominance
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-300">
+                    Lead Authority: <span className="text-blue-300 font-semibold">{hcsPost.author.name}</span> ({hcsPost.author.role})
+                  </span>
+                </div>
+
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="space-y-1.5 max-w-3xl">
+                    <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white font-['Google_Sans',sans-serif]">
+                      {hcsPost.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
+                      {hcsPost.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenArticle(hcsPost)}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>Read Playbook</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleCopySlug(hcsPost.slug)}
+                      className="px-3 py-2 bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold rounded-xl transition-all border border-white/10 flex items-center gap-1.5 cursor-pointer"
+                      title="Copy Deep Link"
+                    >
+                      {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedLink ? 'Copied' : 'Copy Link'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-blue-800/30 flex items-center gap-2 flex-wrap text-xs text-slate-300">
+                  <span className="text-blue-400 font-semibold">Core Algorithmic Anchors:</span>
+                  <span className="px-2 py-0.5 rounded bg-blue-900/50 text-blue-200 text-[11px] font-mono">Frictionless Zero-Signup UX</span>
+                  <span className="px-2 py-0.5 rounded bg-blue-900/50 text-blue-200 text-[11px] font-mono">Patent US20200349181A1 Info Gain</span>
+                  <span className="px-2 py-0.5 rounded bg-blue-900/50 text-blue-200 text-[11px] font-mono">ASN 15169 WAF Crawl Bypass</span>
+                  <span className="px-2 py-0.5 rounded bg-blue-900/50 text-blue-200 text-[11px] font-mono">14-Day Sitewide Recovery</span>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Executive Directive: Google Search Quality & AdSense Compliance Standards */}
           {(() => {
             const evalPost = BLOG_POSTS.find((p) => p.slug === 'google-search-quality-adsense-compliance-evaluation-standards');

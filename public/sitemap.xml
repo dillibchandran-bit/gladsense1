@@ -10,6 +10,13 @@
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
   </url>
+  <!-- Executive Search Quality & Helpful Content Policy Directive -->
+  <url>
+    <loc>https://gladsenseedu.app/guides/google-helpful-content-core-algorithm-recovery-playbook-2026/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+  </url>
   <!-- Priority 1 High-Velocity AdSense Rejection Crisis Guides -->
   <url>
     <loc>https://gladsenseedu.app/guides/how-to-fix-low-value-content-adsense-2026/</loc>

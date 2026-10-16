@@ -241,7 +241,7 @@ export const MASTER_SCHEMA_GRAPH = {
       author: {
         '@type': 'Person',
         name: 'Dillib Chandran, Lead Evaluator',
-        jobTitle: 'Head of Google Quality & AdSense Compliance Evaluation',
+        jobTitle: 'Web Content Quality & AdSense Specialist',
       },
       publisher: {
         '@id': `${BASE_URL}/#organization`,
