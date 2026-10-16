@@ -7,25 +7,19 @@ export interface GladSenseAuthor {
   avatarBg: string; // Tailwind color class for avatars
   specialization: string;
 }
+
+const DILLIB_AUTHOR: GladSenseAuthor = {
+  id: 'dillib-chandran',
+  name: 'Dillib Chandran, Lead Evaluator',
+  role: 'Founder & Lead Evaluator (Web Content Quality & AdSense Specialist)',
+  team: 'Global Search Quality & AdSense Policy Review Directorate',
+  shortBio: 'Founding architect of GladSense and Lead Evaluator. Directs web content quality criteria, automated classifier enforcement, programmatic ad yield economics, and AdSense publisher compliance audits across E-E-A-T and Information Gain.',
+  avatarBg: 'bg-emerald-700',
+  specialization: 'Web Content Quality, Search Systems & Monetization Architecture',
+};
+
 export const GLADSENSE_AUTHORS: Record<string, GladSenseAuthor> = {
-  HEAD_EVALUATOR: {
-    id: 'google-quality-head',
-    name: 'Dillib Chandran, Lead Evaluator',
-    role: 'Web Content Quality & AdSense Specialist',
-    team: 'Global Search Quality & AdSense Policy Review Directorate',
-    shortBio: 'Directs search quality criteria, automated classifier enforcement, and AdSense publisher compliance audits. Evaluates domain eligibility across E-E-A-T, Information Gain, and Google Publisher Policies.',
-    avatarBg: 'bg-emerald-700',
-    specialization: 'Web Content Quality, Search Systems & AdSense Compliance',
-  },
-  DILLIB: {
-    id: 'dillib-chandran',
-    name: 'Dillib Chandran',
-    role: 'Founder & Chief Research Officer',
-    team: 'GladSense Executive Research Council',
-    shortBio: 'Founding architect of GladSense. Specializes in programmatic ad yield economics, zero-cost static edge frameworks, and sustainable digital publishing models.',
-    avatarBg: 'bg-blue-600',
-    specialization: 'Monetization Architecture & Strategic Blueprints',
-  },
+  HEAD_EVALUATOR: DILLIB_AUTHOR,
   MARCUS: {
     id: 'marcus-vance',
     name: 'Marcus Vance, JD',
@@ -81,3 +75,12 @@ export const GLADSENSE_AUTHORS: Record<string, GladSenseAuthor> = {
     specialization: 'Data Privacy Regulations & Static Edge Hosting',
   },
 };
+
+// Backward-compatibility alias: non-enumerable on GLADSENSE_AUTHORS to keep exactly 7 distinct cards in Object.values
+export const DILLIB = DILLIB_AUTHOR;
+Object.defineProperty(GLADSENSE_AUTHORS, 'DILLIB', {
+  value: DILLIB_AUTHOR,
+  enumerable: false,
+  writable: false,
+  configurable: true,
+});

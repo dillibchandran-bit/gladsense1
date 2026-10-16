@@ -61,7 +61,9 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
     'Technical SEO & $0 Static Architecture',
   ];
 
-  const authorList = Object.values(GLADSENSE_AUTHORS);
+  const authorList = Array.from(
+    new Map(Object.values(GLADSENSE_AUTHORS).map((a) => [a.id, a])).values()
+  );
   const teamsList = ['All', ...Array.from(new Set(authorList.map((a) => a.team)))];
 
   // Filter articles
@@ -129,7 +131,11 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
 
   // Find matching author details from registry
   const getAuthorDetails = (authorName: string): GladSenseAuthor | undefined => {
-    return authorList.find((a) => a.name.toLowerCase() === authorName.toLowerCase());
+    return authorList.find(
+      (a) =>
+        a.name.toLowerCase() === authorName.toLowerCase() ||
+        (authorName.toLowerCase().includes('dillib') && a.id === 'dillib-chandran')
+    );
   };
 
   return (
