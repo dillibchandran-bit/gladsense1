@@ -40,7 +40,7 @@ export const MASTER_SCHEMA_GRAPH = {
       sameAs: [
         'https://twitter.com/GladSenseLabs',
         'https://github.com/gladsense',
-        'https://linkedin.com/company/gladsense',
+        'https://www.linkedin.com/company/gladsense/',
       ],
       founder: {
         '@type': 'Person',

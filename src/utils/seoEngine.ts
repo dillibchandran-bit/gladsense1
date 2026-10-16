@@ -25,7 +25,7 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
     sameAs: [
       'https://twitter.com/GladSenseLabs',
       'https://github.com/gladsense',
-      'https://linkedin.com/company/gladsense',
+      'https://www.linkedin.com/company/gladsense/',
     ],
     founder: {
       '@type': 'Person',

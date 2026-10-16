@@ -63,9 +63,9 @@ export const GLADSENSE_OFFICIAL_SOCIALS = [
   {
     id: 'linkedin',
     name: 'LinkedIn',
-    handle: 'gladsense-edu',
+    handle: 'gladsense',
     label: 'Connect on LinkedIn',
-    url: 'https://www.linkedin.com/company/gladsense-edu',
+    url: 'https://www.linkedin.com/company/gladsense/',
     color: '#0a66c2',
     hoverBg: 'hover:bg-[#0a66c2]',
     hoverBorder: 'hover:border-[#0a66c2]',
