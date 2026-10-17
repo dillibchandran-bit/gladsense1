@@ -379,7 +379,7 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
       const canonical = `${CANONICAL_BASE}/about/`;
       return {
         title: 'About GladSense — Editorial Standards & E-E-A-T Architecture',
-        description: 'Learn about the GladSense analytical mission, led by Chief Technology Architect Dillib Chandran, helping digital publishers navigate Google AdSense compliance.',
+        description: 'Learn about the GladSense analytical mission, founded by Dillib Chandran (Founder - Web Content & AdSense Specialist), helping digital publishers navigate Google AdSense compliance.',
         canonical,
         ogType: 'profile',
         schemaGraph: [
@@ -392,8 +392,8 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
             mainEntity: {
               '@type': 'Person',
               name: 'Dillib Chandran',
-              jobTitle: 'Chief Technology Architect',
-              description: 'Veteran web systems architect specializing in high-throughput edge web apps, Core Web Vitals, and programmatic publisher monetization.',
+              jobTitle: 'Founder - Web Content & AdSense Specialist',
+              description: 'Founder of GladSense and Web Content & AdSense Specialist. Directs web content quality evaluation criteria, search ranking compliance, and programmatic monetization standards.',
             },
           },
         ],

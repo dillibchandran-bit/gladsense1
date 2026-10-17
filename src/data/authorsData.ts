@@ -10,12 +10,12 @@ export interface GladSenseAuthor {
 
 const DILLIB_AUTHOR: GladSenseAuthor = {
   id: 'dillib-chandran',
-  name: 'Dillib Chandran, Lead Evaluator',
-  role: 'Founder & Lead Evaluator (Web Content Quality & AdSense Specialist)',
-  team: 'Global Search Quality & AdSense Policy Review Directorate',
-  shortBio: 'Founding architect of GladSense and Lead Evaluator. Directs web content quality criteria, automated classifier enforcement, programmatic ad yield economics, and AdSense publisher compliance audits across E-E-A-T and Information Gain.',
+  name: 'Dillib Chandran',
+  role: 'Founder - Web Content & AdSense Specialist',
+  team: 'Content Quality, Search Ranking Policies & AdSense Compliance Evaluation Directorate',
+  shortBio: 'Founder of GladSense and Web Content & AdSense Specialist. Directs web content quality evaluation criteria, Google search ranking policy compliance, and programmatic AdSense monetization approval standards across E-E-A-T and Information Gain.',
   avatarBg: 'bg-emerald-700',
-  specialization: 'Web Content Quality, Search Systems & Monetization Architecture',
+  specialization: 'Web Content Quality, Search Systems & AdSense Monetization',
 };
 
 export const GLADSENSE_AUTHORS: Record<string, GladSenseAuthor> = {

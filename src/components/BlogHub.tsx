@@ -655,6 +655,72 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
             </div>
           </div>
 
+          {/* Flagship Directorate Master Guide: Google Search Ranking Policies & AdSense Compliance */}
+          {(() => {
+            const masterPost = BLOG_POSTS.find((p) => p.slug === 'google-search-ranking-policies-adsense-compliance-quality-blueprint');
+            if (!masterPost) return null;
+            return (
+              <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950 via-slate-900 to-indigo-950 text-white shadow-2xl border-2 border-emerald-500/50 space-y-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 px-4 py-1 bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-widest rounded-bl-xl shadow-md">
+                  Must-Read Flagship Blueprint
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-800/40 pb-3">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-3 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 text-xs font-bold font-mono flex items-center gap-1.5">
+                      <Award className="w-3.5 h-3.5 text-emerald-400" />
+                      Founder's Flagship Guide
+                    </span>
+                    <span className="text-xs text-emerald-200 font-bold uppercase tracking-wider">
+                      Search Ranking &amp; AdSense Compliance Unified
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-300">
+                    Author: <span className="text-emerald-300 font-semibold">{masterPost.author.name}</span> ({masterPost.author.role})
+                  </span>
+                </div>
+
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="space-y-2 max-w-3xl">
+                    <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white font-['Google_Sans',sans-serif]">
+                      {masterPost.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                      {masterPost.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenArticle(masterPost)}
+                      className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      <span>Read Official Blueprint</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleCopySlug(masterPost.slug)}
+                      className="px-3 py-2.5 bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold rounded-xl transition-all border border-white/10 flex items-center gap-1.5 cursor-pointer"
+                      title="Copy Deep Link"
+                    >
+                      {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedLink ? 'Copied' : 'Share'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-emerald-800/30 flex items-center gap-2 flex-wrap text-xs text-slate-300">
+                  <span className="text-emerald-400 font-semibold">Directorate Evaluation Pillars:</span>
+                  <span className="px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-[11px] font-mono">1. Information Gain &gt; 75</span>
+                  <span className="px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-[11px] font-mono">2. Mechanic-Test E-E-A-T</span>
+                  <span className="px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-[11px] font-mono">3. 30% Ad Ceiling &amp; Screen Sanity</span>
+                  <span className="px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-[11px] font-mono">4. 5 Mandatory Trust Documents</span>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* 2026 Core Algorithm & Helpful Content Recovery Directive */}
           {(() => {
             const hcsPost = BLOG_POSTS.find((p) => p.slug === 'google-helpful-content-core-algorithm-recovery-playbook-2026');

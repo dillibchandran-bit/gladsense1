@@ -54,7 +54,7 @@ export const AboutPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-bold text-slate-900">Dillib Chandran</h3>
                 <span className="text-[11px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">
-                  Chief Technology Architect
+                  Founder - Web Content &amp; AdSense Specialist
                 </span>
               </div>
               <p className="text-xs text-slate-500">
