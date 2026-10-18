@@ -26,11 +26,12 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
       'https://twitter.com/GladSenseLabs',
       'https://github.com/gladsense',
       'https://www.linkedin.com/company/gladsense/',
+      'https://www.youtube.com/@GladSense-n8f',
     ],
     founder: {
       '@type': 'Person',
       name: 'Dillib Chandran',
-      jobTitle: 'Chief Technology Architect',
+      jobTitle: 'Founder - Web Content & AdSense Specialist',
       worksFor: {
         '@id': `${CANONICAL_BASE}/#organization`,
       },

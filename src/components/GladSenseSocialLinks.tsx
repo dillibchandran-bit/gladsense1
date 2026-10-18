@@ -89,9 +89,9 @@ export const GLADSENSE_OFFICIAL_SOCIALS = [
   {
     id: 'youtube',
     name: 'YouTube',
-    handle: '@GladSenseEducation',
+    handle: '@GladSense-n8f',
     label: 'Watch on YouTube',
-    url: 'https://www.youtube.com/@GladSenseEducation',
+    url: 'https://www.youtube.com/@GladSense-n8f',
     color: '#ff0000',
     hoverBg: 'hover:bg-[#ff0000]',
     hoverBorder: 'hover:border-[#ff0000]',
