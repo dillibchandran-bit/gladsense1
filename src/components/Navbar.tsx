@@ -120,21 +120,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden sm:inline">Share</span>
             </button>
 
-            {/* Corporate Outline Sign In */}
+            {/* 100% Free Tool Access Pill */}
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-300 rounded-full shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              100% Free Tool
+            </span>
+
+            {/* Run Free Audit Direct CTA */}
             <button
               onClick={() => handleNavClick('site-doctor')}
-              className="px-2.5 sm:px-3.5 h-8 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-300 transition-colors cursor-pointer whitespace-nowrap flex items-center"
+              className="px-2.5 sm:px-3.5 h-8 text-xs font-bold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap flex items-center gap-1"
+              title="Run Free Site Audit"
             >
-              Sign in
-            </button>
-
-            {/* Corporate Solid Brand Button - Links directly to Niche & Keyword Lab */}
-            <button
-              onClick={() => handleNavClick('niche-lab')}
-              className="px-2.5 sm:px-3.5 h-8 text-xs font-semibold text-white bg-[#1a73e8] hover:bg-[#1557b0] rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap flex items-center"
-              title="Open Niche & Keyword Lab"
-            >
-              Sign up
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Run Free Audit</span>
             </button>
 
             {/* Mobile Hamburger Menu Toggle Button (Visible on screens < lg) */}

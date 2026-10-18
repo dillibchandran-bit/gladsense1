@@ -63,8 +63,8 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
     case 'site-doctor': {
       const canonical = `${CANONICAL_BASE}/tools/site-doctor/`;
       return {
-        title: 'AdSense Rejection Doctor & Pre-Approval Site Auditor — GladSense',
-        description: 'Diagnose Low Value Content, invalid navigation, and automated crawler flags. Complete 100-point Google AdSense pre-submission compliance audit.',
+        title: 'Free AdSense Rejection Doctor & Pre-Approval Site Auditor — GladSense',
+        description: 'Instant 100% free tool to diagnose Low Value Content, invalid navigation, and crawler flags. Complete 100-point Google AdSense pre-submission compliance audit.',
         canonical,
         ogType: 'website',
         schemaGraph: [

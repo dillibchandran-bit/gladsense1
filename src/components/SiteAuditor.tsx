@@ -341,42 +341,49 @@ Verified by GladSense AI Auditor`;
 
         <div className="relative max-w-4xl mx-auto text-center space-y-6">
           {/* Clinical Diagnostic Clinic Eyebrow Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-purple-200/80 shadow-xs flex-wrap justify-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border-2 border-emerald-300 shadow-sm flex-wrap justify-center">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 flex items-center gap-1.5">
-              <Stethoscope className="w-3.5 h-3.5 text-purple-600" />
-              <span>Official 100-Point Audit Rubric</span>
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+              <Stethoscope className="w-4 h-4 text-emerald-600" />
+              <span>100% Free Clinical Audit</span>
             </span>
             <span className="text-slate-300">•</span>
-            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-              Search Quality Evaluator &amp; AdSense Compliance Engine
+            <span className="text-xs font-bold text-slate-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-300">
+              No Sign-Up or Credit Card Required
+            </span>
+            <span className="text-slate-300 hidden sm:inline">•</span>
+            <span className="text-[11px] font-semibold text-slate-600 hidden sm:inline">
+              Official 100-Point Search Quality Rubric
             </span>
           </div>
 
           {/* Main Hero Headline */}
           <div className="space-y-3">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#191b23] tracking-tight font-['Google_Sans_Display','Google_Sans',sans-serif] leading-tight">
-              Google AdSense
+              <span className="inline-block px-3 py-1 mb-2 text-xs sm:text-sm font-black tracking-wider uppercase text-emerald-800 bg-emerald-100 border-2 border-emerald-400 rounded-full shadow-xs mr-2 align-middle">
+                100% FREE
+              </span>
+              Google AdSense Audit &amp; Diagnostic
               <span className="block mt-1 text-2xl sm:text-3xl lg:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#9d62ec] via-[#7c3aed] to-[#1a73e8]">
-                Pre-Approval Audit • Rejection Remedy • Penalization Diagnostic
+                Pre-Approval Readiness • Rejection Remedy • 100-Point Heuristics
               </span>
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
               {mode === 'rejection-doctor' ? (
                 <span>
-                  Actionable root-cause diagnosis and 14-day recovery roadmaps for publishers. Pinpoint why your domain was rejected for <strong className="text-slate-900 font-bold">"Low-Value Content"</strong>, resolve crawler blocks, or recover from sudden ad serving limitations.
+                  Instant, <strong className="text-slate-900 font-bold">100% free</strong> root-cause diagnosis and 14-day recovery roadmaps for publishers. Pinpoint why your domain was rejected for <strong className="text-slate-900 font-bold">"Low-Value Content"</strong>, resolve crawler blocks, or recover from sudden ad serving limitations.
                 </span>
               ) : mode === 'quality-matrix' ? (
                 <span>
-                  Interactive Google Quality Evaluator (SQEG) audit. Measure your site&apos;s <strong className="text-slate-900 font-bold">Information Gain</strong>, author entity transparency, and unhelpful AI risk before submitting your application.
+                  Interactive, <strong className="text-slate-900 font-bold">100% free</strong> Google Quality Evaluator (SQEG) audit. Measure your site&apos;s <strong className="text-slate-900 font-bold">Information Gain</strong>, author entity transparency, and unhelpful AI risk before submitting your application.
                 </span>
               ) : mode === 'crawler-firewall' ? (
                 <span>
-                  Diagnostic firewall &amp; bot unblocking lab. Stop Cloudflare Turnstile, Bot Fight Mode, and 403 Forbidden errors from blocking <strong className="text-slate-900 font-bold">Mediapartners-Google</strong> crawlers.
+                  Diagnostic firewall &amp; bot unblocking lab. Stop Cloudflare Turnstile, Bot Fight Mode, and 403 Forbidden errors from blocking <strong className="text-slate-900 font-bold">Mediapartners-Google</strong> crawlers with <strong className="text-slate-900 font-bold">100% free diagnostics</strong>.
                 </span>
               ) : (
                 <span>
-                  Actionable pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google&apos;s core quality standards</strong> (content value, legal trust pages, zero broken links, mobile performance) before applying.
+                  Actionable, <strong className="text-slate-900 font-bold">100% free</strong> pre-submission readiness audit. Verify your domain against <strong className="text-slate-900 font-bold">Google&apos;s core quality standards</strong> (content value, legal trust pages, zero broken links, mobile performance) before applying.
                 </span>
               )}
             </p>
@@ -452,16 +459,34 @@ Verified by GladSense AI Auditor`;
                     )}
                     <span>
                       {mode === 'rejection-doctor'
-                        ? 'Diagnose Rejection Cause'
+                        ? 'Run Free Rejection Diagnosis'
                         : mode === 'crawler-firewall'
-                        ? 'Test Crawler & Firewall'
+                        ? 'Run Free Firewall Test'
                         : mode === 'quality-matrix'
-                        ? 'Run Quality Rater Audit'
-                        : 'Run Pre-Approval Audit'}
+                        ? 'Run Free Quality Audit'
+                        : 'Run Free Pre-Approval Audit'}
                     </span>
                   </>
                 )}
               </button>
+            </div>
+
+            {/* 100% Free Micro-Trust Assurance Row */}
+            <div className="mt-3 flex items-center justify-center gap-3 sm:gap-4 text-xs font-medium flex-wrap">
+              <span className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>100% Free Forever</span>
+              </span>
+              <span className="text-slate-300 hidden sm:inline">•</span>
+              <span className="flex items-center gap-1.5 text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-full font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>No Account or Card Required</span>
+              </span>
+              <span className="text-slate-300 hidden sm:inline">•</span>
+              <span className="flex items-center gap-1.5 text-purple-700 bg-purple-50 border border-purple-200/80 px-2.5 py-0.5 rounded-full font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                <span>Instant Clinical Heuristics</span>
+              </span>
             </div>
 
             {/* Quick Demo Fill & Advanced Crawl Links */}

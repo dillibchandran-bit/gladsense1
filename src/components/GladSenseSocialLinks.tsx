@@ -102,6 +102,40 @@ export const GLADSENSE_OFFICIAL_SOCIALS = [
 ];
 
 /**
+ * Official YouTube Channel Description & Search Discovery Metadata
+ * Drafted for maximum YouTube Search visibility and algorithm approval.
+ */
+export const GLADSENSE_YOUTUBE_CHANNEL_METADATA = {
+  channelName: 'GladSense — Google AdSense Compliance & Search Monetization',
+  handle: '@GladSense-n8f',
+  channelUrl: 'https://www.youtube.com/@GladSense-n8f',
+  primaryKeywords: [
+    'Google AdSense approval',
+    'fix Low Value Content AdSense',
+    'Google Search ranking policies',
+    'website monetization tutorial',
+    'high RPM niches',
+    'AdSense policy compliance',
+    'helpful content update recovery',
+  ],
+  description: `Welcome to GladSense — your masterclass on how to get approved for Google AdSense on your first try, fix Low Value Content rejections, and rank on Page 1 of Google Search.
+
+Whether you run a blog, a niche website, or a web utility tool, we break down Google review bots, human Quality Rater guidelines, and search algorithms into simple, actionable steps.
+
+🎯 WHAT YOU WILL LEARN:
+• AdSense Approval Blueprint: 7-step checklist to pass review on your first attempt.
+• Fix "Low Value Content": Add Information Gain and eliminate generic AI fluff.
+• Google Search Policies: Master E-E-A-T, Helpful Content, and Core Algorithm Updates.
+• High-RPM Micro-Niches: Find $30+ CPM niches and low-competition KGR keywords.
+• Ad Placement & Screen Sanity: Maximize ad RPM while respecting the 30% screen rule.
+
+🚀 Free Site Doctor & Compliance Audit Tools:
+👉 https://gladsenseedu.app
+
+🔔 Subscribe for weekly site audits, teardowns & policy guides!`,
+};
+
+/**
  * Multi-layout component providing interactive official social channels for GladSense
  */
 export const GladSenseSocialLinks: React.FC<GladSenseSocialLinksProps> = ({
