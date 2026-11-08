@@ -16,7 +16,13 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  
+  const portArgIndex = process.argv.indexOf('--port');
+  const cliPort = portArgIndex !== -1 && process.argv[portArgIndex + 1] ? parseInt(process.argv[portArgIndex + 1], 10) : undefined;
+  const PORT = cliPort || (process.env.PORT ? parseInt(process.env.PORT, 10) : 3000);
+
+  const hostArgIndex = process.argv.indexOf('--host');
+  const HOST = (hostArgIndex !== -1 && process.argv[hostArgIndex + 1]) ? process.argv[hostArgIndex + 1] : '0.0.0.0';
 
   app.use(express.json());
 
@@ -324,8 +330,23 @@ Return ONLY valid JSON matching this exact structure:
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`AdSense Strategist server running on http://0.0.0.0:${PORT}`);
+  const server = app.listen(PORT, HOST, () => {
+    console.log(`AdSense Strategist server running on http://${HOST}:${PORT}`);
+  });
+
+  server.on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`[GladSense Server] Port ${PORT} is currently in use. Existing process active.`);
+    } else {
+      console.error('[GladSense Server] Server listen error:', err);
+    }
+  });
+
+  process.on('SIGTERM', () => {
+    server.close(() => process.exit(0));
+  });
+  process.on('SIGINT', () => {
+    server.close(() => process.exit(0));
   });
 }
 
