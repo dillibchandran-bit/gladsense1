@@ -137,10 +137,38 @@ export const GuideDetailPage: React.FC = () => {
         </section>
       )}
 
+      {/* Automatic Table of Contents for Deep 360° Guides */}
+      {post.sections.length >= 8 && (
+        <nav
+          aria-label="Table of Contents"
+          className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3"
+        >
+          <div className="text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-[#1a73e8]" />
+            <span>Complete 360° Field Manual Contents ({post.sections.length} Sections)</span>
+          </div>
+          <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-slate-700">
+            {post.sections.map((sec, idx) => (
+              <li key={idx} className="leading-snug">
+                <a
+                  href={`#guide-section-${idx}`}
+                  className="hover:text-[#1a73e8] hover:underline transition-colors flex items-start gap-2"
+                >
+                  <span className="font-mono font-bold text-slate-400 shrink-0">
+                    {String(idx + 1).padStart(2, '0')}.
+                  </span>
+                  <span>{sec.heading}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
       {/* Main Content Sections */}
       <main className="space-y-8 text-sm text-slate-700 leading-relaxed">
         {post.sections.map((section, idx) => (
-          <section key={idx} className="space-y-4">
+          <section key={idx} id={`guide-section-${idx}`} className="space-y-4 scroll-mt-24">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
               {section.heading}
             </h2>

@@ -329,10 +329,38 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               <p className="leading-relaxed">{activeArticle.directAnswerSummary}</p>
             </div>
 
+            {/* Automatic Table of Contents for Deep 360° Guides */}
+            {activeArticle.sections.length >= 8 && (
+              <nav
+                aria-label="Table of Contents"
+                className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3"
+              >
+                <div className="text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-[#1a73e8]" />
+                  <span>Complete 360° Field Manual Contents ({activeArticle.sections.length} Sections)</span>
+                </div>
+                <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-slate-700">
+                  {activeArticle.sections.map((sec, idx) => (
+                    <li key={idx} className="leading-snug">
+                      <a
+                        href={`#guide-section-${idx}`}
+                        className="hover:text-[#1a73e8] hover:underline transition-colors flex items-start gap-2"
+                      >
+                        <span className="font-mono font-bold text-slate-400 shrink-0">
+                          {String(idx + 1).padStart(2, '0')}.
+                        </span>
+                        <span>{sec.heading}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
             {/* Article Content Sections */}
             <div className="pt-4 space-y-10 text-slate-800 text-sm sm:text-base leading-relaxed">
               {activeArticle.sections.map((section, sIdx) => (
-                <section key={sIdx} className="space-y-4">
+                <section key={sIdx} id={`guide-section-${sIdx}`} className="space-y-4 scroll-mt-24">
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Google_Sans',sans-serif] tracking-tight">
                     {section.heading}
                   </h2>
