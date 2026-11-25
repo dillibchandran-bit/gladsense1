@@ -139,7 +139,7 @@ export const GuideDetailPage: React.FC = () => {
         </section>
       )}
 
-      {/* Automatic Table of Contents for Deep 360° Guides */}
+      {/* Automatic Table of Contents for Long-Form Guides */}
       {post.sections.length >= 8 && (
         <nav
           aria-label="Table of Contents"
@@ -147,7 +147,7 @@ export const GuideDetailPage: React.FC = () => {
         >
           <div className="text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-[#1a73e8]" />
-            <span>Complete 360° Field Manual Contents ({post.sections.length} Sections)</span>
+            <span>Table of Contents ({post.sections.length} Sections)</span>
           </div>
           <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-slate-700">
             {post.sections.map((sec, idx) => (
@@ -277,7 +277,7 @@ export const GuideDetailPage: React.FC = () => {
           <section aria-label="Technical Glossary" className="space-y-4 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <h2 className="text-xl font-bold text-slate-900 font-['Google_Sans',sans-serif]">
-                Nano-Level Technical Glossary
+                Technical Glossary
               </h2>
               <span className="text-[11px] font-mono text-slate-500">
                 {post.glossaryTerms.length} Verified Entities

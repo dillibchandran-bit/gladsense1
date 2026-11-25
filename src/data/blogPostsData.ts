@@ -5092,11 +5092,11 @@ else:
     id: 'post-49',
     slug: 'adsense-policy-center-restricted-ad-serving-must-fix-guide',
     title: 'How to Fix AdSense Policy Center "Restricted Ad Serving" & "Must Fix" Violations: The 2026/2027 Remediation Field Guide',
-    subtitle: '360° Nano-Level Content Engineering Edition: The definitive diagnostic manual separating Google Publisher Policies ("Must Fix: Yes") from Google Publisher Restrictions ("Must Fix: No"), mapping Google\'s automated crawler-to-classifier pipeline, breaking deleted-page 301 loops, hardening UGC and CMP telemetry, and clearing Policy Center reviews on the first try.',
+    subtitle: 'The definitive diagnostic manual separating Google Publisher Policies ("Must Fix: Yes") from Google Publisher Restrictions ("Must Fix: No"), mapping Google\'s automated crawler-to-classifier pipeline, breaking deleted-page 301 loops, hardening UGC and CMP telemetry, and clearing Policy Center reviews on the first try.',
     category: 'AdSense Approval & Rejection Doctor',
     intent: 'Informational',
     readTime: '24 min read',
-    publishDate: 'November 2026 (360° NCE Directorate Release)',
+    publishDate: 'November 2026 (Updated Edition)',
     isoDatePublished: '2026-11-25T08:00:00Z',
     isoDateModified: '2026-11-25T10:00:00Z',
     author: GLADSENSE_AUTHORS.HEAD_EVALUATOR,
@@ -5203,7 +5203,7 @@ else:
         ],
       },
       {
-        heading: 'Part III — Nano-Level Deletion Mechanics: Why Deleted URLs Stay Flagged in Policy Center (The 4 Server Culprits)',
+        heading: 'Part III — Deletion Mechanics: Why Deleted URLs Stay Flagged in Policy Center (The 4 Server Culprits)',
         content: 'A Policy Center violation refuses to disappear after you delete a page for four concrete technical reasons: an SEO plugin silently created an HTTP 301 redirect pointing back to your homepage, your global template still executes adsbygoogle.js on your custom 404 error page, a CDN edge node is still serving stale cached HTML to Mediapartners-Google, or the 7-day rolling ad-request reporting window has not yet closed.',
         image: {
           src: http410CrawlerFlowImg,
@@ -5364,7 +5364,7 @@ export function shouldLoadAdSense(pathname: string, hostname: string, hasSearchQ
         content: 'Never submit a Policy Center review blind. Run this bash diagnostic script from any Linux/macOS terminal or WSL shell to inspect the exact HTTP status code, redirect Location header, CDN cache headers, X-Robots-Tag, and adsbygoogle.js script footprint that Mediapartners-Google receives from your origin and edge network:',
         codeSnippet: `#!/bin/bash
 # ==============================================================================
-# GladSense 360° Policy Center Pre-Review Crawler Audit
+# GladSense Policy Center Pre-Review Crawler Audit
 # Simulates Mediapartners-Google to verify HTTP 410/200, redirects, cache & ad tags
 # ==============================================================================
 TARGET_URL="https://yourdomain.com/flagged-page-slug/"
