@@ -16,6 +16,8 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  ExternalLink,
+  Wrench,
 } from 'lucide-react';
 import { TrademarkDisclaimer } from '../components/TrademarkDisclaimer';
 import { AdSlotPlaceholder } from '../components/monetization/AdPlaceholders';
@@ -270,8 +272,99 @@ export const GuideDetailPage: React.FC = () => {
           </section>
         ))}
 
+        {/* Structured Technical Glossary */}
+        {post.glossaryTerms && post.glossaryTerms.length > 0 && (
+          <section aria-label="Technical Glossary" className="space-y-4 border-t border-slate-200 pt-6">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <h2 className="text-xl font-bold text-slate-900 font-['Google_Sans',sans-serif]">
+                Nano-Level Technical Glossary
+              </h2>
+              <span className="text-[11px] font-mono text-slate-500">
+                {post.glossaryTerms.length} Verified Entities
+              </span>
+            </div>
+            <dl className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {post.glossaryTerms.map((item, gIdx) => (
+                <div
+                  key={gIdx}
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 space-y-1"
+                >
+                  <dt className="text-xs font-extrabold text-slate-900 font-mono">
+                    {item.term}
+                  </dt>
+                  <dd className="text-xs text-slate-600 leading-relaxed">
+                    {item.definition}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
+        {/* Official Primary Sources & References */}
+        {post.references && post.references.length > 0 && (
+          <section aria-label="Primary Sources and Official Documentation" className="space-y-3 border-t border-slate-200 pt-6">
+            <h2 className="text-lg font-bold text-slate-900 font-['Google_Sans',sans-serif]">
+              Official Primary Sources &amp; Policy Documentation
+            </h2>
+            <ul className="space-y-2">
+              {post.references.map((ref, rIdx) => (
+                <li key={rIdx} className="text-xs">
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[#1a73e8] hover:underline font-medium"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    <span>{ref.title}</span>
+                    <span className="text-slate-400 font-normal">({ref.publisher})</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* Ad Placement Below Content */}
         <AdSlotPlaceholder format="in-content-728" />
+
+        {/* Related Diagnostic Tools (Internal Linking Equity) */}
+        {post.relatedToolLinks && post.relatedToolLinks.length > 0 && (
+          <section aria-label="Recommended Diagnostic Tools" className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div className="flex items-center gap-2">
+              <Wrench className="w-4 h-4 text-[#1a73e8]" />
+              <h2 className="text-sm font-bold text-slate-900">
+                Recommended GladSense Diagnostic Tools
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {post.relatedToolLinks.map((tool, tIdx) => {
+                const toolRouteMap: Record<string, string> = {
+                  'site-doctor': '/tools/site-doctor/',
+                  'crawler-firewall-lab': '/tools/crawler-firewall/',
+                  'policy-toolkit': '/tools/ads-txt-generator/',
+                  'ad-placement': '/tools/ad-placement-simulator/',
+                  'revenue-planner': '/tools/adsense-rpm-calculator/',
+                  'niche-lab': '/tools/kgr-keyword-lab/',
+                  'ads-txt-validator': '/tools/ads-txt-validator/',
+                };
+                const targetPath = toolRouteMap[tool.tabId] || '/tools/site-doctor/';
+                return (
+                  <button
+                    key={tIdx}
+                    type="button"
+                    onClick={() => navigate(targetPath)}
+                    className="px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-xs font-bold text-slate-800 hover:text-[#1a73e8] transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                  >
+                    <span>{tool.label}</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* FAQs */}
         {post.faqs && post.faqs.length > 0 && (

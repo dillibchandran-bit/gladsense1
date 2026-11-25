@@ -457,6 +457,54 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
               ))}
             </div>
 
+            {/* Structured Technical Glossary */}
+            {activeArticle.glossaryTerms && activeArticle.glossaryTerms.length > 0 && (
+              <div className="pt-8 border-t border-slate-200 space-y-4">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-lg font-bold text-slate-900 font-['Google_Sans',sans-serif]">
+                    Nano-Level Technical Glossary
+                  </h3>
+                  <span className="text-xs text-slate-500 font-mono">
+                    • {activeArticle.glossaryTerms.length} Verified Entities
+                  </span>
+                </div>
+                <dl className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {activeArticle.glossaryTerms.map((item, gIdx) => (
+                    <div
+                      key={gIdx}
+                      className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1"
+                    >
+                      <dt className="text-xs font-extrabold text-slate-900 font-mono">{item.term}</dt>
+                      <dd className="text-xs text-slate-600 leading-relaxed">{item.definition}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            {/* Official Primary Sources & References */}
+            {activeArticle.references && activeArticle.references.length > 0 && (
+              <div className="pt-6 border-t border-slate-200 space-y-3">
+                <h3 className="text-base font-bold text-slate-900 font-['Google_Sans',sans-serif]">
+                  Official Primary Sources &amp; Policy Documentation
+                </h3>
+                <ul className="space-y-1.5">
+                  {activeArticle.references.map((ref, rIdx) => (
+                    <li key={rIdx} className="text-xs">
+                      <a
+                        href={ref.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#1a73e8] hover:underline font-medium"
+                      >
+                        {ref.title} <span className="text-slate-400 font-normal">({ref.publisher})</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* FAQ Accordion Section */}
             {activeArticle.faqs.length > 0 && (
               <div className="pt-8 border-t border-slate-200 space-y-4">

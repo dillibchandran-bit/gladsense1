@@ -259,70 +259,108 @@ export function getRouteMeta(routeState: RouteState): RouteMeta {
 
       if (post) {
         const canonical = `${CANONICAL_BASE}/guides/${post.slug}/`;
+        const baseTitle = post.metaTitle || post.title;
+        const formattedTitle = baseTitle.length <= 50 ? `${baseTitle} — GladSense` : baseTitle;
+        const articleImages = post.sections
+          .map((sec) => sec.image?.src)
+          .filter((src): src is string => Boolean(src))
+          .map((src) => (src.startsWith('http') ? src : `${CANONICAL_BASE}${src.startsWith('/') ? src : `/${src}`}`));
+
+        const schemaGraph: any[] = [
+          organizationSchema,
+          {
+            '@type': 'BreadcrumbList',
+            '@id': `${canonical}#breadcrumb`,
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${CANONICAL_BASE}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Guides',
+                item: `${CANONICAL_BASE}/guides/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: post.title,
+                item: canonical,
+              },
+            ],
+          },
+          {
+            '@type': 'TechArticle',
+            '@id': `${canonical}#article`,
+            headline: post.title,
+            description: post.metaDescription || post.subtitle,
+            url: canonical,
+            ...(articleImages.length > 0 ? { image: articleImages } : {}),
+            datePublished: post.isoDatePublished || '2026-09-01T08:00:00Z',
+            dateModified: post.isoDateModified || post.isoDatePublished || '2026-10-01T12:00:00Z',
+            author: {
+              '@type': 'Person',
+              name: post.author.name,
+              jobTitle: post.author.role,
+              affiliation: {
+                '@type': 'Organization',
+                name: 'GladSense Compliance Labs',
+              },
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'GladSense Compliance & Monetization Labs',
+              logo: {
+                '@type': 'ImageObject',
+                url: `${CANONICAL_BASE}/favicon.ico`,
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': canonical,
+            },
+            keywords: [post.primaryKeyword, ...post.secondaryKeywords].join(', '),
+            articleSection: post.category,
+          },
+        ];
+
+        if (post.faqs && post.faqs.length > 0) {
+          schemaGraph.push({
+            '@type': 'FAQPage',
+            '@id': `${canonical}#faq`,
+            mainEntity: post.faqs.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+              },
+            })),
+          });
+        }
+
+        if (post.glossaryTerms && post.glossaryTerms.length > 0) {
+          schemaGraph.push({
+            '@type': 'DefinedTermSet',
+            '@id': `${canonical}#glossary`,
+            name: `${post.title} — Technical Glossary`,
+            hasDefinedTerm: post.glossaryTerms.map((item) => ({
+              '@type': 'DefinedTerm',
+              name: item.term,
+              description: item.definition,
+            })),
+          });
+        }
+
         return {
-          title: `${post.metaTitle || post.title} — GladSense`,
+          title: formattedTitle,
           description: post.metaDescription || post.subtitle,
           canonical,
           ogType: 'article',
-          schemaGraph: [
-            organizationSchema,
-            {
-              '@type': 'BreadcrumbList',
-              '@id': `${canonical}#breadcrumb`,
-              itemListElement: [
-                {
-                  '@type': 'ListItem',
-                  position: 1,
-                  name: 'Home',
-                  item: `${CANONICAL_BASE}/`,
-                },
-                {
-                  '@type': 'ListItem',
-                  position: 2,
-                  name: 'Guides',
-                  item: `${CANONICAL_BASE}/guides/`,
-                },
-                {
-                  '@type': 'ListItem',
-                  position: 3,
-                  name: post.title,
-                  item: canonical,
-                },
-              ],
-            },
-            {
-              '@type': 'TechArticle',
-              '@id': `${canonical}#article`,
-              headline: post.title,
-              description: post.metaDescription || post.subtitle,
-              url: canonical,
-              datePublished: '2026-09-01T08:00:00Z',
-              dateModified: '2026-10-01T12:00:00Z',
-              author: {
-                '@type': 'Person',
-                name: post.author.name,
-                jobTitle: post.author.role,
-                affiliation: {
-                  '@type': 'Organization',
-                  name: 'GladSense Compliance Labs',
-                },
-              },
-              publisher: {
-                '@type': 'Organization',
-                name: 'GladSense Compliance & Monetization Labs',
-                logo: {
-                  '@type': 'ImageObject',
-                  url: `${CANONICAL_BASE}/favicon.ico`,
-                },
-              },
-              mainEntityOfPage: {
-                '@type': 'WebPage',
-                '@id': canonical,
-              },
-              keywords: [post.primaryKeyword, ...post.secondaryKeywords].join(', '),
-              articleSection: post.category,
-            },
-          ],
+          schemaGraph,
         };
       }
 

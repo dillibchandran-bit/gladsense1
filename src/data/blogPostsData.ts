@@ -5097,9 +5097,11 @@ else:
     intent: 'Informational',
     readTime: '24 min read',
     publishDate: 'November 2026 (360° NCE Directorate Release)',
+    isoDatePublished: '2026-11-25T08:00:00Z',
+    isoDateModified: '2026-11-25T10:00:00Z',
     author: GLADSENSE_AUTHORS.HEAD_EVALUATOR,
-    metaTitle: 'How to Fix AdSense Policy Center Restricted Ad Serving & Must Fix (2026/2027)',
-    metaDescription: 'Complete 360-degree guide to fixing AdSense Policy Center "Restricted ad serving" and "Must fix" alerts. Master Google Publisher Policies vs. Restrictions, HTTP 410 cleanup, crawler blocks, CMP TCF v2.2 fixes, and review workflows.',
+    metaTitle: 'Fix AdSense Policy Center Restricted Ads (2026)',
+    metaDescription: 'Fix AdSense Policy Center "Restricted ad serving" and "Must fix" alerts. Learn Policies vs. Restrictions, HTTP 410 cleanup, crawler blocks, and CMP TCF v2.2.',
     primaryKeyword: 'adsense policy center restricted ad serving',
     secondaryKeywords: [
       'google publisher policies vs google publisher restrictions',
@@ -5444,8 +5446,8 @@ fi`,
         ],
       },
       {
-        heading: 'Part VII & VIII — 2026/2027 Preventive Architecture & Nano-Level Technical Glossary',
-        content: 'Proactive publishers prevent Policy Center revenue shocks by treating compliance as continuous site engineering rather than crisis cleanup. As Google expands multimodal AI scanning (inspecting rendered text, image OCR, video frames, CMP signals, and MFA layout ratios in 2026–2027), building lightweight automated guardrails protects your domain permanently.',
+        heading: 'Part VII — Expert Prevention: 2026/2027 Enforcement Trends & Automated Compliance Architecture',
+        content: 'Proactive publishers prevent Policy Center revenue shocks by treating compliance as continuous site engineering rather than crisis cleanup. As Google expands multimodal AI scanning—inspecting rendered text, image OCR, video frames, CMP signals, and MFA layout ratios across 2026 and 2027—building lightweight automated guardrails protects your domain permanently.',
         callout: {
           type: 'tip',
           text: '2026/2027 Preventive Compliance Stack: (1) Scope adsbygoogle.js exclusively to verified editorial/tool templates—never load it on 404, 410, /search, /login, or empty SPA states; (2) Whitelist ASN 15169 verified bots in your WAF; (3) Run a certified IAB TCF v2.2 CMP with Consent Mode v2; (4) Pre-moderate UGC comments with Turnstile; (5) Audit Policy Center weekly and export baseline Page RPMs so you catch drops within 48 hours.',
@@ -5456,10 +5458,87 @@ fi`,
             content: 'Three enforcement shifts are accelerating across 2026 and 2027: (1) Multimodal Vision + OCR Auditing—Google increasingly flags text embedded inside screenshots, memes, and video thumbnails even when body HTML is clean; (2) Automated CMP Revocation Auditing—sites whose GDPR banner breaks after a theme or JS update lose EEA/UK demand within 24 hours; and (3) Stricter "Ads on Screens Without Publisher Content" & MFA Enforcement—thin pagination slideshows, interstitial ad walls, and unhydrated SPA shells face faster site-level Policy Center actions.',
           },
           {
-            title: 'Nano-Level Technical Glossary (12 Essential Policy Center Entities)',
-            content: 'Google Publisher Policies: Mandatory AdSense compliance rules ("Must fix: Yes") where violations disable ad serving and risk account termination. Google Publisher Restrictions: Content categories ("Must fix: No") permitted by Google but subject to reduced advertiser bidding due to brand-safety filters. Mediapartners-Google: Google\'s specialized AdSense crawler (originating from ASN 15169) that fetches rendered HTML and media to match contextual ads and verify policy compliance. HTTP 410 Gone: Terminal HTTP status informing crawlers a URL was permanently deleted—far superior to HTTP 301 or soft 404 for clearing Policy Center flags. Auto-301 Contamination: Accidental redirection of a deleted policy-flagged URL back to a live monetized page, causing repeated review failures. Page Exclusions: AdSense control (Ads -> By site -> Page exclusions) that disables ad serving on specific URLs without deleting the page or harming SEO. data-ad-status="unfilled": DOM attribute written onto <ins class="adsbygoogle"> containers when Google returns zero ads due to disabled serving or empty auctions. X-Afma-Ad-Status: HTTP response diagnostic header exposed in ad-request network telemetry indicating fill/restriction state. IAB TCF v2.2: European Transparency and Consent Framework standard required by Google for serving ads in the EEA, UK, and Switzerland. Consent Mode v2: Google tag signaling standard passing ad_storage, ad_user_data, ad_personalization, and analytics_storage consent flags. Ad Serving Limit: Account-level traffic-quality throttle triggered by invalid traffic assessments (distinct from fixable content policy strikes). Rolling 7-Day Ad-Request Window: The active telemetry timeframe over which Policy Center retains flagged URLs that continue sending ad requests.',
+            title: 'Quarterly Compliance Hygiene Routine for High-RPM Publishers',
+            content: 'Run a 15-minute monthly engineering check: (1) Export your top 100 earning URLs and verify zero unexpected data-ad-status="unfilled" drops; (2) Crawl a sample 404 URL and /?s=test query as Mediapartners-Google to confirm zero adsbygoogle.js execution; (3) Confirm Cloudflare or server WAF logs show 0 blocked hits from ASN 15169; and (4) Test your EEA/UK CMP consent flow via VPN to ensure a valid IAB TCF v2.2 string fires before the first ad request.',
           },
         ],
+      },
+    ],
+    glossaryTerms: [
+      {
+        term: 'Google Publisher Policies ("Must Fix: Yes")',
+        definition: 'Mandatory AdSense compliance rules governing prohibited content, malware, copyright, privacy, and screen value. Violations disable ad serving (0% fill) and risk site or account suspension if ignored.',
+      },
+      {
+        term: 'Google Publisher Restrictions ("Must Fix: No")',
+        definition: 'Legal, permitted content themes (such as alcohol, sensitive events, or medical topics) where risk-averse advertisers opt out of bidding. Reduces auction fill without risking an account ban.',
+      },
+      {
+        term: 'Mediapartners-Google (ASN 15169)',
+        definition: 'Google\'s specialized AdSense crawler that fetches rendered DOM text, images, metadata, and outbound links to match contextual ads and enforce Policy Center rules.',
+      },
+      {
+        term: 'HTTP 410 Gone',
+        definition: 'Terminal HTTP response signaling that a URL was permanently deleted. Clears deleted Policy Center URLs cleanly without the homepage contamination caused by HTTP 301 redirects.',
+      },
+      {
+        term: 'Auto-301 Contamination',
+        definition: 'Accidental redirection created by SEO plugins (Rank Math, Yoast) that forwards a deleted policy-flagged URL back to a live monetized homepage, causing repeated Policy Center review failures.',
+      },
+      {
+        term: 'Page Exclusions',
+        definition: 'AdSense control (Ads -> By site -> Page exclusions) that turns off ad serving on specific URLs while keeping the article live and preserving 100% of organic Google Search traffic.',
+      },
+      {
+        term: 'data-ad-status="unfilled"',
+        definition: 'DOM attribute injected into <ins class="adsbygoogle"> containers when Google declines to fill a slot due to disabled ad serving, CMP blocks, or zero eligible advertiser bids.',
+      },
+      {
+        term: 'X-Afma-Ad-Status',
+        definition: 'Diagnostic HTTP response header visible in Chrome DevTools ad-request telemetry indicating whether an ad auction filled or encountered policy/restriction filtering.',
+      },
+      {
+        term: 'IAB TCF v2.2',
+        definition: 'IAB Europe Transparency and Consent Framework standard required by Google for serving personalized or non-personalized ads to visitors in the EEA, UK, and Switzerland.',
+      },
+      {
+        term: 'Google Consent Mode v2',
+        definition: 'Tag signaling protocol communicating ad_storage, ad_user_data, ad_personalization, and analytics_storage consent states to Google tags prior to ad execution.',
+      },
+      {
+        term: 'Ad Serving Limit (IVT)',
+        definition: 'Account-wide temporary ad throttle triggered by invalid traffic or traffic-quality assessments. Distinct from content policy flags and lifts automatically without a review button.',
+      },
+      {
+        term: 'Rolling 7-Day Ad-Request Window',
+        definition: 'Telemetry retention timeframe over which Policy Center displays flagged URLs that have generated at least one live adsbygoogle.js request.',
+      },
+    ],
+    references: [
+      {
+        title: 'Policy Center Overview & Fixing Ad-Serving Issues',
+        url: 'https://support.google.com/adsense/answer/9437976',
+        publisher: 'Google AdSense Help Center',
+      },
+      {
+        title: 'Google Publisher Policies (Mandatory Compliance Rules)',
+        url: 'https://support.google.com/adsense/answer/10502938',
+        publisher: 'Google AdSense Help Center',
+      },
+      {
+        title: 'Google Publisher Restrictions (Restricted Ad Serving)',
+        url: 'https://support.google.com/adsense/answer/10437795',
+        publisher: 'Google AdSense Help Center',
+      },
+      {
+        title: 'Google CMP Requirements for Serving Ads in the EEA, UK & Switzerland (IAB TCF v2.2)',
+        url: 'https://support.google.com/adsense/answer/13554116',
+        publisher: 'Google AdSense Help Center',
+      },
+      {
+        title: 'AdSense Crawler (Mediapartners-Google) Technical Documentation',
+        url: 'https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers#adsense',
+        publisher: 'Google Search Central',
       },
     ],
     faqs: [

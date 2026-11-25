@@ -351,6 +351,17 @@ export interface BlogPostSection {
   callout?: { type: 'tip' | 'warning' | 'data' | 'checklist'; text: string };
 }
 
+export interface BlogPostGlossaryTerm {
+  term: string;
+  definition: string;
+}
+
+export interface BlogPostReference {
+  title: string;
+  url: string;
+  publisher: string;
+}
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -360,6 +371,8 @@ export interface BlogPost {
   intent: 'Informational' | 'Transactional' | 'Navigational';
   readTime: string;
   publishDate: string;
+  isoDatePublished?: string;
+  isoDateModified?: string;
   author: {
     name: string;
     role: string;
@@ -371,6 +384,8 @@ export interface BlogPost {
   secondaryKeywords: string[];
   directAnswerSummary: string; // Layer 2 & checklist requirement: immediate answer within 200 words
   sections: BlogPostSection[];
+  glossaryTerms?: BlogPostGlossaryTerm[];
+  references?: BlogPostReference[];
   faqs: BlogPostFaq[];
   relatedToolLinks: { label: string; tabId: string }[];
 }
