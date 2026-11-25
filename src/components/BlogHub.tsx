@@ -339,6 +339,24 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onNavigateToTab }) => {
 
                   <p className="leading-relaxed text-slate-700">{section.content}</p>
 
+                  {/* Editorial Visual / Diagram */}
+                  {section.image && (
+                    <figure className="my-5 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                      <img
+                        src={section.image.src}
+                        alt={section.image.alt}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        className="w-full h-auto object-cover block"
+                      />
+                      {section.image.caption && (
+                        <figcaption className="px-4 py-2.5 text-xs text-slate-600 bg-slate-50 border-t border-slate-200/80 leading-relaxed">
+                          {section.image.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  )}
+
                   {/* Subheadings */}
                   {section.subheadings && (
                     <div className="space-y-4 pt-2">

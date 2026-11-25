@@ -149,6 +149,24 @@ export const GuideDetailPage: React.FC = () => {
               {section.content}
             </p>
 
+            {/* Editorial Visual / Diagram */}
+            {section.image && (
+              <figure className="my-5 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                <img
+                  src={section.image.src}
+                  alt={section.image.alt}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-auto object-cover block"
+                />
+                {section.image.caption && (
+                  <figcaption className="px-4 py-2.5 text-xs text-slate-600 bg-slate-50 border-t border-slate-200/80 leading-relaxed">
+                    {section.image.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+
             {/* Callout Box */}
             {section.callout && (
               <div
@@ -168,6 +186,15 @@ export const GuideDetailPage: React.FC = () => {
                   <CheckCircle2 className="w-4 h-4 text-[#1a73e8] shrink-0 mt-0.5" />
                 )}
                 <div>{section.callout.text}</div>
+              </div>
+            )}
+
+            {/* Code Snippet */}
+            {section.codeSnippet && (
+              <div className="p-4 rounded-2xl bg-slate-950 text-slate-100 font-mono text-xs overflow-x-auto border border-slate-800 my-4">
+                <pre>
+                  <code>{section.codeSnippet}</code>
+                </pre>
               </div>
             )}
 

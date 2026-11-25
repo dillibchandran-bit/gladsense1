@@ -341,6 +341,11 @@ export interface BlogPostSection {
   heading: string;
   subheadings?: { title: string; content: string }[];
   content: string;
+  image?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
   codeSnippet?: string;
   tableData?: { headers: string[]; rows: string[][] };
   callout?: { type: 'tip' | 'warning' | 'data' | 'checklist'; text: string };
